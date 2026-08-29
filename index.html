@@ -8,6 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.coingecko.com https://mempool.space; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Crypto Hogs · UARK's Crypto Club</title>
 <meta name="description" content="Crypto Hogs is the University of Arkansas student org for crypto & digital assets. Speakers, education, networking, policy. For the curious, not the experts. Free and open to all UA students.">
 <meta property="og:title" content="Crypto Hogs · UARK's Crypto Club">
@@ -47,8 +49,9 @@
     html{scroll-behavior:auto}
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   }
+  html{background:var(--ink)}
   body{
-    background:var(--ink);
+    background:transparent;
     color:var(--cream);
     font-family:var(--font-d);
     font-size:1rem;
@@ -81,7 +84,7 @@
     transition:background .4s var(--ease),border-color .4s var(--ease),backdrop-filter .4s var(--ease);
     border-bottom:1px solid transparent;
   }
-  header.scrolled{background:rgba(11,11,13,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+  header.scrolled{background:rgba(11,11,13,.88);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);border-bottom-color:var(--line)}
   .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
   .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:1.02rem;letter-spacing:.02em}
   .brand img{width:34px;height:34px;transition:transform .6s var(--ease)}
@@ -97,7 +100,6 @@
     padding:12px 22px;border-radius:var(--radius);cursor:pointer;
     border:1px solid var(--bronze-deep);color:var(--cream);background:transparent;
     transition:background .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease),transform .3s var(--ease);
-    will-change:transform;
   }
   .btn:hover{background:var(--bronze);border-color:var(--bronze);color:#141414}
   .btn.solid{background:var(--cardinal);border-color:var(--cardinal)}
@@ -161,18 +163,11 @@
   .coin-hint{position:absolute;left:50%;bottom:-44px;transform:translateX(-50%);color:var(--cream-faint);white-space:nowrap}
   .particle{position:fixed;z-index:115;pointer-events:none;font-size:20px;line-height:1;will-change:transform,opacity}
 
-  /* film grain */
+  /* film grain (static: animating a full-viewport layer costs more than it looks) */
   body::after{
-    content:"";position:fixed;inset:-100px;pointer-events:none;z-index:100;opacity:.05;
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.05;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-    animation:grain 7s steps(9) infinite;
   }
-  @keyframes grain{
-    0%,100%{transform:translate(0,0)}12%{transform:translate(-30px,14px)}25%{transform:translate(18px,-26px)}
-    37%{transform:translate(-24px,-18px)}50%{transform:translate(26px,22px)}62%{transform:translate(-14px,28px)}
-    75%{transform:translate(30px,-12px)}87%{transform:translate(-20px,8px)}
-  }
-  @media (prefers-reduced-motion:reduce){body::after{animation:none}}
 
   /* ghost section numerals */
   .ghost{
@@ -180,25 +175,27 @@
     font-family:var(--font-d);font-weight:700;line-height:1;pointer-events:none;user-select:none;
     font-size:clamp(7rem,17vw,15rem);color:transparent;
     -webkit-text-stroke:1px rgba(201,169,106,.13);
+    will-change:transform;
   }
+  @media (max-width:480px){.ghost{display:none}}
   .ghost ~ .wrap{position:relative;z-index:1}
 
   /* custom cursor */
   @media (hover:hover) and (pointer:fine){
     body.cursor-on, body.cursor-on a, body.cursor-on button, body.cursor-on .coin3d{cursor:none}
-    .cur-dot,.cur-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:120;border-radius:50%}
+    .cur-dot,.cur-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:120;border-radius:50%;transform:translate(-200px,-200px)}
     .cur-dot{width:6px;height:6px;background:var(--bronze);transform:translate(-50%,-50%)}
     .cur-ring{
       width:34px;height:34px;border:1px solid rgba(201,169,106,.55);
-      transform:translate(-50%,-50%) scale(1);transition:width .25s var(--ease),height .25s var(--ease),border-color .25s var(--ease);
+      transform:translate(-50%,-50%);transition:border-color .25s var(--ease);
     }
-    body.cursor-hot .cur-ring{width:56px;height:56px;border-color:var(--bronze)}
+    body.cursor-hot .cur-ring{border-color:var(--bronze)}
     body.cursor-hot .cur-dot{background:var(--cardinal-hot)}
   }
 
   /* masked char reveal */
   .word-w{display:inline-block;overflow:hidden;vertical-align:top}
-  .ch{display:inline-block;will-change:transform}
+  .ch{display:inline-block}
 
   /* officer photos: mono at rest, color on hover */
   .card .ph img{filter:saturate(.12) contrast(1.06);transition:transform .9s var(--ease),filter .7s var(--ease)}
@@ -212,9 +209,18 @@
   }
   .card:hover::after{opacity:1}
 
-  /* hero ember field */
-  .embers{position:absolute;inset:0;pointer-events:none;z-index:0}
+  /* page-wide ember field (fixed, behind all content) */
+  .embers{position:fixed;inset:0;pointer-events:none;z-index:-1}
   .hero > .wrap, .hero > .marquee{position:relative;z-index:1}
+
+  /* constant ambient life: gold accents breathe, glow pulses, marquee stars turn */
+  @keyframes goldbreathe{0%,100%{filter:brightness(.97)}50%{filter:brightness(1.22)}}
+  .proof-card .serif, .stat b em, .join-fine em{animation:goldbreathe 6.5s ease-in-out infinite}
+  .mq-paused .marquee-track{animation-play-state:paused}
+  @keyframes glowpulse{0%,100%{opacity:.8;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
+  .coin-glow{animation:glowpulse 6s ease-in-out infinite}
+  @keyframes spinstar{to{transform:rotate(360deg)}}
+  .marquee-inner span::after{display:inline-block;animation:spinstar 10s linear infinite}
 
   /* scroll progress */
   .scroll-progress{
@@ -229,6 +235,48 @@
     content:"";position:absolute;left:12px;top:50%;transform:translateY(-50%);
     width:6px;height:6px;border-radius:50%;background:var(--cream);animation:pulse 2s infinite;
   }
+
+  /* lite mode: phones & low-memory devices skip the heavy atmosphere */
+  html.lite body::after{display:none}
+  html.lite header.scrolled{background:rgba(11,11,13,.97);-webkit-backdrop-filter:none;backdrop-filter:none}
+
+  /* next block line (hero) */
+  .nextblock{margin-top:14px;color:var(--cream-dim)}
+  .nextblock b{color:var(--bronze);font-weight:500}
+
+  /* FAQ: block-explorer rows */
+  .faq{border-top:1px solid var(--line);padding:clamp(80px,12vh,150px) 0}
+  .faqrow{border-bottom:1px solid var(--line)}
+  .faqrow summary{
+    display:grid;grid-template-columns:64px 1fr auto;gap:20px;align-items:center;
+    padding:24px 8px;cursor:pointer;list-style:none;
+    font-size:clamp(1.02rem,1.7vw,1.3rem);font-weight:500;letter-spacing:-.02em;
+    transition:background .35s var(--ease),padding-left .35s var(--ease);
+  }
+  .faqrow summary::-webkit-details-marker{display:none}
+  .faqrow summary:hover{background:var(--ink-2);padding-left:20px}
+  .faqrow summary .idx{font-family:var(--font-m);font-size:.78rem;color:var(--bronze);letter-spacing:.1em}
+  .faqrow summary .tog{font-family:var(--font-m);color:var(--cream-faint);transition:transform .35s var(--ease)}
+  .faqrow[open] summary .tog{transform:rotate(45deg)}
+  .faqrow p{padding:0 8px 26px 84px;color:var(--cream-dim);max-width:62ch;line-height:1.7}
+  .faqrow p b{color:var(--cream);font-weight:500}
+  @media (max-width:860px){
+    .faqrow summary{grid-template-columns:48px 1fr auto}
+    .faqrow p{padding-left:8px}
+  }
+
+  /* 21-click toast */
+  .toast21{
+    position:fixed;left:50%;bottom:34px;transform:translate(-50%,80px);z-index:126;
+    background:var(--panel);border:1px solid var(--bronze-deep);border-radius:100px;
+    padding:14px 26px;font-family:var(--font-m);font-size:.75rem;letter-spacing:.1em;
+    color:var(--bronze);opacity:0;transition:transform .5s var(--ease),opacity .5s var(--ease);
+    pointer-events:none;white-space:nowrap;
+  }
+  .toast21.on{transform:translate(-50%,0);opacity:1}
+
+  /* genesis egg */
+  .genesis{display:block;text-align:center;margin-top:22px;color:rgba(244,239,228,.24);font-size:.62rem}
 
   /* wps easter egg */
   .wps{
@@ -274,7 +322,7 @@
 
   /* group photo */
   .groupshot{position:relative;border-radius:var(--radius);overflow:hidden;margin-top:72px}
-  .groupshot img{width:100%;aspect-ratio:16/8.5;object-fit:cover;object-position:50% 30%}
+  .groupshot img{width:100%;aspect-ratio:16/8.5;object-fit:cover;object-position:50% 30%;will-change:transform}
   .groupshot figcaption{
     position:absolute;left:0;right:0;bottom:0;padding:22px clamp(16px,3vw,32px);
     background:linear-gradient(transparent,rgba(11,11,13,.88));
@@ -490,6 +538,7 @@
         <a class="btn magnetic" href="#fall">Fall '26 lineup <span class="arr">↓</span></a>
       </div>
       <p class="hero-note mono reveal reveal-d4"><b>150+</b> members · <b>$0</b> dues · Tuesdays all semester</p>
+      <p class="nextblock mono reveal reveal-d4">Next block: <b>Sep 22</b> · speaker night with the CEO of Anvil<span id="nextdays"></span></p>
     </div>
     <div class="coin-stage reveal reveal-d2">
       <div class="coin-glow"></div>
@@ -507,12 +556,12 @@
       <div class="marquee-inner">
         <span>Open to all UA students</span><span>150+ members</span><span>No dues, ever</span>
         <span>Speakers all semester</span><span>Education · Networking · Policy</span>
-        <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span>
+        <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span><span>$HOG · 1 HOG = 1 HOG</span>
       </div>
       <div class="marquee-inner">
         <span>Open to all UA students</span><span>150+ members</span><span>No dues, ever</span>
         <span>Speakers all semester</span><span>Education · Networking · Policy</span>
-        <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span>
+        <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span><span>$HOG · 1 HOG = 1 HOG</span>
       </div>
     </div>
   </div>
@@ -694,10 +743,46 @@
   </div>
 </section>
 
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq">
+  <span class="ghost" aria-hidden="true">06</span>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow mono">06 / Zero gatekeeping</div>
+        <h2>Common <span class="serif">objections,</span> answered.</h2>
+      </div>
+      <p class="reveal">The questions everyone asks before their first Tuesday, settled on-chain.</p>
+    </div>
+    <div class="reveal">
+      <details class="faqrow">
+        <summary><span class="idx">0x01</span> Do I need to own crypto? <span class="tog">+</span></summary>
+        <p><b>No.</b> Most members start with zero. Curiosity is the only prerequisite, and it stays that way.</p>
+      </details>
+      <details class="faqrow">
+        <summary><span class="idx">0x02</span> Do I need to be a finance or CS major? <span class="tog">+</span></summary>
+        <p><b>Every major is welcome.</b> Crypto needs marketers, writers, policy minds, designers, and healthy skeptics just as much as it needs engineers.</p>
+      </details>
+      <details class="faqrow">
+        <summary><span class="idx">0x03</span> Does it cost anything? <span class="tog">+</span></summary>
+        <p><b>$0.</b> No dues, no paid course, no upsell, ever. Free pizza, on the other hand, happens regularly.</p>
+      </details>
+      <details class="faqrow">
+        <summary><span class="idx">0x04</span> Is this financial advice? <span class="tog">+</span></summary>
+        <p><b>Emphatically not.</b> We study the technology, the industry, and the policy around it. Your money stays yours and your decisions stay yours.</p>
+      </details>
+      <details class="faqrow">
+        <summary><span class="idx">0x05</span> I know nothing about crypto. <span class="tog">+</span></summary>
+        <p><b>Perfect.</b> The whole club is built for the curious, not the experts. Come confused, leave slightly less confused.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ============ JOIN ============ -->
 <section class="join" id="join">
   <div class="wrap">
-    <div class="eyebrow mono" style="justify-content:center">06 / Your move</div>
+    <div class="eyebrow mono" style="justify-content:center">07 / Your move</div>
     <h2>Join <span class="serif">Crypto Hogs.</span></h2>
     <p class="sub reveal">Three taps. Zero dollars. If you're curious, you belong here.</p>
     <div class="join-steps">
@@ -730,6 +815,7 @@
         <a class="brand" href="#top"><img src="assets/coin-96.png" alt="Crypto Hogs coin logo">CRYPTO&nbsp;HOGS</a>
         <p>The Cryptocurrency Club at the University of Arkansas. Educating students, connecting them with industry, and putting Fayetteville on the map of the future of finance.</p>
         <div class="clockline"><span class="dot"></span> Fayetteville, AR · <span id="clock">--:--</span> local</div>
+        <div class="clockline" id="halvingline" hidden><span class="dot" style="background:var(--bronze)"></span> <span id="halving"></span></div>
       </div>
       <div class="foot-cols">
         <div class="foot-col">
@@ -757,6 +843,7 @@
       <span>© 2026 Crypto Hogs · A registered student organization at the University of Arkansas.</span>
       <span class="mono">Events open to all UA students · Not financial advice. We're a club, not your broker.</span>
     </div>
+    <span class="mono genesis">Chancellor on brink of second bailout for banks · 03/Jan/2009</span>
   </div>
 </footer>
 
@@ -767,6 +854,9 @@
   "use strict";
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (/[?&]motion/.test(location.search)) reduced = false;
+  var LITE = window.matchMedia('(max-width:860px)').matches ||
+             (navigator.deviceMemory && navigator.deviceMemory <= 4);
+  if (LITE) document.documentElement.classList.add('lite');
   var staticMode = /[?&]static/.test(location.search);
   if (staticMode){
     document.documentElement.classList.add('static-mode');
@@ -799,7 +889,7 @@
     {name:"Jackson Varela",    role:"Director of Accountability",       img:"assets/web/DSC9415.jpg"},
     {name:"Aubree Upchurch",   role:"Director of Marketing",            img:"assets/web/DSC9444.jpg"},
     {name:"Callie Conrade",    role:"Assistant Director of Marketing",  img:"assets/web/DSC9348.jpg"},
-    {name:"Kaylee",            role:"Assistant Director of Marketing",  img:"assets/web/kaylee.jpg"},
+    {name:"Kaylee Houston",    role:"Assistant Director of Marketing",  img:"assets/web/kaylee.jpg"},
     {name:"Jackson Templeton", role:"Outreach Officer",                 img:"assets/web/DSC9393.jpg"},
     {name:"Thomas Cheek",      role:"Outreach Officer",                 img:"assets/web/DSC9417.jpg"}
   ];
@@ -873,10 +963,13 @@
         } else if (n.nodeType === 1){ split(n); }
       });
     })(scrub);
+    var lastP = -1;
     function onScrub(){
       var r = scrub.getBoundingClientRect(), wh = window.innerHeight;
       var p = (wh * 0.85 - r.top) / (wh * 0.6);
       p = Math.max(0, Math.min(1, p));
+      if (Math.abs(p - lastP) < .004) return;
+      lastP = p;
       var lit = p * nodes.length;
       for (var i = 0; i < nodes.length; i++){
         nodes[i].style.opacity = Math.max(.14, Math.min(1, lit - i));
@@ -929,13 +1022,15 @@
   /* ---------- Magnetic buttons ---------- */
   if (!reduced && window.matchMedia('(hover:hover)').matches){
     document.querySelectorAll('.magnetic').forEach(function(btn){
+      var br = null;
+      btn.addEventListener('mouseenter', function(){ br = btn.getBoundingClientRect(); });
       btn.addEventListener('mousemove', function(ev){
-        var r = btn.getBoundingClientRect();
-        var x = (ev.clientX - r.left - r.width/2) * .18;
-        var y = (ev.clientY - r.top - r.height/2) * .3;
+        if (!br) return;
+        var x = (ev.clientX - br.left - br.width/2) * .18;
+        var y = (ev.clientY - br.top - br.height/2) * .3;
         btn.style.transform = 'translate(' + x + 'px,' + y + 'px)';
       });
-      btn.addEventListener('mouseleave', function(){ btn.style.transform = ''; });
+      btn.addEventListener('mouseleave', function(){ br = null; btn.style.transform = ''; });
     });
   }
 
@@ -948,7 +1043,7 @@
       var ts = pill.classList.contains('on') ? 1 : .6;
       pcs += (ts - pcs) * .18;
       pill.style.transform = 'translate(' + pcx + 'px,' + pcy + 'px) translate(-50%,-140%) scale(' + pcs.toFixed(3) + ')';
-      if (Math.abs(px - pcx) < .3 && Math.abs(py - pcy) < .3 && Math.abs(ts - pcs) < .01 && ts !== 1){ praf = null; return; }
+      if (Math.abs(px - pcx) < .3 && Math.abs(py - pcy) < .3 && Math.abs(ts - pcs) < .01){ praf = null; return; }
       praf = requestAnimationFrame(ploop);
     };
     var pkick = function(){ if (praf === null) praf = requestAnimationFrame(ploop); };
@@ -977,11 +1072,11 @@
         pill.textContent = label;
         pill.classList.add('on'); pkick();
       });
-      row.addEventListener('mouseleave', function(){ pill.classList.remove('on'); });
+      row.addEventListener('mouseleave', function(){ pill.classList.remove('on'); pkick(); });
     });
     document.querySelectorAll('.step, .groupshot').forEach(function(el){
       el.addEventListener('mouseenter', function(){ pill.textContent = el.classList.contains('groupshot') ? 'The team' : 'Open ↗'; pill.classList.add('on'); pkick(); });
-      el.addEventListener('mouseleave', function(){ pill.classList.remove('on'); });
+      el.addEventListener('mouseleave', function(){ pill.classList.remove('on'); pkick(); });
     });
   }
 
@@ -996,14 +1091,16 @@
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script>
 (function(){
   "use strict";
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (/[?&]motion/.test(location.search)) reduced = false;
   var staticMode = /[?&]static/.test(location.search);
+  var LITE = document.documentElement.classList.contains('lite');
+  var btcUsd = null;
 
   /* ---------- Live prices in the marquee (CoinGecko, fails silently) ---------- */
   if (!staticMode){
@@ -1011,15 +1108,19 @@
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){
         if (!d || !d.bitcoin) return;
+        if (typeof d.bitcoin.usd === 'number') btcUsd = d.bitcoin.usd;
         var rows = [['BTC', d.bitcoin], ['ETH', d.ethereum], ['SOL', d.solana]];
         document.querySelectorAll('.marquee-inner').forEach(function(track){
           rows.forEach(function(row){
-            if (!row[1] || !row[1].usd) return;
-            var chg = row[1].usd_24h_change || 0;
+            if (!row[1] || typeof row[1].usd !== 'number') return;
+            var chg = Number(row[1].usd_24h_change) || 0;
             var s = document.createElement('span');
-            s.innerHTML = row[0] + ' $' + Math.round(row[1].usd).toLocaleString('en-US') +
-              '&nbsp;<b style="color:' + (chg >= 0 ? '#6FCF97' : '#E25563') + ';font-weight:500">' +
-              (chg >= 0 ? '▲' : '▼') + Math.abs(chg).toFixed(1) + '%</b>';
+            s.appendChild(document.createTextNode(row[0] + ' $' + Math.round(row[1].usd).toLocaleString('en-US') + ' '));
+            var b = document.createElement('b');
+            b.style.color = chg >= 0 ? '#6FCF97' : '#E25563';
+            b.style.fontWeight = '500';
+            b.textContent = (chg >= 0 ? '▲' : '▼') + Math.abs(chg).toFixed(1) + '%';
+            s.appendChild(b);
             track.appendChild(s);
           });
         });
@@ -1032,21 +1133,26 @@
     var ring = document.createElement('div'); ring.className = 'cur-ring';
     document.body.appendChild(dot); document.body.appendChild(ring);
     document.body.classList.add('cursor-on');
-    var mx = -100, my = -100, rx = -100, ry = -100, craf = null;
+    var mx = -100, my = -100, rx = -100, ry = -100, cs = 1, craf = null;
     var cloop = function(){
       rx += (mx - rx) * .16; ry += (my - ry) * .16;
-      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+      var ts = document.body.classList.contains('cursor-hot') ? 1.6 : 1;
+      cs += (ts - cs) * .18;
+      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%) scale(' + cs.toFixed(3) + ')';
       dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
-      if (Math.abs(mx - rx) < .2 && Math.abs(my - ry) < .2){ craf = null; return; }
+      if (Math.abs(mx - rx) < .2 && Math.abs(my - ry) < .2 && Math.abs(ts - cs) < .01){ craf = null; return; }
       craf = requestAnimationFrame(cloop);
     };
+    var ckick = function(){ if (craf === null) craf = requestAnimationFrame(cloop); };
     document.addEventListener('mousemove', function(e){
       mx = e.clientX; my = e.clientY;
-      if (craf === null){ if (rx < -50){ rx = mx; ry = my; } craf = requestAnimationFrame(cloop); }
+      if (craf === null && rx < -50){ rx = mx; ry = my; }
+      ckick();
     }, {passive:true});
     document.addEventListener('mouseover', function(e){
-      var t = e.target.closest ? e.target.closest('a,button,.coin3d,.row,.card,.step,.groupshot') : null;
+      var t = e.target.closest ? e.target.closest('a,button,.coin3d,.row,.card,.step,.groupshot,summary') : null;
       document.body.classList.toggle('cursor-hot', !!t);
+      ckick();
     }, {passive:true});
   }
 
@@ -1085,49 +1191,54 @@
         })();
       });
     }, {threshold: .8});
-    document.querySelectorAll('.eyebrow, .stat small').forEach(function(el){ sio.observe(el); });
+    document.querySelectorAll('.eyebrow, .stat small, .genesis').forEach(function(el){ sio.observe(el); });
   }
 
   /* ---------- 3D tilt + glare on officer cards ---------- */
   if (!staticMode && !reduced && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
     document.querySelectorAll('.card').forEach(function(card){
+      var cr = null, lgx = -1, lgy = -1;
+      card.addEventListener('mouseenter', function(){ cr = card.getBoundingClientRect(); });
       card.addEventListener('mousemove', function(e){
-        var r = card.getBoundingClientRect();
-        var x = (e.clientX - r.left) / r.width - .5;
-        var y = (e.clientY - r.top) / r.height - .5;
+        if (!cr) return;
+        var x = (e.clientX - cr.left) / cr.width - .5;
+        var y = (e.clientY - cr.top) / cr.height - .5;
         card.style.transition = 'border-color .4s';
         card.style.transform = 'perspective(700px) translateY(-6px) rotateX(' + (-y * 7).toFixed(2) + 'deg) rotateY(' + (x * 8).toFixed(2) + 'deg)';
-        card.style.setProperty('--gx', ((x + .5) * 100).toFixed(1) + '%');
-        card.style.setProperty('--gy', ((y + .5) * 100).toFixed(1) + '%');
+        var gx = Math.round((x + .5) * 50) * 2, gy = Math.round((y + .5) * 50) * 2;
+        if (gx !== lgx || gy !== lgy){
+          lgx = gx; lgy = gy;
+          card.style.setProperty('--gx', gx + '%');
+          card.style.setProperty('--gy', gy + '%');
+        }
       });
-      card.addEventListener('mouseleave', function(){ card.style.transition = ''; card.style.transform = ''; });
+      card.addEventListener('mouseleave', function(){ cr = null; card.style.transition = ''; card.style.transform = ''; });
     });
   }
 
-  /* ---------- Hero ember field ---------- */
-  if (!staticMode && !reduced){
-    var heroEl = document.querySelector('.hero');
+  /* ---------- Page-wide ember field ---------- */
+  if (!staticMode && !reduced && !LITE){
     var cv = document.createElement('canvas');
     cv.className = 'embers';
-    heroEl.insertBefore(cv, heroEl.firstChild);
+    cv.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(cv);
     var ctx = cv.getContext('2d');
-    var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 1.5);
     var eresize = function(){
-      W = heroEl.clientWidth; H = heroEl.clientHeight;
+      W = window.innerWidth; H = window.innerHeight;
       cv.width = W * DPR; cv.height = H * DPR;
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     };
     eresize(); window.addEventListener('resize', eresize);
     var P = [];
-    for (var pi = 0; pi < 60; pi++) P.push({
+    for (var pi = 0; pi < 44; pi++) P.push({
       x: Math.random(), y: Math.random(), z: .3 + Math.random() * .7,
       s: .8 + Math.random() * 1.8, p: Math.random() * Math.PI * 2,
       v: .00012 + Math.random() * .00025, red: Math.random() < .12
     });
-    var emx = 0, erun = false, eraf = null, et0 = performance.now();
-    heroEl.addEventListener('mousemove', function(e){
-      var r = heroEl.getBoundingClientRect();
-      emx = (e.clientX - r.left) / r.width - .5;
+    var emx = 0, erun = !document.hidden, eraf = null, et0 = performance.now();
+    document.addEventListener('mousemove', function(e){
+      emx = e.clientX / Math.max(1, W) - .5;
     }, {passive:true});
     var edraw = function(t){
       ctx.clearRect(0, 0, W, H);
@@ -1144,13 +1255,74 @@
       }
       eraf = erun ? requestAnimationFrame(edraw) : null;
     };
-    var hio = new IntersectionObserver(function(es){
-      es.forEach(function(en){
-        erun = en.isIntersecting && !document.hidden;
-        if (erun && eraf === null) eraf = requestAnimationFrame(edraw);
-      });
-    }, {threshold: .02});
-    hio.observe(heroEl);
+    if (erun) eraf = requestAnimationFrame(edraw);
+    document.addEventListener('visibilitychange', function(){
+      erun = !document.hidden;
+      if (erun && eraf === null) eraf = requestAnimationFrame(edraw);
+    });
+  }
+
+  /* ---------- Feature pack: console egg, tab ticker, halving, countdown, 21-club, marquee pause ---------- */
+  try {
+    console.log('%cCRYPTO HOGS', 'font-size:26px;font-weight:bold;color:#C9A96A;text-shadow:2px 2px 0 #9D2235;');
+    console.log('%c₿ You opened devtools. You should probably join.\n→ GroupMe: https://groupme.com/join_group/113608298/MGcsS3ON\n→ Tuesdays · University of Arkansas · est. 2026 · WPS', 'color:#F4EFE4;font-size:12px;line-height:1.7;');
+  } catch (e) {}
+
+  var ND = document.getElementById('nextdays');
+  if (ND){
+    var evd = Math.ceil((new Date(2026, 8, 22) - new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())) / 86400000);
+    if (evd > 1) ND.textContent = ' · in ' + evd + ' days';
+    else if (evd === 1) ND.textContent = ' · tomorrow';
+    else if (evd === 0) ND.textContent = ' · tonight';
+  }
+
+  if (!staticMode){
+    fetch('https://mempool.space/api/blocks/tip/height')
+      .then(function(r){ return r.ok ? r.text() : null; })
+      .then(function(t){
+        var h = parseInt(t, 10);
+        if (!h || h <= 0 || h >= 1050000) return;
+        var left = 1050000 - h;
+        var days = Math.round(left * 10 / 1440);
+        document.getElementById('halving').textContent =
+          'Next Bitcoin halving: ~' + days + ' days · block ' + h.toLocaleString('en-US') + ' / 1,050,000';
+        document.getElementById('halvingline').hidden = false;
+      }).catch(function(){});
+  }
+
+  var origTitle = document.title, titleTimer = null, titleFlip = false;
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden && btcUsd && !titleTimer){
+      titleTimer = setInterval(function(){
+        titleFlip = !titleFlip;
+        document.title = titleFlip ? ('₿ $' + Math.round(btcUsd).toLocaleString('en-US') + ' · CRYPTO HOGS') : origTitle;
+      }, 4000);
+    } else if (!document.hidden && titleTimer){
+      clearInterval(titleTimer); titleTimer = null; document.title = origTitle;
+    }
+  });
+
+  var coinEl = document.getElementById('coin3d'), clicks21 = 0, toast21done = false;
+  if (coinEl){
+    coinEl.addEventListener('click', function(){
+      clicks21++;
+      if (clicks21 === 21 && !toast21done){
+        toast21done = true;
+        var t = document.createElement('div');
+        t.className = 'toast21';
+        t.textContent = '21,000,000 · there will never be more';
+        document.body.appendChild(t);
+        requestAnimationFrame(function(){ t.classList.add('on'); });
+        setTimeout(function(){ t.classList.remove('on'); setTimeout(function(){ t.remove(); }, 600); }, 3400);
+      }
+    });
+  }
+
+  var heroSec = document.querySelector('.hero'), mq = document.querySelector('.marquee');
+  if (heroSec && mq && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(en){ mq.classList.toggle('mq-paused', !en.isIntersecting); });
+    }, {threshold: 0}).observe(mq);
   }
 
   /* ---------- "wps" easter egg ---------- */
@@ -1203,10 +1375,22 @@
     var chs = splitChars(el);
     if (!chs.length) return;
     gsap.set(chs, {yPercent: 112});
-    gsap.to(chs, Object.assign({yPercent: 0, duration: .85, ease: 'power4.out', stagger: .016}, opts || {}));
+    gsap.to(chs, Object.assign({
+      yPercent: 0, duration: .85, ease: 'power4.out', stagger: .016,
+      onComplete: function(){ gsap.set(chs, {clearProps: 'transform'}); }
+    }, opts || {}));
   }
   document.fonts.ready.then(function(){
     var h1 = document.querySelector('h1[data-split]');
+    if (LITE){
+      /* phones & low-end: simple heading fades, no span explosion, no scrub layers */
+      if (h1) gsap.from(h1, {opacity: 0, y: 26, duration: .8, ease: 'power3.out', delay: .1});
+      document.querySelectorAll('h2').forEach(function(h){
+        gsap.from(h, {opacity: 0, y: 24, duration: .7, ease: 'power3.out',
+          scrollTrigger: {trigger: h, start: 'top 88%', once: true}});
+      });
+      return;
+    }
     if (h1) maskReveal(h1, {delay: .1});
     document.querySelectorAll('h2').forEach(function(h){
       maskReveal(h, {scrollTrigger: {trigger: h, start: 'top 88%', once: true}});
@@ -1222,18 +1406,20 @@
 </script>
 
 <script type="importmap">
-{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
+{"imports": {"three": "./assets/vendor/three.module.js"}}
 </script>
 <script type="module">
 const host = document.getElementById('coin3d');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches && !/[?&]motion/.test(location.search);
 const staticMode = /[?&]static/.test(location.search);
-if (host && !reduced && !staticMode){
+const LITE = document.documentElement.classList.contains('lite');
+if (host && !reduced && !staticMode && !LITE){
   try {
     const THREE = await import('three');
-    const {RoomEnvironment} = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/environments/RoomEnvironment.js');
-    const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    const {RoomEnvironment} = await import('./assets/vendor/RoomEnvironment.js');
+    const DPR = Math.min(devicePixelRatio, 1.75);
+    const renderer = new THREE.WebGLRenderer({alpha: true, antialias: DPR < 1.5, powerPreference: 'high-performance'});
+    renderer.setPixelRatio(DPR);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(28, 1, .1, 20);
@@ -1318,7 +1504,7 @@ if (host && !reduced && !staticMode){
     });
 
     /* render only while visible */
-    let running = false, raf = null;
+    let running = false, raf = null, inView = false, calm = 0, skip = false;
     const tick = (t) => {
       if (!dragging){
         vy += (Math.sign(vy || 1) * IDLE - vy) * .04;
@@ -1326,19 +1512,23 @@ if (host && !reduced && !staticMode){
         const breathe = Math.sin((t || 0) * .0006) * .07;
         group.rotation.x += (breathe - group.rotation.x) * .03;
       }
-      renderer.render(scene, camera);
+      /* idle throttle: after 2s of calm spinning, render at 30fps */
+      calm = (!dragging && Math.abs(Math.abs(vy) - IDLE) < .002) ? calm + 1 : 0;
+      skip = calm > 120 ? !skip : false;
+      if (!skip) renderer.render(scene, camera);
       raf = running ? requestAnimationFrame(tick) : null;
     };
     const vis = new IntersectionObserver(es => {
       es.forEach(en => {
-        running = en.isIntersecting && !document.hidden;
+        inView = en.isIntersecting;
+        running = inView && !document.hidden;
         if (running && raf === null) raf = requestAnimationFrame(tick);
       });
     }, {threshold: .05});
     vis.observe(host);
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden){ running = false; }
-      else { running = true; if (raf === null) raf = requestAnimationFrame(tick); }
+      running = inView && !document.hidden;
+      if (running && raf === null) raf = requestAnimationFrame(tick);
     });
   } catch (e) { /* WebGL or CDN unavailable: the static coin image stays */ }
 }
