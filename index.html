@@ -131,36 +131,73 @@
   .hero-note b{color:var(--bronze);font-weight:500}
 
   /* coin */
-  .coin-stage{display:flex;justify-content:center;perspective:1200px;position:relative}
+  .coin-stage{display:flex;justify-content:center;position:relative}
   .coin-glow{
     position:absolute;inset:50% auto auto 50%;width:min(34vw,480px);aspect-ratio:1;
     transform:translate(-50%,-50%);border-radius:50%;
     background:radial-gradient(circle,rgba(201,169,106,.20),rgba(157,34,53,.10) 45%,transparent 70%);
     filter:blur(30px);pointer-events:none;
   }
-  .coin-bob{position:relative;perspective:1200px}
-  .coin{
-    width:min(30vw,420px);aspect-ratio:1;position:relative;cursor:pointer;user-select:none;
-    transform-style:preserve-3d;will-change:transform;border-radius:50%;
-    box-shadow:0 30px 60px rgba(0,0,0,.55);
-    -webkit-tap-highlight-color:transparent;
+  .coin-wrap{position:relative}
+  .coin3d{
+    width:min(36vw,500px);aspect-ratio:1;position:relative;cursor:grab;user-select:none;
+    touch-action:pan-y;-webkit-tap-highlight-color:transparent;
   }
-  .coin.flipping{animation:coinflip 1.15s var(--ease)}
-  @keyframes coinflip{
-    0%{transform:rotateY(0) scale(1)}
-    45%{transform:rotateY(360deg) scale(1.07)}
-    100%{transform:rotateY(720deg) scale(1)}
+  .coin3d.dragging{cursor:grabbing}
+  .coin3d canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
+  .coin3d img{
+    position:absolute;inset:9%;width:82%;height:82%;border-radius:50%;pointer-events:none;
+    box-shadow:0 30px 60px rgba(0,0,0,.55);transition:opacity .6s var(--ease);
   }
-  .coin img{width:100%;height:100%;border-radius:50%;pointer-events:none}
+  .coin3d.live img{opacity:0}
   .brand img{border-radius:50%}
-  .coin .shine{
-    position:absolute;inset:4%;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
-    background:radial-gradient(circle at var(--sx,30%) var(--sy,25%),rgba(255,246,220,.34),rgba(255,246,220,.05) 34%,transparent 55%);
-  }
   @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
   .coin-float{animation:floaty 6.5s ease-in-out infinite}
   .coin-hint{position:absolute;left:50%;bottom:-44px;transform:translateX(-50%);color:var(--cream-faint);white-space:nowrap}
-  .particle{position:fixed;z-index:80;pointer-events:none;font-size:20px;line-height:1;will-change:transform,opacity}
+  .particle{position:fixed;z-index:115;pointer-events:none;font-size:20px;line-height:1;will-change:transform,opacity}
+
+  /* film grain */
+  body::after{
+    content:"";position:fixed;inset:-100px;pointer-events:none;z-index:100;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    animation:grain 7s steps(9) infinite;
+  }
+  @keyframes grain{
+    0%,100%{transform:translate(0,0)}12%{transform:translate(-30px,14px)}25%{transform:translate(18px,-26px)}
+    37%{transform:translate(-24px,-18px)}50%{transform:translate(26px,22px)}62%{transform:translate(-14px,28px)}
+    75%{transform:translate(30px,-12px)}87%{transform:translate(-20px,8px)}
+  }
+  @media (prefers-reduced-motion:reduce){body::after{animation:none}}
+
+  /* ghost section numerals */
+  .ghost{
+    position:absolute;top:clamp(10px,4vh,44px);right:clamp(6px,3vw,44px);z-index:0;
+    font-family:var(--font-d);font-weight:700;line-height:1;pointer-events:none;user-select:none;
+    font-size:clamp(7rem,17vw,15rem);color:transparent;
+    -webkit-text-stroke:1px rgba(201,169,106,.13);
+  }
+  .ghost ~ .wrap{position:relative;z-index:1}
+
+  /* custom cursor */
+  @media (hover:hover) and (pointer:fine){
+    body.cursor-on, body.cursor-on a, body.cursor-on button, body.cursor-on .coin3d{cursor:none}
+    .cur-dot,.cur-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:120;border-radius:50%}
+    .cur-dot{width:6px;height:6px;background:var(--bronze);transform:translate(-50%,-50%)}
+    .cur-ring{
+      width:34px;height:34px;border:1px solid rgba(201,169,106,.55);
+      transform:translate(-50%,-50%) scale(1);transition:width .25s var(--ease),height .25s var(--ease),border-color .25s var(--ease);
+    }
+    body.cursor-hot .cur-ring{width:56px;height:56px;border-color:var(--bronze)}
+    body.cursor-hot .cur-dot{background:var(--cardinal-hot)}
+  }
+
+  /* masked char reveal */
+  .word-w{display:inline-block;overflow:hidden;vertical-align:top}
+  .ch{display:inline-block;will-change:transform}
+
+  /* officer photos: mono at rest, color on hover */
+  .card .ph img{filter:saturate(.12) contrast(1.06);transition:transform .9s var(--ease),filter .7s var(--ease)}
+  .card:hover .ph img{filter:none}
 
   /* marquee */
   .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;margin-top:clamp(40px,7vh,84px)}
@@ -193,8 +230,7 @@
 
   /* group photo */
   .groupshot{position:relative;border-radius:var(--radius);overflow:hidden;margin-top:72px}
-  .groupshot img{width:100%;aspect-ratio:16/8.5;object-fit:cover;object-position:50% 30%;transform:scale(1.03);transition:transform 1.4s var(--ease)}
-  .groupshot:hover img{transform:scale(1)}
+  .groupshot img{width:100%;aspect-ratio:16/8.5;object-fit:cover;object-position:50% 30%}
   .groupshot figcaption{
     position:absolute;left:0;right:0;bottom:0;padding:22px clamp(16px,3vw,32px);
     background:linear-gradient(transparent,rgba(11,11,13,.88));
@@ -376,7 +412,7 @@
       <a class="link" href="#pillars">What we do</a>
       <a class="link" href="#fall">Fall '26</a>
       <a class="link" href="#team">Team</a>
-      <a class="btn magnetic" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the herd <span class="arr">→</span></a>
+      <a class="btn magnetic" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club <span class="arr">→</span></a>
       <button class="burger" aria-label="Menu" aria-expanded="false" onclick="this.setAttribute('aria-expanded', document.body.classList.toggle('menu-open'))">
         <span></span><span></span><span></span>
       </button>
@@ -390,7 +426,7 @@
   <a href="#pillars">What we do</a>
   <a href="#fall">Fall '26</a>
   <a href="#team">Team</a>
-  <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the herd →</a>
+  <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club →</a>
 </div>
 
 <!-- ============ HERO ============ -->
@@ -399,26 +435,25 @@
   <div class="wrap hero-grid">
     <div>
       <div class="eyebrow mono reveal">University of Arkansas · Registered Student Org</div>
-      <h1 class="reveal reveal-d1">The <span class="serif">future of money</span> runs through Fayetteville.</h1>
+      <h1 data-split>The <span class="serif">future of money</span> runs through Fayetteville.</h1>
       <p class="hero-sub reveal reveal-d2">
         Crypto Hogs is UARK's student org for crypto &amp; digital assets:
         <strong>for the curious, not the experts.</strong>
         No experience needed. Every major welcome.
       </p>
       <div class="hero-ctas reveal reveal-d3">
-        <a class="btn solid magnetic" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the herd <span class="arr">→</span></a>
+        <a class="btn solid magnetic" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join Crypto Hogs <span class="arr">→</span></a>
         <a class="btn magnetic" href="#fall">Fall '26 lineup <span class="arr">↓</span></a>
       </div>
       <p class="hero-note mono reveal reveal-d4"><b>150+</b> members · <b>$0</b> dues · Tuesdays all semester</p>
     </div>
     <div class="coin-stage reveal reveal-d2">
       <div class="coin-glow"></div>
-      <div class="coin-bob coin-float">
-        <div class="coin" id="coin" role="img" aria-label="Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock" title="Go on, flip it" tabindex="0">
-          <img src="assets/coin-hero.jpg" alt="">
-          <div class="shine"></div>
+      <div class="coin-wrap coin-float">
+        <div class="coin3d" id="coin3d" role="img" aria-label="Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock" title="Grab it" tabindex="0">
+          <img src="assets/coin-hero.jpg" alt="" id="coinFallback">
         </div>
-        <span class="coin-hint mono">Flip the coin. It's good luck</span>
+        <span class="coin-hint mono" id="coinHint">Grab the coin. Give it a spin</span>
       </div>
     </div>
   </div>
@@ -451,6 +486,7 @@
 
 <!-- ============ MISSION ============ -->
 <section class="mission" id="about">
+  <span class="ghost" aria-hidden="true">01</span>
   <div class="wrap">
     <div class="eyebrow mono">01 / Why we exist</div>
     <p class="big" id="scrub">
@@ -467,7 +503,7 @@
     <figure class="groupshot reveal">
       <img src="assets/web/DSC9332.jpg" alt="Crypto Hogs officer team standing in front of the Wild Band of Razorbacks fountain" loading="lazy">
       <figcaption>
-        <span class="mono">The herd's leadership</span>
+        <span class="mono">The officer team, Spring 2026</span>
         <span class="mono">Wild Band of Razorbacks · Fayetteville</span>
       </figcaption>
     </figure>
@@ -476,11 +512,12 @@
 
 <!-- ============ PILLARS ============ -->
 <section class="pillars" id="pillars">
+  <span class="ghost" aria-hidden="true">02</span>
   <div class="wrap">
     <div class="section-head">
       <div>
         <div class="eyebrow mono">02 / What we do</div>
-        <h2 class="reveal">Four ways in.<br><span class="serif">Pick yours.</span></h2>
+        <h2>Four ways in.<br><span class="serif">Pick yours.</span></h2>
       </div>
       <p class="reveal">Whatever brought you here, a headline, a paycheck question, or a startup idea, there's a lane for it.</p>
     </div>
@@ -515,6 +552,7 @@
 
 <!-- ============ PROOF ============ -->
 <section class="proof">
+  <span class="ghost" aria-hidden="true">03</span>
   <div class="wrap">
     <div class="eyebrow mono">03 / Proof of work</div>
     <div class="proof-grid">
@@ -539,11 +577,12 @@
 
 <!-- ============ FALL ============ -->
 <section class="fall" id="fall">
+  <span class="ghost" aria-hidden="true">04</span>
   <div class="wrap">
     <div class="section-head">
       <div>
         <div class="eyebrow mono">04 / Fall 2026</div>
-        <h2 class="reveal">The <span class="serif">lineup.</span></h2>
+        <h2>The <span class="serif">lineup.</span></h2>
       </div>
       <p class="reveal">General meetings run Tuesdays all semester; time &amp; room drop in the GroupMe. Speaker nights below.</p>
     </div>
@@ -590,11 +629,12 @@
 
 <!-- ============ TEAM ============ -->
 <section class="team" id="team">
+  <span class="ghost" aria-hidden="true">05</span>
   <div class="wrap">
     <div class="section-head">
       <div>
         <div class="eyebrow mono">05 / The officers</div>
-        <h2 class="reveal">Meet <span class="serif">the herd's</span> leadership.</h2>
+        <h2>The people <span class="serif">behind the coin.</span></h2>
       </div>
       <p class="reveal">Student-led and officer-run, with one shared conviction: Arkansas shouldn't watch the future of money from the bleachers.</p>
     </div>
@@ -603,7 +643,7 @@
       <div>
         <span class="mono" style="color:var(--bronze)">Faculty Advisor</span>
         <b style="margin-top:10px">Dr. Daniel Conway</b>
-        <p>Blockchain educator, data scientist, and Associate Director of the Blockchain Center of Excellence at the Walton College. The academic muscle behind the herd.</p>
+        <p>Blockchain educator, data scientist, and Associate Director of the Blockchain Center of Excellence at the Walton College. The academic muscle behind the club.</p>
       </div>
       <a class="btn magnetic" href="mailto:uarkcryptohogs@gmail.com">Contact the club <span class="arr">→</span></a>
     </div>
@@ -614,7 +654,7 @@
 <section class="join" id="join">
   <div class="wrap">
     <div class="eyebrow mono" style="justify-content:center">06 / Your move</div>
-    <h2 class="reveal">Join <span class="serif">the herd.</span></h2>
+    <h2>Join <span class="serif">Crypto Hogs.</span></h2>
     <p class="sub reveal">Three taps. Zero dollars. If you're curious, you belong here.</p>
     <div class="join-steps">
       <a class="step reveal" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">
@@ -707,17 +747,17 @@
 
   /* ---------- OFFICERS (photo mapping pending /swap img values) ---------- */
   var OFFICERS = [
-    {name:"Lucas Vilar",       role:"President",      img:null},
-    {name:"Reese Crawford",    role:"Vice President", img:"assets/web/DSC9379.jpg"},
-    {name:"Paxton Crocker",    role:"Treasurer",      img:"assets/web/DSC9386.jpg"},
-    {name:"Hunter Tackett",    role:"Secretary",      img:null},
-    {name:"Thomas Cheek",      role:"Officer",        img:"assets/web/DSC9417.jpg"},
-    {name:"Jackson Templeton", role:"Officer",        img:"assets/web/DSC9393.jpg"},
-    {name:"Brixton Blasi",     role:"Officer",        img:"assets/web/DSC9364.jpg"},
-    {name:"Jackson Varela",    role:"Officer",        img:"assets/web/DSC9415.jpg"},
-    {name:"Nate Rowe",         role:"Officer",        img:"assets/web/DSC9402.jpg"},
-    {name:"Callie Conrade",    role:"Officer",        img:"assets/web/DSC9348.jpg"},
-    {name:"Aubree Upchurch",   role:"Officer",        img:"assets/web/DSC9436.jpg"}
+    {name:"Lucas Vilar",       role:"President",                        img:"assets/web/lucas-vilar.jpg"},
+    {name:"Reese Crawford",    role:"Vice President",                   img:"assets/web/DSC9379.jpg"},
+    {name:"Paxton Crocker",    role:"Treasurer",                        img:"assets/web/paxton-crocker.jpg"},
+    {name:"Hunter Tackett",    role:"Secretary",                        img:null},
+    {name:"Brixton Blasi",     role:"Director of Strategy",             img:"assets/web/DSC9364.jpg"},
+    {name:"Jackson Varela",    role:"Director of Accountability",       img:"assets/web/DSC9415.jpg"},
+    {name:"Aubree Upchurch",   role:"Director of Marketing",            img:"assets/web/DSC9436.jpg"},
+    {name:"Callie Conrade",    role:"Assistant Director of Marketing",  img:"assets/web/DSC9348.jpg"},
+    {name:"Kaylee",            role:"Assistant Director of Marketing",  img:null},
+    {name:"Jackson Templeton", role:"Outreach Officer",                 img:"assets/web/DSC9393.jpg"},
+    {name:"Thomas Cheek",      role:"Outreach Officer",                 img:"assets/web/DSC9417.jpg"}
   ];
   var grid = document.getElementById('teamGrid');
   OFFICERS.forEach(function(o,i){
@@ -802,64 +842,42 @@
     else { window.addEventListener('scroll', onScrub, {passive:true}); onScrub(); }
   }
 
-  /* ---------- Coin tilt + shine + flip ---------- */
-  var coin = document.getElementById('coin');
-  var hero = document.querySelector('.hero');
+  /* ---------- Coin particle burst (shared with the 3D coin module) ---------- */
   var canHover = window.matchMedia('(hover:hover)').matches;
-  if (coin && hero && !reduced && canHover){
-    var rx = 0, ry = 0, trx = 0, try_ = 0, raf = null;
-    var shine = coin.querySelector('.shine');
-    var tiltLoop = function(){
-      rx += (trx - rx) * .08; ry += (try_ - ry) * .08;
-      if (Math.abs(trx - rx) < .01 && Math.abs(try_ - ry) < .01){ rx = trx; ry = try_; raf = null; }
-      coin.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
-      shine.style.setProperty('--sx', (50 + ry * 2.2) + '%');
-      shine.style.setProperty('--sy', (38 - rx * 2.2) + '%');
-      if (raf !== null) raf = requestAnimationFrame(tiltLoop);
-    };
-    var kick = function(){ if (raf === null) raf = requestAnimationFrame(tiltLoop); };
-    hero.addEventListener('mousemove', function(ev){
-      var r = hero.getBoundingClientRect();
-      trx = ((r.top + r.height/2) - ev.clientY) / r.height * 22;
-      try_ = (ev.clientX - (r.left + r.width/2)) / r.width * 26;
-      kick();
+  window.__coinBurst = function(x, y){
+    if (reduced || !document.body.animate) return;
+    var glyphs = ['₿','✦','₿','✦','₿','₿','✦','₿'];
+    for (var i = 0; i < 14; i++){
+      var p = document.createElement('span');
+      p.className = 'particle';
+      p.textContent = glyphs[i % glyphs.length];
+      p.style.color = i % 3 ? '#C9A96A' : '#C41230';
+      p.style.left = x + 'px'; p.style.top = y + 'px';
+      document.body.appendChild(p);
+      (function(el){
+        var a = Math.random() * Math.PI * 2, v = 90 + Math.random() * 160;
+        var dx = Math.cos(a) * v, dy = Math.sin(a) * v - 90;
+        var rot = (Math.random() - .5) * 540;
+        el.animate([
+          {transform:'translate(0,0) rotate(0) scale(1)', opacity:1},
+          {transform:'translate(' + dx + 'px,' + (dy + 190) + 'px) rotate(' + rot + 'deg) scale(.4)', opacity:0}
+        ], {duration: 950 + Math.random() * 500, easing:'cubic-bezier(.17,.67,.4,1)'}).onfinish = function(){ el.remove(); };
+      })(p);
+    }
+  };
+  /* fallback interactions if the 3D module never takes over */
+  var coinHost = document.getElementById('coin3d');
+  if (coinHost){
+    coinHost.addEventListener('click', function(ev){
+      if (coinHost.classList.contains('live')) return;
+      var r = coinHost.getBoundingClientRect();
+      window.__coinBurst(ev.clientX || (r.left + r.width/2), ev.clientY || (r.top + r.height/2));
     });
-    hero.addEventListener('mouseleave', function(){ trx = 0; try_ = 0; kick(); });
-  }
-  if (coin){
-    var flipCoin = function(x, y){
-      if (coin.classList.contains('flipping')) return;
-      coin.classList.add('flipping');
-      setTimeout(function(){ coin.classList.remove('flipping'); }, 1200);
-      if (reduced || !document.body.animate) return;
-      var glyphs = ['₿','✦','₿','✦','₿','₿','✦','₿'];
-      for (var i = 0; i < 14; i++){
-        var p = document.createElement('span');
-        p.className = 'particle';
-        p.textContent = glyphs[i % glyphs.length];
-        p.style.color = i % 3 ? '#C9A96A' : '#C41230';
-        p.style.left = x + 'px'; p.style.top = y + 'px';
-        document.body.appendChild(p);
-        (function(el){
-          var a = Math.random() * Math.PI * 2, v = 90 + Math.random() * 160;
-          var dx = Math.cos(a) * v, dy = Math.sin(a) * v - 90;
-          var rot = (Math.random() - .5) * 540;
-          el.animate([
-            {transform:'translate(0,0) rotate(0) scale(1)', opacity:1},
-            {transform:'translate(' + dx + 'px,' + (dy + 190) + 'px) rotate(' + rot + 'deg) scale(.4)', opacity:0}
-          ], {duration: 950 + Math.random() * 500, easing:'cubic-bezier(.17,.67,.4,1)'}).onfinish = function(){ el.remove(); };
-        })(p);
-      }
-    };
-    coin.addEventListener('click', function(ev){
-      var r = coin.getBoundingClientRect();
-      flipCoin(ev.clientX || (r.left + r.width/2), ev.clientY || (r.top + r.height/2));
-    });
-    coin.addEventListener('keydown', function(ev){
-      if (ev.key === 'Enter' || ev.key === ' '){
+    coinHost.addEventListener('keydown', function(ev){
+      if ((ev.key === 'Enter' || ev.key === ' ') && !coinHost.classList.contains('live')){
         ev.preventDefault();
-        var r = coin.getBoundingClientRect();
-        flipCoin(r.left + r.width/2, r.top + r.height/2);
+        var r = coinHost.getBoundingClientRect();
+        window.__coinBurst(r.left + r.width/2, r.top + r.height/2);
       }
     });
   }
@@ -904,7 +922,7 @@
       row.addEventListener('mouseleave', function(){ pill.classList.remove('on'); });
     });
     document.querySelectorAll('.step, .groupshot').forEach(function(el){
-      el.addEventListener('mouseenter', function(){ pill.textContent = el.classList.contains('groupshot') ? 'The herd' : 'Open ↗'; pill.classList.add('on'); pkick(); });
+      el.addEventListener('mouseenter', function(){ pill.textContent = el.classList.contains('groupshot') ? 'The team' : 'Open ↗'; pill.classList.add('on'); pkick(); });
       el.addEventListener('mouseleave', function(){ pill.classList.remove('on'); });
     });
   }
@@ -918,6 +936,217 @@
   }
   clock(); setInterval(clock, 30000);
 })();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var staticMode = /[?&]static/.test(location.search);
+
+  /* ---------- Live prices in the marquee (CoinGecko, fails silently) ---------- */
+  if (!staticMode){
+    fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true')
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        if (!d || !d.bitcoin) return;
+        var rows = [['BTC', d.bitcoin], ['ETH', d.ethereum], ['SOL', d.solana]];
+        document.querySelectorAll('.marquee-inner').forEach(function(track){
+          rows.forEach(function(row){
+            if (!row[1] || !row[1].usd) return;
+            var chg = row[1].usd_24h_change || 0;
+            var s = document.createElement('span');
+            s.innerHTML = row[0] + ' $' + Math.round(row[1].usd).toLocaleString('en-US') +
+              '&nbsp;<b style="color:' + (chg >= 0 ? '#6FCF97' : '#E25563') + ';font-weight:500">' +
+              (chg >= 0 ? '▲' : '▼') + Math.abs(chg).toFixed(1) + '%</b>';
+            track.appendChild(s);
+          });
+        });
+      }).catch(function(){});
+  }
+
+  /* ---------- Custom cursor ---------- */
+  if (!staticMode && !reduced && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var dot = document.createElement('div'); dot.className = 'cur-dot';
+    var ring = document.createElement('div'); ring.className = 'cur-ring';
+    document.body.appendChild(dot); document.body.appendChild(ring);
+    document.body.classList.add('cursor-on');
+    var mx = -100, my = -100, rx = -100, ry = -100, craf = null;
+    var cloop = function(){
+      rx += (mx - rx) * .16; ry += (my - ry) * .16;
+      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+      if (Math.abs(mx - rx) < .2 && Math.abs(my - ry) < .2){ craf = null; return; }
+      craf = requestAnimationFrame(cloop);
+    };
+    document.addEventListener('mousemove', function(e){
+      mx = e.clientX; my = e.clientY;
+      if (craf === null){ if (rx < -50){ rx = mx; ry = my; } craf = requestAnimationFrame(cloop); }
+    }, {passive:true});
+    document.addEventListener('mouseover', function(e){
+      var t = e.target.closest ? e.target.closest('a,button,.coin3d,.row,.card,.step,.groupshot') : null;
+      document.body.classList.toggle('cursor-hot', !!t);
+    }, {passive:true});
+  }
+
+  /* ---------- GSAP: masked char reveals, parallax, ghost numerals ---------- */
+  if (staticMode || reduced || !window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  function splitChars(el){
+    var chs = [];
+    (function walk(node){
+      Array.prototype.slice.call(node.childNodes).forEach(function(n){
+        if (n.nodeType === 3){
+          var frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(function(part){
+            if (!part) return;
+            if (/^\s+$/.test(part)){ frag.appendChild(document.createTextNode(' ')); return; }
+            var w = document.createElement('span'); w.className = 'word-w';
+            part.split('').forEach(function(c){
+              var s = document.createElement('span'); s.className = 'ch'; s.textContent = c;
+              w.appendChild(s); chs.push(s);
+            });
+            frag.appendChild(w);
+          });
+          node.replaceChild(frag, n);
+        } else if (n.nodeType === 1 && n.tagName !== 'BR'){ walk(n); }
+      });
+    })(el);
+    return chs;
+  }
+  function maskReveal(el, opts){
+    var chs = splitChars(el);
+    if (!chs.length) return;
+    gsap.set(chs, {yPercent: 112});
+    gsap.to(chs, Object.assign({yPercent: 0, duration: .85, ease: 'power4.out', stagger: .016}, opts || {}));
+  }
+  document.fonts.ready.then(function(){
+    var h1 = document.querySelector('h1[data-split]');
+    if (h1) maskReveal(h1, {delay: .1});
+    document.querySelectorAll('h2').forEach(function(h){
+      maskReveal(h, {scrollTrigger: {trigger: h, start: 'top 88%', once: true}});
+    });
+    gsap.fromTo('.groupshot img', {yPercent: -6, scale: 1.14}, {yPercent: 6, scale: 1.14, ease: 'none',
+      scrollTrigger: {trigger: '.groupshot', start: 'top bottom', end: 'bottom top', scrub: true}});
+    document.querySelectorAll('.ghost').forEach(function(g){
+      gsap.fromTo(g, {y: 70}, {y: -70, ease: 'none',
+        scrollTrigger: {trigger: g.parentElement, start: 'top bottom', end: 'bottom top', scrub: true}});
+    });
+  });
+})();
+</script>
+
+<script type="module">
+const host = document.getElementById('coin3d');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const staticMode = /[?&]static/.test(location.search);
+if (host && !reduced && !staticMode){
+  try {
+    const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
+    const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(28, 1, .1, 20);
+    camera.position.z = 4.6;
+
+    const tex = await new Promise((res, rej) =>
+      new THREE.TextureLoader().load('assets/coin-hero.jpg', res, undefined, rej));
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    const back = tex.clone();
+    back.wrapS = THREE.RepeatWrapping;
+    back.repeat.x = -1;
+    back.needsUpdate = true;
+
+    const faceMat = t => new THREE.MeshStandardMaterial({map: t, metalness: .42, roughness: .5});
+    const edgeMat = new THREE.MeshStandardMaterial({color: 0x6b5530, metalness: .8, roughness: .48});
+    const geo = new THREE.CylinderGeometry(1, 1, .085, 96);
+    geo.rotateX(Math.PI / 2);
+    const coin = new THREE.Mesh(geo, [edgeMat, faceMat(tex), faceMat(back)]);
+    const group = new THREE.Group();
+    group.add(coin);
+    scene.add(group);
+
+    scene.add(new THREE.AmbientLight(0xfff6e6, .75));
+    const key = new THREE.DirectionalLight(0xfff2d8, 1.7); key.position.set(2.5, 2.5, 4); scene.add(key);
+    const rim = new THREE.DirectionalLight(0x9d2235, 1.4); rim.position.set(-3, -1.5, -2.5); scene.add(rim);
+    const fill = new THREE.DirectionalLight(0xc9a96a, .7); fill.position.set(-2, 2, 2); scene.add(fill);
+
+    const size = () => {
+      const w = host.clientWidth || 300, h = host.clientHeight || 300;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+    size();
+    new ResizeObserver(size).observe(host);
+    host.appendChild(renderer.domElement);
+    host.classList.add('live');
+
+    /* drag to spin, with inertia; tap = big spin + burst */
+    let vy = .012, dragging = false, px = 0, py = 0, moved = 0, downT = 0;
+    const IDLE = .012;
+    host.addEventListener('pointerdown', e => {
+      dragging = true; moved = 0; px = e.clientX; py = e.clientY; downT = performance.now();
+      host.classList.add('dragging');
+      try { host.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    host.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - px, dy = e.clientY - py;
+      px = e.clientX; py = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
+      group.rotation.y += dx * .012;
+      group.rotation.x = Math.max(-.7, Math.min(.7, group.rotation.x + dy * .006));
+      vy = dx * .012;
+    });
+    const endDrag = e => {
+      if (!dragging) return;
+      dragging = false; host.classList.remove('dragging');
+      if (moved < 8 && performance.now() - downT < 350){
+        vy += (Math.random() < .5 ? -1 : 1) * .45;
+        if (window.__coinBurst) window.__coinBurst(e.clientX || px, e.clientY || py);
+        const hint = document.getElementById('coinHint');
+        if (hint) hint.textContent = 'Woo. Pig. Sooie.';
+      }
+    };
+    host.addEventListener('pointerup', endDrag);
+    host.addEventListener('pointercancel', () => { dragging = false; host.classList.remove('dragging'); });
+    host.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        vy += .5;
+        const r = host.getBoundingClientRect();
+        if (window.__coinBurst) window.__coinBurst(r.left + r.width / 2, r.top + r.height / 2);
+      }
+    });
+
+    /* render only while visible */
+    let running = false, raf = null;
+    const tick = () => {
+      if (!dragging){
+        vy += (Math.sign(vy || 1) * IDLE - vy) * .04;
+        group.rotation.y += vy;
+        group.rotation.x += (0 - group.rotation.x) * .03;
+      }
+      renderer.render(scene, camera);
+      raf = running ? requestAnimationFrame(tick) : null;
+    };
+    const vis = new IntersectionObserver(es => {
+      es.forEach(en => {
+        running = en.isIntersecting && !document.hidden;
+        if (running && raf === null) raf = requestAnimationFrame(tick);
+      });
+    }, {threshold: .05});
+    vis.observe(host);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden){ running = false; }
+      else { running = true; if (raf === null) raf = requestAnimationFrame(tick); }
+    });
+  } catch (e) { /* WebGL or CDN unavailable: the static coin image stays */ }
+}
 </script>
 </body>
 </html>
