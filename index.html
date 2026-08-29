@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!--
+   CRYPTO HOGS · University of Arkansas · est. 2026
+   The future of money runs through Fayetteville.
+   psst... type "wps" anywhere on the page.
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -198,6 +203,45 @@
   /* officer photos: mono at rest, color on hover */
   .card .ph img{filter:saturate(.12) contrast(1.06);transition:transform .9s var(--ease),filter .7s var(--ease)}
   .card:hover .ph img{filter:none}
+
+  /* card glare sweep (position driven by JS tilt) */
+  .card::after{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:0;z-index:2;
+    background:radial-gradient(420px circle at var(--gx,50%) var(--gy,50%),rgba(201,169,106,.15),transparent 55%);
+    transition:opacity .4s var(--ease);
+  }
+  .card:hover::after{opacity:1}
+
+  /* hero ember field */
+  .embers{position:absolute;inset:0;pointer-events:none;z-index:0}
+  .hero > .wrap, .hero > .marquee{position:relative;z-index:1}
+
+  /* scroll progress */
+  .scroll-progress{
+    position:fixed;top:0;left:0;right:0;height:2px;z-index:130;pointer-events:none;
+    background:linear-gradient(90deg,var(--bronze),var(--cardinal-hot));
+    transform:scaleX(0);transform-origin:0 50%;
+  }
+
+  /* confirmed chip pulse */
+  .chip.hot{position:relative;padding-left:26px}
+  .chip.hot::before{
+    content:"";position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    width:6px;height:6px;border-radius:50%;background:var(--cream);animation:pulse 2s infinite;
+  }
+
+  /* wps easter egg */
+  .wps{
+    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;gap:.35em;
+    z-index:125;pointer-events:none;font-family:var(--font-s);font-style:italic;
+    font-size:clamp(3rem,10vw,8rem);color:var(--bronze);text-shadow:0 8px 60px rgba(0,0,0,.7);
+    animation:wpsout 1.9s var(--ease) forwards;
+  }
+  .wps span{opacity:0;animation:wpsword .5s var(--ease) forwards}
+  .wps span:nth-child(2){animation-delay:.22s;color:var(--cream)}
+  .wps span:nth-child(3){animation-delay:.44s;color:var(--cardinal-hot)}
+  @keyframes wpsword{from{opacity:0;transform:translateY(44px) scale(.9)}to{opacity:1;transform:none}}
+  @keyframes wpsout{0%,80%{opacity:1}100%{opacity:0}}
 
   /* marquee */
   .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;margin-top:clamp(40px,7vh,84px)}
@@ -722,6 +766,7 @@
 (function(){
   "use strict";
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (/[?&]motion/.test(location.search)) reduced = false;
   var staticMode = /[?&]static/.test(location.search);
   if (staticMode){
     document.documentElement.classList.add('static-mode');
@@ -750,12 +795,11 @@
     {name:"Lucas Vilar",       role:"President",                        img:"assets/web/lucas-vilar.jpg"},
     {name:"Reese Crawford",    role:"Vice President",                   img:"assets/web/DSC9379.jpg"},
     {name:"Paxton Crocker",    role:"Treasurer",                        img:"assets/web/paxton-crocker.jpg"},
-    {name:"Hunter Tackett",    role:"Secretary",                        img:null},
     {name:"Brixton Blasi",     role:"Director of Strategy",             img:"assets/web/DSC9364.jpg"},
     {name:"Jackson Varela",    role:"Director of Accountability",       img:"assets/web/DSC9415.jpg"},
-    {name:"Aubree Upchurch",   role:"Director of Marketing",            img:"assets/web/DSC9436.jpg"},
+    {name:"Aubree Upchurch",   role:"Director of Marketing",            img:"assets/web/DSC9444.jpg"},
     {name:"Callie Conrade",    role:"Assistant Director of Marketing",  img:"assets/web/DSC9348.jpg"},
-    {name:"Kaylee",            role:"Assistant Director of Marketing",  img:null},
+    {name:"Kaylee",            role:"Assistant Director of Marketing",  img:"assets/web/kaylee.jpg"},
     {name:"Jackson Templeton", role:"Outreach Officer",                 img:"assets/web/DSC9393.jpg"},
     {name:"Thomas Cheek",      role:"Outreach Officer",                 img:"assets/web/DSC9417.jpg"}
   ];
@@ -914,9 +958,23 @@
       if (fresh){ pcx = px; pcy = py; }
       pkick();
     }, {passive:true});
+    var MONTHS = {JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
+    var daysUntil = function(txt){
+      var m = txt.match(/([A-Z]{3})\s*(\d{1,2})/);
+      if (!m || !(m[1] in MONTHS)) return null;
+      var now = new Date();
+      var target = new Date(2026, MONTHS[m[1]], +m[2]);
+      return Math.ceil((target - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
+    };
     document.querySelectorAll('.row').forEach(function(row){
       row.addEventListener('mouseenter', function(){
-        pill.textContent = row.querySelector('.date').textContent.indexOf('SEP 22') > -1 ? 'Be there' : 'Tuesday night';
+        var dateTxt = row.querySelector('.date').textContent;
+        var label = dateTxt.indexOf('SEP 22') > -1 ? 'Be there' : 'Tuesday night';
+        var d = daysUntil(dateTxt);
+        if (d !== null && d > 1) label += ' · in ' + d + ' days';
+        else if (d === 1) label += ' · tomorrow';
+        else if (d === 0) label += ' · tonight';
+        pill.textContent = label;
         pill.classList.add('on'); pkick();
       });
       row.addEventListener('mouseleave', function(){ pill.classList.remove('on'); });
@@ -944,6 +1002,7 @@
 (function(){
   "use strict";
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (/[?&]motion/.test(location.search)) reduced = false;
   var staticMode = /[?&]static/.test(location.search);
 
   /* ---------- Live prices in the marquee (CoinGecko, fails silently) ---------- */
@@ -990,6 +1049,130 @@
       document.body.classList.toggle('cursor-hot', !!t);
     }, {passive:true});
   }
+
+  /* ---------- Scroll progress bar ---------- */
+  var pb = document.createElement('div');
+  pb.className = 'scroll-progress';
+  document.body.appendChild(pb);
+  var pbTick = false;
+  window.addEventListener('scroll', function(){
+    if (pbTick) return; pbTick = true;
+    requestAnimationFrame(function(){
+      var h = document.documentElement;
+      pb.style.transform = 'scaleX(' + (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+      pbTick = false;
+    });
+  }, {passive:true});
+
+  /* ---------- Decrypt scramble on mono labels ---------- */
+  if (!staticMode && !reduced && 'IntersectionObserver' in window){
+    var GLY = '₿ΞÐ#$%&@01<>*';
+    var sio = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (!en.isIntersecting) return;
+        sio.unobserve(en.target);
+        var el = en.target, orig = el.textContent, len = orig.length, frame = 0;
+        var total = Math.max(14, Math.min(26, len + 6));
+        (function step(){
+          frame++;
+          var out = '';
+          var reveal = (frame - 4) * (len / (total - 8));
+          for (var i = 0; i < len; i++){
+            out += (i < reveal || orig[i] === ' ') ? orig[i] : GLY[Math.floor(Math.random() * GLY.length)];
+          }
+          el.textContent = out;
+          if (frame < total) setTimeout(step, 34); else el.textContent = orig;
+        })();
+      });
+    }, {threshold: .8});
+    document.querySelectorAll('.eyebrow, .stat small').forEach(function(el){ sio.observe(el); });
+  }
+
+  /* ---------- 3D tilt + glare on officer cards ---------- */
+  if (!staticMode && !reduced && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    document.querySelectorAll('.card').forEach(function(card){
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - .5;
+        var y = (e.clientY - r.top) / r.height - .5;
+        card.style.transition = 'border-color .4s';
+        card.style.transform = 'perspective(700px) translateY(-6px) rotateX(' + (-y * 7).toFixed(2) + 'deg) rotateY(' + (x * 8).toFixed(2) + 'deg)';
+        card.style.setProperty('--gx', ((x + .5) * 100).toFixed(1) + '%');
+        card.style.setProperty('--gy', ((y + .5) * 100).toFixed(1) + '%');
+      });
+      card.addEventListener('mouseleave', function(){ card.style.transition = ''; card.style.transform = ''; });
+    });
+  }
+
+  /* ---------- Hero ember field ---------- */
+  if (!staticMode && !reduced){
+    var heroEl = document.querySelector('.hero');
+    var cv = document.createElement('canvas');
+    cv.className = 'embers';
+    heroEl.insertBefore(cv, heroEl.firstChild);
+    var ctx = cv.getContext('2d');
+    var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var eresize = function(){
+      W = heroEl.clientWidth; H = heroEl.clientHeight;
+      cv.width = W * DPR; cv.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    };
+    eresize(); window.addEventListener('resize', eresize);
+    var P = [];
+    for (var pi = 0; pi < 60; pi++) P.push({
+      x: Math.random(), y: Math.random(), z: .3 + Math.random() * .7,
+      s: .8 + Math.random() * 1.8, p: Math.random() * Math.PI * 2,
+      v: .00012 + Math.random() * .00025, red: Math.random() < .12
+    });
+    var emx = 0, erun = false, eraf = null, et0 = performance.now();
+    heroEl.addEventListener('mousemove', function(e){
+      var r = heroEl.getBoundingClientRect();
+      emx = (e.clientX - r.left) / r.width - .5;
+    }, {passive:true});
+    var edraw = function(t){
+      ctx.clearRect(0, 0, W, H);
+      var dt = t - et0;
+      for (var i = 0; i < P.length; i++){
+        var o = P[i];
+        var y = (o.y - dt * o.v * o.z) % 1; if (y < 0) y += 1;
+        var x = (o.x + Math.sin(dt * .0002 + o.p) * .015 * o.z + emx * .04 * o.z) % 1; if (x < 0) x += 1;
+        var tw = .35 + .3 * Math.sin(dt * .002 + o.p * 3);
+        ctx.beginPath();
+        ctx.arc(x * W, y * H, o.s * o.z, 0, 6.283);
+        ctx.fillStyle = o.red ? 'rgba(196,18,48,' + (tw * .5).toFixed(3) + ')' : 'rgba(201,169,106,' + tw.toFixed(3) + ')';
+        ctx.fill();
+      }
+      eraf = erun ? requestAnimationFrame(edraw) : null;
+    };
+    var hio = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        erun = en.isIntersecting && !document.hidden;
+        if (erun && eraf === null) eraf = requestAnimationFrame(edraw);
+      });
+    }, {threshold: .02});
+    hio.observe(heroEl);
+  }
+
+  /* ---------- "wps" easter egg ---------- */
+  var wpsBuf = '', wpsBusy = false;
+  document.addEventListener('keydown', function(e){
+    if (!e.key || e.key.length !== 1) return;
+    wpsBuf = (wpsBuf + e.key.toLowerCase()).slice(-3);
+    if (wpsBuf === 'wps' && !wpsBusy){
+      wpsBusy = true;
+      var o = document.createElement('div');
+      o.className = 'wps';
+      o.innerHTML = '<span>Woo.</span><span>Pig.</span><span>Sooie.</span>';
+      document.body.appendChild(o);
+      for (var wi = 0; wi < 3; wi++) (function(wi){
+        setTimeout(function(){
+          if (window.__coinBurst) window.__coinBurst(
+            innerWidth * (.25 + Math.random() * .5), innerHeight * (.3 + Math.random() * .4));
+        }, wi * 220);
+      })(wi);
+      setTimeout(function(){ o.remove(); wpsBusy = false; }, 1900);
+    }
+  });
 
   /* ---------- GSAP: masked char reveals, parallax, ghost numerals ---------- */
   if (staticMode || reduced || !window.gsap || !window.ScrollTrigger) return;
@@ -1038,13 +1221,17 @@
 })();
 </script>
 
+<script type="importmap">
+{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
+</script>
 <script type="module">
 const host = document.getElementById('coin3d');
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches && !/[?&]motion/.test(location.search);
 const staticMode = /[?&]static/.test(location.search);
 if (host && !reduced && !staticMode){
   try {
-    const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
+    const THREE = await import('three');
+    const {RoomEnvironment} = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/environments/RoomEnvironment.js');
     const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
@@ -1061,8 +1248,13 @@ if (host && !reduced && !staticMode){
     back.repeat.x = -1;
     back.needsUpdate = true;
 
-    const faceMat = t => new THREE.MeshStandardMaterial({map: t, metalness: .42, roughness: .5});
+    const faceMat = t => {
+      const m = new THREE.MeshStandardMaterial({map: t, metalness: .42, roughness: .5});
+      m.envMapIntensity = .7;
+      return m;
+    };
     const edgeMat = new THREE.MeshStandardMaterial({color: 0x6b5530, metalness: .8, roughness: .48});
+    edgeMat.envMapIntensity = 1.1;
     const geo = new THREE.CylinderGeometry(1, 1, .085, 96);
     geo.rotateX(Math.PI / 2);
     const coin = new THREE.Mesh(geo, [edgeMat, faceMat(tex), faceMat(back)]);
@@ -1070,10 +1262,12 @@ if (host && !reduced && !staticMode){
     group.add(coin);
     scene.add(group);
 
-    scene.add(new THREE.AmbientLight(0xfff6e6, .75));
-    const key = new THREE.DirectionalLight(0xfff2d8, 1.7); key.position.set(2.5, 2.5, 4); scene.add(key);
-    const rim = new THREE.DirectionalLight(0x9d2235, 1.4); rim.position.set(-3, -1.5, -2.5); scene.add(rim);
-    const fill = new THREE.DirectionalLight(0xc9a96a, .7); fill.position.set(-2, 2, 2); scene.add(fill);
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), .04).texture;
+    scene.add(new THREE.AmbientLight(0xfff6e6, .3));
+    const key = new THREE.DirectionalLight(0xfff2d8, 1.2); key.position.set(2.5, 2.5, 4); scene.add(key);
+    const rim = new THREE.DirectionalLight(0x9d2235, 1.2); rim.position.set(-3, -1.5, -2.5); scene.add(rim);
+    const fill = new THREE.DirectionalLight(0xc9a96a, .5); fill.position.set(-2, 2, 2); scene.add(fill);
 
     const size = () => {
       const w = host.clientWidth || 300, h = host.clientHeight || 300;
@@ -1125,11 +1319,12 @@ if (host && !reduced && !staticMode){
 
     /* render only while visible */
     let running = false, raf = null;
-    const tick = () => {
+    const tick = (t) => {
       if (!dragging){
         vy += (Math.sign(vy || 1) * IDLE - vy) * .04;
         group.rotation.y += vy;
-        group.rotation.x += (0 - group.rotation.x) * .03;
+        const breathe = Math.sin((t || 0) * .0006) * .07;
+        group.rotation.x += (breathe - group.rotation.x) * .03;
       }
       renderer.render(scene, camera);
       raf = running ? requestAnimationFrame(tick) : null;
