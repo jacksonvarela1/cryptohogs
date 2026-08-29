@@ -858,7 +858,7 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (/[?&]motion/.test(location.search)) reduced = false;
   var LITE = window.matchMedia('(max-width:860px)').matches ||
-             (navigator.deviceMemory && navigator.deviceMemory <= 4);
+             (navigator.deviceMemory && navigator.deviceMemory <= 2);
   if (LITE) document.documentElement.classList.add('lite');
   var staticMode = /[?&]static/.test(location.search);
   if (staticMode){
@@ -1271,23 +1271,27 @@
 
   /* ---------- FPS governor: drop to lite on machines that can't hold ~45fps ---------- */
   if (!staticMode && !reduced && !LITE){
-    window.addEventListener('load', function(){
-      setTimeout(function(){
-        if (document.hidden) return;
-        var frames = 0, t0 = performance.now();
-        var count = function(t){
-          if (document.hidden) return;
-          frames++;
-          if (t - t0 < 2400){ requestAnimationFrame(count); return; }
-          var fps = frames / ((t - t0) / 1000);
-          if (fps < 45){
-            document.documentElement.classList.add('lite');
-            try { window.dispatchEvent(new CustomEvent('ch:golite')); } catch (e) {}
-          }
-        };
-        requestAnimationFrame(count);
-      }, 2500);
-    });
+    var govTries = 0;
+    var govMeasure = function(){
+      if (document.hidden || !document.hasFocus()){
+        if (++govTries < 4) setTimeout(govMeasure, 8000);
+        return;
+      }
+      var frames = 0, t0 = performance.now();
+      var count = function(t){
+        if (document.hidden){ if (++govTries < 4) setTimeout(govMeasure, 8000); return; }
+        frames++;
+        if (t - t0 < 2400){ requestAnimationFrame(count); return; }
+        var fps = frames / ((t - t0) / 1000);
+        /* fewer than 30 frames means a throttled context, not a slow machine */
+        if (fps < 45 && frames >= 30){
+          document.documentElement.classList.add('lite');
+          try { window.dispatchEvent(new CustomEvent('ch:golite')); } catch (e) {}
+        }
+      };
+      requestAnimationFrame(count);
+    };
+    window.addEventListener('load', function(){ setTimeout(govMeasure, 2500); });
   }
 
   /* ---------- Feature pack: console egg, tab ticker, halving, countdown, 21-club, marquee pause ---------- */
