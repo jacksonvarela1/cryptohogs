@@ -175,7 +175,6 @@
     font-family:var(--font-d);font-weight:700;line-height:1;pointer-events:none;user-select:none;
     font-size:clamp(7rem,17vw,15rem);color:transparent;
     -webkit-text-stroke:1px rgba(201,169,106,.13);
-    will-change:transform;
   }
   @media (max-width:480px){.ghost{display:none}}
   .ghost ~ .wrap{position:relative;z-index:1}
@@ -193,9 +192,10 @@
     body.cursor-hot .cur-dot{background:var(--cardinal-hot)}
   }
 
-  /* masked char reveal */
+  /* masked char reveal (mask released after the reveal so descenders never clip) */
   .word-w{display:inline-block;overflow:hidden;vertical-align:top}
   .ch{display:inline-block}
+  .split-done .word-w{overflow:visible}
 
   /* officer photos: mono at rest, color on hover */
   .card .ph img{filter:saturate(.12) contrast(1.06);transition:transform .9s var(--ease),filter .7s var(--ease)}
@@ -322,7 +322,8 @@
 
   /* group photo */
   .groupshot{position:relative;border-radius:var(--radius);overflow:hidden;margin-top:72px}
-  .groupshot img{width:100%;aspect-ratio:16/8.5;object-fit:cover;object-position:50% 30%;will-change:transform}
+  .groupshot img{width:100%;aspect-ratio:16/8.5;object-fit:cover;object-position:50% 30%;transform:scale(1.04);transition:transform 1.6s var(--ease)}
+  .groupshot:hover img{transform:scale(1)}
   .groupshot figcaption{
     position:absolute;left:0;right:0;bottom:0;padding:22px clamp(16px,3vw,32px);
     background:linear-gradient(transparent,rgba(11,11,13,.88));
@@ -1225,7 +1226,7 @@
     cv.setAttribute('aria-hidden', 'true');
     document.body.appendChild(cv);
     var ctx = cv.getContext('2d');
-    var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+    var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 1.25);
     var eresize = function(){
       W = window.innerWidth; H = window.innerHeight;
       cv.width = W * DPR; cv.height = H * DPR;
@@ -1233,7 +1234,7 @@
     };
     eresize(); window.addEventListener('resize', eresize);
     var P = [];
-    for (var pi = 0; pi < 44; pi++) P.push({
+    for (var pi = 0; pi < 36; pi++) P.push({
       x: Math.random(), y: Math.random(), z: .3 + Math.random() * .7,
       s: .8 + Math.random() * 1.8, p: Math.random() * Math.PI * 2,
       v: .00012 + Math.random() * .00025, red: Math.random() < .12
@@ -1259,8 +1260,33 @@
     };
     if (erun) eraf = requestAnimationFrame(edraw);
     document.addEventListener('visibilitychange', function(){
-      erun = !document.hidden;
+      erun = !document.hidden && !document.documentElement.classList.contains('lite');
       if (erun && eraf === null) eraf = requestAnimationFrame(edraw);
+    });
+    window.addEventListener('ch:golite', function(){
+      erun = false;
+      if (cv.parentNode) cv.parentNode.removeChild(cv);
+    });
+  }
+
+  /* ---------- FPS governor: drop to lite on machines that can't hold ~45fps ---------- */
+  if (!staticMode && !reduced && !LITE){
+    window.addEventListener('load', function(){
+      setTimeout(function(){
+        if (document.hidden) return;
+        var frames = 0, t0 = performance.now();
+        var count = function(t){
+          if (document.hidden) return;
+          frames++;
+          if (t - t0 < 2400){ requestAnimationFrame(count); return; }
+          var fps = frames / ((t - t0) / 1000);
+          if (fps < 45){
+            document.documentElement.classList.add('lite');
+            try { window.dispatchEvent(new CustomEvent('ch:golite')); } catch (e) {}
+          }
+        };
+        requestAnimationFrame(count);
+      }, 2500);
     });
   }
 
@@ -1407,7 +1433,7 @@
     gsap.set(chs, {yPercent: 112});
     gsap.to(chs, Object.assign({
       yPercent: 0, duration: .85, ease: 'power4.out', stagger: .016,
-      onComplete: function(){ gsap.set(chs, {clearProps: 'transform'}); }
+      onComplete: function(){ gsap.set(chs, {clearProps: 'transform'}); el.classList.add('split-done'); }
     }, opts || {}));
   }
   document.fonts.ready.then(function(){
@@ -1424,12 +1450,6 @@
     if (h1) maskReveal(h1, {delay: .1});
     document.querySelectorAll('h2').forEach(function(h){
       maskReveal(h, {scrollTrigger: {trigger: h, start: 'top 88%', once: true}});
-    });
-    gsap.fromTo('.groupshot img', {yPercent: -6, scale: 1.14}, {yPercent: 6, scale: 1.14, ease: 'none',
-      scrollTrigger: {trigger: '.groupshot', start: 'top bottom', end: 'bottom top', scrub: true}});
-    document.querySelectorAll('.ghost').forEach(function(g){
-      gsap.fromTo(g, {y: 70}, {y: -70, ease: 'none',
-        scrollTrigger: {trigger: g.parentElement, start: 'top bottom', end: 'bottom top', scrub: true}});
     });
   });
 })();
@@ -1559,6 +1579,15 @@ if (host && !reduced && !staticMode && !LITE){
     document.addEventListener('visibilitychange', () => {
       running = inView && !document.hidden;
       if (running && raf === null) raf = requestAnimationFrame(tick);
+    });
+    window.addEventListener('ch:golite', () => {
+      running = false;
+      vis.disconnect();
+      host.classList.remove('live');
+      setTimeout(() => {
+        try { renderer.dispose(); } catch (_) {}
+        if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
+      }, 700);
     });
   } catch (e) { /* WebGL or CDN unavailable: the static coin image stays */ }
 }
