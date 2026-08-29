@@ -366,6 +366,8 @@
   .row .date{font-family:var(--font-m);color:var(--bronze);font-size:.82rem;letter-spacing:.1em}
   .row .what{font-size:clamp(1.05rem,1.8vw,1.35rem);font-weight:500;letter-spacing:-.02em}
   .row .what small{display:block;font-size:.85rem;font-weight:400;color:var(--cream-faint);margin-top:4px;letter-spacing:0}
+  .row.past{opacity:.4}
+  .row.past:hover{opacity:.65}
   .chip{font-family:var(--font-m);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:100px;border:1px solid var(--line-strong);color:var(--cream-dim);white-space:nowrap}
   .chip.hot{border-color:var(--cardinal);color:var(--cream);background:var(--cardinal)}
   .chip.tba{border-color:var(--line-strong);color:var(--cream-faint);background:transparent}
@@ -538,7 +540,7 @@
         <a class="btn magnetic" href="#fall">Fall '26 lineup <span class="arr">↓</span></a>
       </div>
       <p class="hero-note mono reveal reveal-d4"><b>150+</b> members · <b>$0</b> dues · Tuesdays all semester</p>
-      <p class="nextblock mono reveal reveal-d4">Next block: <b>Sep 22</b> · speaker night with the CEO of Anvil<span id="nextdays"></span></p>
+      <p class="nextblock mono reveal reveal-d4" id="nextblock">Next block: <b>Sep 22</b> · speaker night with the CEO of Anvil</p>
     </div>
     <div class="coin-stage reveal reveal-d2">
       <div class="coin-glow"></div>
@@ -840,7 +842,7 @@
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 Crypto Hogs · A registered student organization at the University of Arkansas.</span>
+      <span>© <span id="copyyear">2026</span> Crypto Hogs · A registered student organization at the University of Arkansas.</span>
       <span class="mono">Events open to all UA students · Not financial advice. We're a club, not your broker.</span>
     </div>
     <span class="mono genesis">Chancellor on brink of second bailout for banks · 03/Jan/2009</span>
@@ -1268,13 +1270,41 @@
     console.log('%c₿ You opened devtools. You should probably join.\n→ GroupMe: https://groupme.com/join_group/113608298/MGcsS3ON\n→ Tuesdays · University of Arkansas · est. 2026 · WPS', 'color:#F4EFE4;font-size:12px;line-height:1.7;');
   } catch (e) {}
 
-  var ND = document.getElementById('nextdays');
-  if (ND){
-    var evd = Math.ceil((new Date(2026, 8, 22) - new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())) / 86400000);
-    if (evd > 1) ND.textContent = ' · in ' + evd + ' days';
-    else if (evd === 1) ND.textContent = ' · tomorrow';
-    else if (evd === 0) ND.textContent = ' · tonight';
-  }
+  /* self-maintaining dates: past rows dim to Done, hero line tracks the real next event */
+  (function(){
+    var MO = {JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var next = null;
+    document.querySelectorAll('.sched .row').forEach(function(row){
+      var m = row.querySelector('.date').textContent.match(/([A-Z]{3})\s*(\d{1,2})/);
+      if (!m || !(m[1] in MO)) return;
+      var d = new Date(2026, MO[m[1]], +m[2]);
+      if (d < today){
+        row.classList.add('past');
+        var chip = row.querySelector('.chip');
+        if (chip){ chip.textContent = 'Done'; chip.className = 'chip'; }
+      } else if (!next){
+        next = {date: d, label: m[1].charAt(0) + m[1].slice(1).toLowerCase() + ' ' + m[2], row: row};
+      }
+    });
+    var nb = document.getElementById('nextblock');
+    if (!nb) return;
+    if (next){
+      var days = Math.round((next.date - today) / 86400000);
+      var when = days === 0 ? 'tonight' : days === 1 ? 'tomorrow' : 'in ' + days + ' days';
+      var what = next.row.querySelector('.what');
+      var title = what ? (what.childNodes[0].textContent || '').trim() : '';
+      nb.textContent = 'Next block: ';
+      var b = document.createElement('b'); b.textContent = next.label;
+      nb.appendChild(b);
+      nb.appendChild(document.createTextNode(' · ' + (title || 'general meeting') + ' · ' + when));
+    } else {
+      nb.textContent = 'Fall semester is a wrap. The spring schedule drops in the GroupMe first.';
+    }
+  })();
+  var cy = document.getElementById('copyyear');
+  if (cy && new Date().getFullYear() > 2026) cy.textContent = new Date().getFullYear();
 
   if (!staticMode){
     fetch('https://mempool.space/api/blocks/tip/height')
