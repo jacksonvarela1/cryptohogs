@@ -50,6 +50,10 @@
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   }
   html{background:var(--ink)}
+  /* overflow-x:clip on body only (not hidden, not on html): hidden makes body a
+     scroll container and breaks smooth anchor scrolling; clip on html freezes
+     page scrolling entirely because its paired axis also computes to clip */
+  body{overflow-x:clip}
   body{
     background:transparent;
     color:var(--cream);
@@ -58,8 +62,8 @@
     line-height:1.5;
     letter-spacing:-.02em;
     -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
   }
+  section[id]{scroll-margin-top:72px}
   ::selection{background:var(--cardinal);color:var(--cream)}
   :focus-visible{outline:1.5px solid var(--bronze);outline-offset:4px}
   img{max-width:100%;display:block}
@@ -214,7 +218,7 @@
   .hero > .wrap, .hero > .marquee{position:relative;z-index:1}
 
   /* constant ambient life: gold accents breathe, glow pulses, marquee stars turn */
-  @keyframes goldbreathe{0%,100%{filter:brightness(.97)}50%{filter:brightness(1.22)}}
+  @keyframes goldbreathe{0%,100%{opacity:.82}50%{opacity:1}}
   .proof-card .serif, .stat b em, .join-fine em{animation:goldbreathe 6.5s ease-in-out infinite}
   .mq-paused .marquee-track{animation-play-state:paused}
   @keyframes glowpulse{0%,100%{opacity:.8;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
@@ -274,6 +278,13 @@
     pointer-events:none;white-space:nowrap;
   }
   .toast21.on{transform:translate(-50%,0);opacity:1}
+
+  /* sponsors */
+  .sponsors{border-top:1px solid var(--line);padding:clamp(80px,12vh,150px) 0;position:relative}
+  .sponsor-cta{
+    margin-top:clamp(32px,5vh,52px);display:flex;align-items:center;gap:22px;flex-wrap:wrap;
+  }
+  .sponsor-cta .mono{color:var(--cream-faint)}
 
   /* genesis egg */
   .genesis{display:block;text-align:center;margin-top:22px;color:rgba(244,239,228,.24);font-size:.62rem}
@@ -507,6 +518,7 @@
       <a class="link" href="#pillars">What we do</a>
       <a class="link" href="#fall">Fall '26</a>
       <a class="link" href="#team">Team</a>
+      <a class="link" href="#sponsors">Sponsors</a>
       <a class="btn magnetic" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club <span class="arr">→</span></a>
       <button class="burger" aria-label="Menu" aria-expanded="false" onclick="this.setAttribute('aria-expanded', document.body.classList.toggle('menu-open'))">
         <span></span><span></span><span></span>
@@ -521,6 +533,7 @@
   <a href="#pillars">What we do</a>
   <a href="#fall">Fall '26</a>
   <a href="#team">Team</a>
+  <a href="#sponsors">Sponsors</a>
   <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club →</a>
 </div>
 
@@ -782,10 +795,45 @@
   </div>
 </section>
 
+<!-- ============ SPONSORS ============ -->
+<section class="sponsors" id="sponsors">
+  <span class="ghost" aria-hidden="true">07</span>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow mono">07 / Partners</div>
+        <h2>Put your brand <span class="serif">in the room.</span></h2>
+      </div>
+      <p class="reveal">150+ students who chose to spend their Tuesday nights on crypto. If they're your future users, hires, or customers, this is the room.</p>
+    </div>
+    <div class="proof-grid">
+      <div class="proof-card reveal">
+        <b>Speaker <span class="serif">slots.</span></b>
+        <p>Put your founder or team on our stage. Talks are framed as education and open to every UA student, so the room is full and the audience is real.</p>
+        <span class="mono">Sept to Dec · Tuesdays</span>
+      </div>
+      <div class="proof-card reveal reveal-d1">
+        <b>Event <span class="serif">backing.</span></b>
+        <p>Fuel a speaker night or a semester of them. Your name on the event, the promo, and this site, in front of the most crypto-curious campus in Arkansas.</p>
+        <span class="mono">Logo · Promo · Shoutouts</span>
+      </div>
+      <div class="proof-card reveal reveal-d2">
+        <b>Talent <span class="serif">pipeline.</span></b>
+        <p>First look at students already building, trading, and studying the space. Internship pipelines run both directions.</p>
+        <span class="mono">150+ members · Every major</span>
+      </div>
+    </div>
+    <div class="sponsor-cta reveal">
+      <a class="btn solid magnetic" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs">Become a sponsor <span class="arr">→</span></a>
+      <span class="mono">Sponsorship deck available on request · uarkcryptohogs@gmail.com</span>
+    </div>
+  </div>
+</section>
+
 <!-- ============ JOIN ============ -->
 <section class="join" id="join">
   <div class="wrap">
-    <div class="eyebrow mono" style="justify-content:center">07 / Your move</div>
+    <div class="eyebrow mono" style="justify-content:center">08 / Your move</div>
     <h2>Join <span class="serif">Crypto Hogs.</span></h2>
     <p class="sub reveal">Three taps. Zero dollars. If you're curious, you belong here.</p>
     <div class="join-steps">
@@ -801,7 +849,7 @@
       </a>
       <a class="step reveal reveal-d2" href="https://www.instagram.com/uarkcryptohogs/" target="_blank" rel="noopener">
         <span class="mono">Step 03</span>
-        <div><b>Follow the socials</b><p>@uarkcryptohogs on Instagram &amp; TikTok: event drops, recaps, and the occasional hog meme.</p></div>
+        <div><b>Follow the socials</b><p>@uarkcryptohogs on Instagram, TikTok &amp; LinkedIn: event drops, recaps, and the occasional hog meme.</p></div>
         <span class="go">@uarkcryptohogs <span class="arr">→</span></span>
       </a>
     </div>
@@ -832,6 +880,7 @@
           <span class="mono">Connect</span>
           <a href="https://www.instagram.com/uarkcryptohogs/" target="_blank" rel="noopener">Instagram</a>
           <a href="https://www.tiktok.com/@uarkcryptohogs" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.linkedin.com/in/cryptohogs-at-the-university-of-arkansas-410b733b7/" target="_blank" rel="noopener">LinkedIn</a>
           <a href="https://linktr.ee/uarkcryptohogs" target="_blank" rel="noopener">Linktree</a>
           <a href="mailto:uarkcryptohogs@gmail.com">uarkcryptohogs@gmail.com</a>
         </div>
@@ -909,6 +958,17 @@
       '</div>' +
       '<div class="info"><b>'+o.name+'</b><span>'+o.role+'</span></div>';
     grid.appendChild(card);
+  });
+
+  /* ---------- Brand click always returns to top ---------- */
+  document.querySelectorAll('.brand').forEach(function(b){
+    b.addEventListener('click', function(e){
+      if (b.getAttribute('href') === '#top'){
+        e.preventDefault();
+        window.scrollTo({top: 0, behavior: reduced ? 'auto' : 'smooth'});
+        try { history.replaceState(null, '', location.pathname + location.search); } catch (err) {}
+      }
+    });
   });
 
   /* ---------- NAV scroll state ---------- */
@@ -1226,7 +1286,7 @@
     cv.setAttribute('aria-hidden', 'true');
     document.body.appendChild(cv);
     var ctx = cv.getContext('2d');
-    var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 1.25);
+    var W = 0, H = 0, DPR = 1;
     var eresize = function(){
       W = window.innerWidth; H = window.innerHeight;
       cv.width = W * DPR; cv.height = H * DPR;
@@ -1234,7 +1294,7 @@
     };
     eresize(); window.addEventListener('resize', eresize);
     var P = [];
-    for (var pi = 0; pi < 36; pi++) P.push({
+    for (var pi = 0; pi < 30; pi++) P.push({
       x: Math.random(), y: Math.random(), z: .3 + Math.random() * .7,
       s: .8 + Math.random() * 1.8, p: Math.random() * Math.PI * 2,
       v: .00012 + Math.random() * .00025, red: Math.random() < .12
@@ -1243,7 +1303,10 @@
     document.addEventListener('mousemove', function(e){
       emx = e.clientX / Math.max(1, W) - .5;
     }, {passive:true});
+    var eskip = false;
     var edraw = function(t){
+      eskip = !eskip;
+      if (eskip){ eraf = erun ? requestAnimationFrame(edraw) : null; return; }
       ctx.clearRect(0, 0, W, H);
       var dt = t - et0;
       for (var i = 0; i < P.length; i++){
@@ -1269,29 +1332,34 @@
     });
   }
 
-  /* ---------- FPS governor: drop to lite on machines that can't hold ~45fps ---------- */
+  /* ---------- FPS watchdog: rolling monitor, drops to lite whenever the page can't keep up ---------- */
   if (!staticMode && !reduced && !LITE){
-    var govTries = 0;
-    var govMeasure = function(){
-      if (document.hidden || !document.hasFocus()){
-        if (++govTries < 4) setTimeout(govMeasure, 8000);
-        return;
-      }
-      var frames = 0, t0 = performance.now();
-      var count = function(t){
-        if (document.hidden){ if (++govTries < 4) setTimeout(govMeasure, 8000); return; }
-        frames++;
-        if (t - t0 < 2400){ requestAnimationFrame(count); return; }
-        var fps = frames / ((t - t0) / 1000);
-        /* fewer than 30 frames means a throttled context, not a slow machine */
-        if (fps < 45 && frames >= 30){
-          document.documentElement.classList.add('lite');
-          try { window.dispatchEvent(new CustomEvent('ch:golite')); } catch (e) {}
+    var badWins = 0, wFrames = 0, wStart = null;
+    var watch = function(t){
+      if (document.documentElement.classList.contains('lite')) return;
+      if (document.hidden){ wStart = null; wFrames = 0; requestAnimationFrame(watch); return; }
+      if (wStart === null){ wStart = t; wFrames = 0; }
+      wFrames++;
+      var span = t - wStart;
+      if (span >= 4000){
+        var fps = wFrames / (span / 1000);
+        /* windows with under 60 frames are throttled contexts, not slow machines */
+        if (wFrames >= 60 && fps < 42){
+          if (++badWins >= 2){
+            document.documentElement.classList.add('lite');
+            try { window.dispatchEvent(new CustomEvent('ch:golite')); } catch (e) {}
+            return;
+          }
+        } else if (fps >= 42){
+          badWins = 0;
         }
-      };
-      requestAnimationFrame(count);
+        wStart = t; wFrames = 0;
+      }
+      requestAnimationFrame(watch);
     };
-    window.addEventListener('load', function(){ setTimeout(govMeasure, 2500); });
+    window.addEventListener('load', function(){
+      setTimeout(function(){ requestAnimationFrame(watch); }, 1200);
+    });
   }
 
   /* ---------- Feature pack: console egg, tab ticker, halving, countdown, 21-club, marquee pause ---------- */
@@ -1471,7 +1539,7 @@ if (host && !reduced && !staticMode && !LITE){
   try {
     const THREE = await import('three');
     const {RoomEnvironment} = await import('./assets/vendor/RoomEnvironment.js');
-    const DPR = Math.min(devicePixelRatio, 1.75);
+    const DPR = Math.min(devicePixelRatio, 1.5);
     const renderer = new THREE.WebGLRenderer({alpha: true, antialias: DPR < 1.5, powerPreference: 'high-performance'});
     renderer.setPixelRatio(DPR);
 
@@ -1568,7 +1636,7 @@ if (host && !reduced && !staticMode && !LITE){
       }
       /* idle throttle: after 2s of calm spinning, render at 30fps */
       calm = (!dragging && Math.abs(Math.abs(vy) - IDLE) < .002) ? calm + 1 : 0;
-      skip = calm > 120 ? !skip : false;
+      skip = calm > 45 ? !skip : false;
       if (!skip) renderer.render(scene, camera);
       raf = running ? requestAnimationFrame(tick) : null;
     };
