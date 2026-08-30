@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<!--
+   CRYPTO HOGS · University of Arkansas · est. 2026
+   psst... type "wps" on the homepage.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>The Crypto Hogs Team</title>
+<meta name="description" content="The officers behind Crypto Hogs at the University of Arkansas: who they are, what they build, and where to find them.">
+<link rel="icon" type="image/png" href="assets/coin-96.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .profiles{padding-top:clamp(30px,5vh,60px)}
+  .profile{
+    display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:clamp(28px,5vw,64px);
+    padding:clamp(44px,7vh,72px) 0;border-bottom:1px solid var(--line);
+    align-items:start;scroll-margin-top:96px;
+  }
+  .profile .ph{
+    aspect-ratio:4/5;overflow:hidden;border-radius:var(--radius);border:1px solid var(--line);
+    background:linear-gradient(160deg,#1b1b1f,#232326);position:relative;
+  }
+  .profile .ph img{
+    width:100%;height:100%;object-fit:cover;object-position:50% 20%;
+    filter:saturate(.12) contrast(1.06);transition:filter .7s var(--ease),transform .9s var(--ease);
+  }
+  .profile:hover .ph img{filter:none;transform:scale(1.03)}
+  .profile .ph .mono-ini{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  }
+  .profile .ph .mono-ini b{
+    font-size:3rem;font-weight:500;color:var(--bronze);
+    width:120px;height:120px;border:1px solid var(--bronze-deep);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 32% 28%,rgba(201,169,106,.16),transparent 60%);
+  }
+  .profile .role{color:var(--bronze);display:block;margin-bottom:14px}
+  .profile h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:500;letter-spacing:-.03em;line-height:1.05;margin-bottom:18px}
+  .profile h2 .serif{color:var(--bronze)}
+  .profile p{color:var(--cream-dim);line-height:1.75;max-width:62ch}
+  .profile p + p{margin-top:14px}
+  .profile .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+  .profile.advisor-block{
+    background:linear-gradient(120deg,rgba(157,34,53,.08),transparent 55%);
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:clamp(28px,4vw,52px);margin-top:clamp(44px,7vh,72px);border-bottom:1px solid var(--line);
+  }
+  .team-cta{margin-top:clamp(50px,8vh,80px);display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .team-cta .mono{color:var(--cream-faint)}
+  @media (max-width:760px){
+    .profile{grid-template-columns:1fr}
+    .profile .ph{max-width:340px}
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="Crypto Hogs home">
+      <img src="assets/coin-96.png" alt="" aria-hidden="true">
+      CRYPTO&nbsp;HOGS
+    </a>
+    <nav class="navlinks" aria-label="Main">
+      <a class="link" href="index.html#about">About</a>
+      <a class="link" href="events.html">Events</a>
+      <a class="link" href="team.html" aria-current="page">Team</a>
+      <a class="link" href="sponsors.html">Sponsors</a>
+      <a class="btn" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club <span class="arr">→</span></a>
+      <button class="burger" aria-label="Menu" aria-expanded="false" onclick="this.setAttribute('aria-expanded', document.body.classList.toggle('menu-open'))">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="mobilemenu" onclick="document.body.classList.remove('menu-open')">
+  <span class="mono">Crypto Hogs · UARK</span>
+  <a href="index.html">Home</a>
+  <a href="events.html">Events</a>
+  <a href="team.html">Team</a>
+  <a href="sponsors.html">Sponsors</a>
+  <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club →</a>
+</div>
+
+<main>
+<section class="page-hero">
+  <span class="ghost" aria-hidden="true">XI</span>
+  <div class="wrap">
+    <div class="eyebrow mono">The officers</div>
+    <h1 class="reveal">The people <span class="serif">behind the coin.</span></h1>
+    <p class="sub reveal reveal-d1">
+      Ten students and one professor with a shared conviction: Arkansas shouldn't watch the
+      future of money from the bleachers. Here's who they are and what they're building.
+    </p>
+  </div>
+</section>
+
+<section class="profiles">
+  <div class="wrap">
+
+    <div class="profile reveal" id="lucas-vilar">
+      <div class="ph"><img src="assets/web/lucas-vilar.jpg" alt="Lucas Vilar, President" loading="lazy"></div>
+      <div>
+        <span class="role mono">President</span>
+        <h2>Lucas <span class="serif">Vilar.</span></h2>
+        <p>Lucas runs the show. He led Crypto Hogs from a group chat to one of the fastest-moving
+        new organizations on campus, co-hosted Fayetteville's slice of PizzaDAO's global Bitcoin
+        Pizza Day alongside Stand With Crypto Arkansas, and spends his weeks putting founders,
+        executives, and policy leaders in front of the club.</p>
+        <p>If the club has a north star, he's holding it.</p>
+      </div>
+    </div>
+
+    <div class="profile reveal" id="reese-crawford">
+      <div class="ph"><img src="assets/web/DSC9379.jpg" alt="Reese Crawford, Vice President" loading="lazy"></div>
+      <div>
+        <span class="role mono">Vice President</span>
+        <h2>Reese <span class="serif">Crawford.</span></h2>
+        <p>A co-founder of the club and its industry engine. Reese studies Information Systems with
+        an Emerging Technologies concentration at the Walton College, carries a 4.0 and a
+        Chancellor's List nod, and graduates December 2026.</p>
+        <p>He's already deep in the industry: research fellow at GOSH AI and SOLV Protocol,
+        business development and research at Red Beard Ventures, and the person behind the club's
+        first protocol partnerships, including a Sui Foundation grant.</p>
+        <div class="links">
+          <a class="btn" href="https://www.linkedin.com/in/reese-crawford-/" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+          <a class="btn" href="https://reesecrawford.com" target="_blank" rel="noopener">reesecrawford.com <span class="arr">↗</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile reveal" id="paxton-crocker">
+      <div class="ph"><img src="assets/web/paxton-crocker.jpg" alt="Paxton Crocker, Treasurer" loading="lazy"></div>
+      <div>
+        <span class="role mono">Treasurer</span>
+        <h2>Paxton <span class="serif">Crocker.</span></h2>
+        <p>Paxton keeps the books and reads the world. A Walton College student and the founder of
+        Black Barrel Intel, an independent research platform covering energy markets, commodity
+        flows, and geopolitical risk, with stops at Startup Junkie and the McMillon Innovation
+        Studio along the way.</p>
+        <p>The club's money answers to him, and so do the spreadsheets.</p>
+        <div class="links">
+          <a class="btn" href="https://www.linkedin.com/in/paxton-crocker-70b73a313/" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile reveal" id="brixton-blasi">
+      <div class="ph"><img src="assets/web/DSC9364.jpg" alt="Brixton Blasi, Director of Strategy" loading="lazy"></div>
+      <div>
+        <span class="role mono">Director of Strategy</span>
+        <h2>Brixton <span class="serif">Blasi.</span></h2>
+        <p>Finance major at the Walton College and co-founder and Head of Growth at Swaply, the
+        student-built campus resale app at Arkansas. He's on record calling startup building "more
+        valuable than any class," which is exactly the energy a strategy seat needs.</p>
+        <p>Where the club goes next is his favorite question.</p>
+        <div class="links">
+          <a class="btn" href="https://www.linkedin.com/in/brixton-blasi" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile reveal" id="jackson-varela">
+      <div class="ph"><img src="assets/web/DSC9415.jpg" alt="Jackson Varela, Director of Accountability" loading="lazy"></div>
+      <div>
+        <span class="role mono">Director of Accountability</span>
+        <h2>Jackson <span class="serif">Varela.</span></h2>
+        <p>Jackson makes sure the club does what it said it would, on time and in public. He also
+        built and runs this website, live tickers, spinning coin, and all.</p>
+        <p>If a deadline exists, he already knows about it. If it slipped, so do you.</p>
+      </div>
+    </div>
+
+    <div class="profile reveal" id="aubree-upchurch">
+      <div class="ph"><img src="assets/web/DSC9444.jpg" alt="Aubree Upchurch, Director of Marketing" loading="lazy"></div>
+      <div>
+        <span class="role mono">Director of Marketing</span>
+        <h2>Aubree <span class="serif">Upchurch.</span></h2>
+        <p>Aubree runs the club's public face, from the feed to the flyers. A Tri Delta at Arkansas
+        with a marketer's eye, she's the reason you'd seen the coin before you ever walked into a
+        meeting.</p>
+        <div class="links">
+          <a class="btn" href="https://www.linkedin.com/in/aubree-upchurch-a9ba16384" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile reveal" id="callie-conrade">
+      <div class="ph"><img src="assets/web/DSC9348.jpg" alt="Callie Conrade, Assistant Director of Marketing" loading="lazy"></div>
+      <div>
+        <span class="role mono">Assistant Director of Marketing</span>
+        <h2>Callie <span class="serif">Conrade.</span></h2>
+        <p>Pre-law student at the University of Arkansas and a Tri Delta whose chapter work
+        includes fundraising for St. Jude Children's Research Hospital. Callie brings the polish:
+        campaigns, copy, and the details everyone else forgets.</p>
+        <div class="links">
+          <a class="btn" href="https://www.linkedin.com/in/callieconrade" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile reveal" id="kaylee-houston">
+      <div class="ph"><img src="assets/web/kaylee.jpg" alt="Kaylee Houston, Assistant Director of Marketing" loading="lazy"></div>
+      <div>
+        <span class="role mono">Assistant Director of Marketing</span>
+        <h2>Kaylee <span class="serif">Houston.</span></h2>
+        <p>Honors Advertising and PR student who has already led at scale: president of one of Tri
+        Delta's largest collegiate chapters, 600+ members strong, with marketing internships at
+        Fifty Six and BigTuna Interactive on the resume.</p>
+        <p>She makes the club look as good as the meetings feel.</p>
+        <div class="links">
+          <a class="btn" href="https://www.linkedin.com/in/kaylee-houston-1485142a6/" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile reveal" id="jackson-templeton">
+      <div class="ph"><img src="assets/web/DSC9393.jpg" alt="Jackson Templeton, Outreach Officer" loading="lazy"></div>
+      <div>
+        <span class="role mono">Outreach Officer</span>
+        <h2>Jackson <span class="serif">Templeton.</span></h2>
+        <p>One half of the outreach duo. Templeton works the campus side of the pipeline: new
+        members, partner orgs, and anyone curious enough to ask what a Crypto Hog actually is.</p>
+        <p>If you've heard of us, there's a decent chance it started with him.</p>
+      </div>
+    </div>
+
+    <div class="profile reveal" id="thomas-cheek">
+      <div class="ph"><img src="assets/web/DSC9417.jpg" alt="Thomas Cheek, Outreach Officer" loading="lazy"></div>
+      <div>
+        <span class="role mono">Outreach Officer</span>
+        <h2>Thomas <span class="serif">Cheek.</span></h2>
+        <p>The other half of outreach. Thomas studies accounting and finance at the Walton College
+        and started early: licensed in real estate with development internship experience running
+        financial analysis on multi-project deals.</p>
+        <p>He brings the handshake.</p>
+      </div>
+    </div>
+
+    <div class="profile advisor-block reveal" id="daniel-conway">
+      <div class="ph"><div class="mono-ini"><b>DC</b></div></div>
+      <div>
+        <span class="role mono">Faculty Advisor</span>
+        <h2>Dr. Daniel <span class="serif">Conway.</span></h2>
+        <p>Teaching Professor of Information Systems at the Walton College and Associate Director
+        of its Blockchain Center of Excellence. Dr. Conway chairs the U.S. Blockchain Technical
+        Committee under INCITS, the body shaping national blockchain standards, and holds a Ph.D.
+        in Operations Research from Indiana University.</p>
+        <p>Before Arkansas he taught at Notre Dame, Indiana, Northwestern, Iowa, Florida, and
+        Virginia Tech, and was Cisco Systems' first professor in residence. The club's unfair
+        academic advantage.</p>
+        <div class="links">
+          <a class="btn" href="https://www.linkedin.com/in/daniel-conway-b0a10b11/" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-cta reveal">
+      <a class="btn solid" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club <span class="arr">→</span></a>
+      <span class="mono">Officer info wrong or outdated? Email uarkcryptohogs@gmail.com and we'll fix it fast.</span>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="index.html"><img src="assets/coin-96.png" alt="Crypto Hogs coin logo">CRYPTO&nbsp;HOGS</a>
+        <p>The Cryptocurrency Club at the University of Arkansas. Educating students, connecting them with industry, and putting Fayetteville on the map of the future of finance.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <span class="mono">Explore</span>
+          <a href="index.html">Home</a>
+          <a href="events.html">Events</a>
+          <a href="team.html">Team</a>
+          <a href="sponsors.html">Sponsors</a>
+        </div>
+        <div class="foot-col">
+          <span class="mono">Connect</span>
+          <a href="https://www.instagram.com/uarkcryptohogs/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@uarkcryptohogs" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.linkedin.com/in/cryptohogs-at-the-university-of-arkansas-410b733b7/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:uarkcryptohogs@gmail.com">uarkcryptohogs@gmail.com</a>
+        </div>
+        <div class="foot-col">
+          <span class="mono">Join</span>
+          <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">GroupMe</a>
+          <a href="https://hogsync.uark.edu/UARKCryptoClub/club_signup" target="_blank" rel="noopener">HogSync</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Crypto Hogs · A registered student organization at the University of Arkansas.</span>
+      <span class="mono">Events open to all UA students · Not financial advice. We're a club, not your broker.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

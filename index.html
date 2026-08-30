@@ -516,9 +516,9 @@
     <nav class="navlinks" aria-label="Main">
       <a class="link" href="#about">About</a>
       <a class="link" href="#pillars">What we do</a>
-      <a class="link" href="#fall">Fall '26</a>
-      <a class="link" href="#team">Team</a>
-      <a class="link" href="#sponsors">Sponsors</a>
+      <a class="link" href="events.html">Events</a>
+      <a class="link" href="team.html">Team</a>
+      <a class="link" href="sponsors.html">Sponsors</a>
       <a class="btn magnetic" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club <span class="arr">→</span></a>
       <button class="burger" aria-label="Menu" aria-expanded="false" onclick="this.setAttribute('aria-expanded', document.body.classList.toggle('menu-open'))">
         <span></span><span></span><span></span>
@@ -530,10 +530,9 @@
 <div class="mobilemenu" onclick="document.body.classList.remove('menu-open')">
   <span class="mono">Crypto Hogs · UARK</span>
   <a href="#about">About</a>
-  <a href="#pillars">What we do</a>
-  <a href="#fall">Fall '26</a>
-  <a href="#team">Team</a>
-  <a href="#sponsors">Sponsors</a>
+  <a href="events.html">Events</a>
+  <a href="team.html">Team</a>
+  <a href="sponsors.html">Sponsors</a>
   <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club →</a>
 </div>
 
@@ -733,6 +732,9 @@
       <span class="chip">Schedule may shift · GroupMe has the latest</span>
     </div>
     <p class="open-line reveal">Every event is <b>free and open to ALL University of Arkansas students.</b> Not a member yet? Come anyway.</p>
+    <div class="reveal" style="margin-top:30px">
+      <a class="btn" href="events.html">Full schedule &amp; past events <span class="arr">→</span></a>
+    </div>
   </div>
 </section>
 
@@ -745,7 +747,10 @@
         <div class="eyebrow mono">05 / The officers</div>
         <h2>The people <span class="serif">behind the coin.</span></h2>
       </div>
-      <p class="reveal">Student-led and officer-run, with one shared conviction: Arkansas shouldn't watch the future of money from the bleachers.</p>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">
+        <p style="max-width:38ch;color:var(--cream-dim)">Student-led and officer-run, with one shared conviction: Arkansas shouldn't watch the future of money from the bleachers.</p>
+        <a class="btn" href="team.html">Full profiles <span class="arr">→</span></a>
+      </div>
     </div>
     <div class="team-grid" id="teamGrid"><!-- rendered by JS --></div>
     <div class="advisor reveal">
@@ -825,7 +830,8 @@
     </div>
     <div class="sponsor-cta reveal">
       <a class="btn solid magnetic" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs">Become a sponsor <span class="arr">→</span></a>
-      <span class="mono">Sponsorship deck available on request · uarkcryptohogs@gmail.com</span>
+      <a class="btn magnetic" href="sponsors.html">The full pitch <span class="arr">→</span></a>
+      <span class="mono">Deck available on request</span>
     </div>
   </div>
 </section>
@@ -872,9 +878,9 @@
         <div class="foot-col">
           <span class="mono">Explore</span>
           <a href="#about">About</a>
-          <a href="#pillars">What we do</a>
-          <a href="#fall">Fall '26</a>
-          <a href="#team">Team</a>
+          <a href="events.html">Events</a>
+          <a href="team.html">Team</a>
+          <a href="sponsors.html">Sponsors</a>
         </div>
         <div class="foot-col">
           <span class="mono">Connect</span>
@@ -948,8 +954,11 @@
   var grid = document.getElementById('teamGrid');
   OFFICERS.forEach(function(o,i){
     var initials = o.name.split(' ').map(function(w){return w[0]}).join('');
-    var card = document.createElement('div');
+    var slug = o.name.toLowerCase().replace(/[^a-z]+/g, '-');
+    var card = document.createElement('a');
+    card.href = 'team.html#' + slug;
     card.className = 'card reveal' + (i%4 ? ' reveal-d'+(i%4) : '');
+    card.setAttribute('aria-label', o.name + ', ' + o.role + ', full profile');
     card.innerHTML =
       '<div class="ph">' +
         (o.img
@@ -1139,6 +1148,10 @@
     });
     document.querySelectorAll('.step, .groupshot').forEach(function(el){
       el.addEventListener('mouseenter', function(){ pill.textContent = el.classList.contains('groupshot') ? 'The team' : 'Open ↗'; pill.classList.add('on'); pkick(); });
+      el.addEventListener('mouseleave', function(){ pill.classList.remove('on'); pkick(); });
+    });
+    document.querySelectorAll('#teamGrid .card').forEach(function(el){
+      el.addEventListener('mouseenter', function(){ pill.textContent = 'View profile ↗'; pill.classList.add('on'); pkick(); });
       el.addEventListener('mouseleave', function(){ pill.classList.remove('on'); pkick(); });
     });
   }

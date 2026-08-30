@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!--
+   CRYPTO HOGS · University of Arkansas · est. 2026
+   psst... type "wps" on the homepage.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Crypto Hogs Events</title>
+<meta name="description" content="The Crypto Hogs Fall 2026 lineup: speaker nights and weekly Tuesday meetings at the University of Arkansas. Free and open to all UA students.">
+<link rel="icon" type="image/png" href="assets/coin-96.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  section{padding-top:clamp(60px,9vh,100px)}
+  .open-line{margin-top:34px;font-size:1.05rem;color:var(--cream)}
+  .open-line b{color:var(--bronze);font-weight:500}
+  .fall-notes{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+  .fall-notes .chip{padding:10px 16px;white-space:normal;line-height:1.6;border-radius:10px}
+  .past-cards .gcard .mono{margin-top:22px}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="Crypto Hogs home">
+      <img src="assets/coin-96.png" alt="" aria-hidden="true">
+      CRYPTO&nbsp;HOGS
+    </a>
+    <nav class="navlinks" aria-label="Main">
+      <a class="link" href="index.html#about">About</a>
+      <a class="link" href="events.html" aria-current="page">Events</a>
+      <a class="link" href="team.html">Team</a>
+      <a class="link" href="sponsors.html">Sponsors</a>
+      <a class="btn" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club <span class="arr">→</span></a>
+      <button class="burger" aria-label="Menu" aria-expanded="false" onclick="this.setAttribute('aria-expanded', document.body.classList.toggle('menu-open'))">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="mobilemenu" onclick="document.body.classList.remove('menu-open')">
+  <span class="mono">Crypto Hogs · UARK</span>
+  <a href="index.html">Home</a>
+  <a href="events.html">Events</a>
+  <a href="team.html">Team</a>
+  <a href="sponsors.html">Sponsors</a>
+  <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club →</a>
+</div>
+
+<main>
+<section class="page-hero">
+  <span class="ghost" aria-hidden="true">₿</span>
+  <div class="wrap">
+    <div class="eyebrow mono">Events</div>
+    <h1 class="reveal">Tuesdays are <span class="serif">for the curious.</span></h1>
+    <p class="sub reveal reveal-d1">
+      General meetings run every week of the semester, and speaker nights drop in about once a month.
+      Time and room land in the GroupMe first, always. Every event is free and open to all
+      University of Arkansas students, member or not.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow mono">Fall 2026 lineup</div>
+    <div class="sched" id="sched">
+      <div class="row reveal">
+        <span class="date">TUE · SEP 22</span>
+        <span class="what">Building in crypto, from the founder's chair<small>Speaker night · with the CEO of Anvil · the first big night of the year, be early</small></span>
+        <span class="chip hot">Confirmed</span>
+      </div>
+      <div class="row reveal">
+        <span class="date">TUE · OCT 6</span>
+        <span class="what">Bitcoin mining in Arkansas<small>Guest speaker · what's actually humming away in our backyard, and why Arkansas of all places</small></span>
+        <span class="chip tba">Speaker TBA</span>
+      </div>
+      <div class="row reveal">
+        <span class="date">TUE · OCT 27</span>
+        <span class="what">Speaker night<small>Announcement coming · follow the GroupMe for the drop</small></span>
+        <span class="chip tba">Speaker TBA</span>
+      </div>
+      <div class="row reveal">
+        <span class="date">TUE · NOV 10</span>
+        <span class="what">Speaker night<small>Announcement coming</small></span>
+        <span class="chip tba">Speaker TBA</span>
+      </div>
+      <div class="row reveal">
+        <span class="date">TUE · NOV 17</span>
+        <span class="what">Speaker night<small>Announcement coming</small></span>
+        <span class="chip tba">Speaker TBA</span>
+      </div>
+      <div class="row reveal">
+        <span class="date">TUE · DEC 1</span>
+        <span class="what">Semester finale<small>Fall recap, spring preview, and the last free pizza of the year</small></span>
+        <span class="chip">Last meeting</span>
+      </div>
+    </div>
+    <div class="fall-notes reveal">
+      <span class="chip">No meeting Oct 20 · Fall Break</span>
+      <span class="chip">No meeting Nov 24 · Thanksgiving week</span>
+      <span class="chip">Schedule may shift · GroupMe has the latest</span>
+    </div>
+    <p class="open-line reveal">Every event is <b>free and open to ALL University of Arkansas students.</b> Not a member yet? Come anyway.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow mono">Past blocks</div>
+    <div class="gridcards past-cards">
+      <div class="gcard reveal">
+        <b>Bitcoin Pizza Day.<br><span class="serif">400+ cities, one Fayetteville.</span></b>
+        <p>We co-hosted PizzaDAO's global Bitcoin Pizza Day with Stand With Crypto Arkansas: free pizza, first-timer-friendly conversations, and worldwide press coverage.</p>
+        <span class="mono">May 22, 2026 · GlobeNewswire</span>
+      </div>
+      <div class="gcard reveal reveal-d1">
+        <b>The founding <span class="serif">semester.</span></b>
+        <p>Spring 2026: from a group chat to 150+ members, a registered student organization, weekly meetings, and an officer team with big plans.</p>
+        <span class="mono">Spring 2026 · Est.</span>
+      </div>
+      <div class="gcard reveal reveal-d2">
+        <b>Academia takes <span class="serif">the stage.</span></b>
+        <p>The Walton College's Blockchain Center of Excellence has been on our stage from the start, including guest lectures from our faculty advisor Dr. Daniel Conway.</p>
+        <span class="mono">Walton College · Ongoing</span>
+      </div>
+    </div>
+    <div class="cta-row reveal" style="margin-top:clamp(40px,6vh,60px);display:flex;align-items:center;gap:22px;flex-wrap:wrap">
+      <a class="btn solid" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Get every announcement <span class="arr">→</span></a>
+      <span class="mono" style="color:var(--cream-faint)">The GroupMe hears everything first</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="index.html"><img src="assets/coin-96.png" alt="Crypto Hogs coin logo">CRYPTO&nbsp;HOGS</a>
+        <p>The Cryptocurrency Club at the University of Arkansas. Educating students, connecting them with industry, and putting Fayetteville on the map of the future of finance.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <span class="mono">Explore</span>
+          <a href="index.html">Home</a>
+          <a href="events.html">Events</a>
+          <a href="team.html">Team</a>
+          <a href="sponsors.html">Sponsors</a>
+        </div>
+        <div class="foot-col">
+          <span class="mono">Connect</span>
+          <a href="https://www.instagram.com/uarkcryptohogs/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@uarkcryptohogs" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.linkedin.com/in/cryptohogs-at-the-university-of-arkansas-410b733b7/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:uarkcryptohogs@gmail.com">uarkcryptohogs@gmail.com</a>
+        </div>
+        <div class="foot-col">
+          <span class="mono">Join</span>
+          <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">GroupMe</a>
+          <a href="https://hogsync.uark.edu/UARKCryptoClub/club_signup" target="_blank" rel="noopener">HogSync</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Crypto Hogs · A registered student organization at the University of Arkansas.</span>
+      <span class="mono">Events open to all UA students · Not financial advice. We're a club, not your broker.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>
+/* past events auto-dim */
+(function(){
+  var MO = {JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  document.querySelectorAll('#sched .row').forEach(function(row){
+    var m = row.querySelector('.date').textContent.match(/([A-Z]{3})\s*(\d{1,2})/);
+    if (!m || !(m[1] in MO)) return;
+    if (new Date(2026, MO[m[1]], +m[2]) < today){
+      row.classList.add('past');
+      var chip = row.querySelector('.chip');
+      if (chip){ chip.textContent = 'Done'; chip.className = 'chip'; }
+    }
+  });
+})();
+</script>
+</body>
+</html>
