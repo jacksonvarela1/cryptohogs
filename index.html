@@ -279,6 +279,24 @@
   }
   .toast21.on{transform:translate(-50%,0);opacity:1}
 
+  /* home: backed by Stand With Crypto band */
+  .home-swc{
+    margin-top:clamp(28px,4vh,44px);display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(20px,3vw,40px);
+    align-items:center;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    background:linear-gradient(120deg,rgba(97,0,255,.12),transparent 60%),var(--ink-2);
+  }
+  .home-swc-body{padding:clamp(22px,3vw,38px)}
+  .home-swc-badge{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-m);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--cream)}
+  .home-swc-badge img{width:24px;height:24px}
+  .home-swc-body p{color:var(--cream-dim);line-height:1.7;margin:14px 0 0;max-width:56ch}
+  .home-swc-body p b{color:var(--cream);font-weight:500}
+  .home-swc-link{display:inline-block;margin-top:16px;font-family:var(--font-m);font-size:.8rem;color:var(--bronze)}
+  .home-swc-link .arr{transition:transform .3s var(--ease);display:inline-block}
+  .home-swc-link:hover .arr{transform:translateX(4px)}
+  .home-swc-figure{align-self:stretch;min-height:200px;margin:0}
+  .home-swc-figure img{display:block;width:100%;height:100%;object-fit:cover}
+  @media (max-width:760px){ .home-swc{grid-template-columns:1fr} .home-swc-figure{min-height:180px;order:-1} }
+
   /* sponsors */
   .sponsors{border-top:1px solid var(--line);padding:clamp(80px,12vh,150px) 0;position:relative}
   .sponsor-cta{
@@ -552,8 +570,8 @@
         <a class="btn solid magnetic" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join Crypto Hogs <span class="arr">→</span></a>
         <a class="btn magnetic" href="#fall">Fall '26 lineup <span class="arr">↓</span></a>
       </div>
-      <p class="hero-note mono reveal reveal-d4"><b>150+</b> members · <b>$0</b> dues · Tuesdays all semester</p>
-      <p class="nextblock mono reveal reveal-d4" id="nextblock">Next block: <b>Sep 22</b> · speaker night with the CEO of Anvil</p>
+      <p class="hero-note mono reveal reveal-d4"><b>150+</b> members · Tuesdays all semester</p>
+      <p class="nextblock mono reveal reveal-d4" id="nextblock">Next block: <b>Sep 22</b> · speaker night with the CEO of ANVIL Research Lab</p>
     </div>
     <div class="coin-stage reveal reveal-d2">
       <div class="coin-glow"></div>
@@ -569,12 +587,12 @@
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
       <div class="marquee-inner">
-        <span>Open to all UA students</span><span>150+ members</span><span>No dues, ever</span>
+        <span>Open to all UA students</span><span>150+ members</span><span>Free · open to all</span>
         <span>Speakers all semester</span><span>Education · Networking · Policy</span>
         <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span><span>$HOG · 1 HOG = 1 HOG</span>
       </div>
       <div class="marquee-inner">
-        <span>Open to all UA students</span><span>150+ members</span><span>No dues, ever</span>
+        <span>Open to all UA students</span><span>150+ members</span><span>Free · open to all</span>
         <span>Speakers all semester</span><span>Education · Networking · Policy</span>
         <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span><span>$HOG · 1 HOG = 1 HOG</span>
       </div>
@@ -586,7 +604,7 @@
 <section class="stats" aria-label="Club stats">
   <div class="wrap stats-grid">
     <div class="stat reveal"><b><span data-count="150">0</span>+</b><small>Members &amp; counting</small></div>
-    <div class="stat reveal reveal-d1"><b>$<span data-count="0">0</span></b><small>Dues · free forever</small></div>
+    <div class="stat reveal reveal-d1"><b><em>Free</em></b><small>Every event, every student</small></div>
     <div class="stat reveal reveal-d2"><b><em>Tue</em></b><small>Meetings all semester</small></div>
     <div class="stat reveal reveal-d3"><b><span data-count="400">0</span>+</b><small>Cities joined on Bitcoin Pizza Day</small></div>
   </div>
@@ -676,9 +694,19 @@
       </div>
       <div class="proof-card reveal reveal-d2">
         <b>Real industry,<br><span class="serif">on campus.</span></b>
-        <p>From the CEO of Anvil to Bitcoin mining in Arkansas, the Fall '26 slate brings the actual industry to campus.</p>
+        <p>From the CEO of ANVIL Research Lab to Arkansas's own Bitcoin miners, the Fall '26 slate brings the actual industry to campus.</p>
         <span class="mono">See the lineup ↓</span>
       </div>
+    </div>
+    <div class="home-swc reveal">
+      <div class="home-swc-body">
+        <span class="home-swc-badge"><img src="assets/sponsors/swc-shield.svg" alt="Stand With Crypto shield">Backed by Stand With Crypto</span>
+        <p><b>The country's largest crypto advocacy community, 2.6 million advocates strong,</b> runs a college program across 37 campuses. Fayetteville is one of them.</p>
+        <a class="home-swc-link" href="sponsors.html">See the partnership <span class="arr">→</span></a>
+      </div>
+      <figure class="home-swc-figure">
+        <img src="assets/sponsors/swc-college.jpg" alt="Stand With Crypto signage at an America Loves Crypto Tour event" loading="lazy">
+      </figure>
     </div>
   </div>
 </section>
@@ -697,13 +725,13 @@
     <div class="sched reveal">
       <div class="row">
         <span class="date">TUE · SEP 22</span>
-        <span class="what">Building in crypto, from the founder's chair<small>Speaker night · with the CEO of Anvil</small></span>
+        <span class="what">Building in crypto, from the founder's chair<small>Speaker night · with the CEO of ANVIL Research Lab</small></span>
         <span class="chip hot">Confirmed</span>
       </div>
       <div class="row">
         <span class="date">TUE · OCT 6</span>
-        <span class="what">Bitcoin mining in Arkansas<small>Guest speaker · what's actually running in our backyard</small></span>
-        <span class="chip tba">Speaker TBA</span>
+        <span class="what">Bitcoin mining, up close with Ben Smith<small>Founder of Bear Market Mining &amp; president of the Arkansas Blockchain Council</small></span>
+        <span class="chip hot">Confirmed</span>
       </div>
       <div class="row">
         <span class="date">TUE · OCT 27</span>
@@ -841,7 +869,7 @@
   <div class="wrap">
     <div class="eyebrow mono" style="justify-content:center">08 / Your move</div>
     <h2>Join <span class="serif">Crypto Hogs.</span></h2>
-    <p class="sub reveal">Three taps. Zero dollars. If you're curious, you belong here.</p>
+    <p class="sub reveal">Three taps. If you're curious, you belong here.</p>
     <div class="join-steps">
       <a class="step reveal" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">
         <span class="mono">Step 01</span>
@@ -859,7 +887,7 @@
         <span class="go">@uarkcryptohogs <span class="arr">→</span></span>
       </a>
     </div>
-    <p class="join-fine reveal">No dues. No experience needed. Every major welcome. <em>For the curious, not the experts.</em></p>
+    <p class="join-fine reveal">No experience needed. Every major welcome. <em>For the curious, not the experts.</em></p>
   </div>
 </section>
 </main>
@@ -1560,25 +1588,43 @@ if (host && !reduced && !staticMode && !LITE){
     const camera = new THREE.PerspectiveCamera(28, 1, .1, 20);
     camera.position.z = 4.6;
 
-    const tex = await new Promise((res, rej) =>
-      new THREE.TextureLoader().load('assets/coin-hero.jpg', res, undefined, rej));
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-    const back = tex.clone();
-    back.wrapS = THREE.RepeatWrapping;
-    back.repeat.x = -1;
-    back.needsUpdate = true;
-
-    const faceMat = t => {
-      const m = new THREE.MeshStandardMaterial({map: t, metalness: .42, roughness: .5});
-      m.envMapIntensity = .7;
-      return m;
+    /* Reese's PBR coin textures: color maps first for a fast first paint,
+       normal/rough/metal/AO detail maps attach in the background as they load */
+    const loader = new THREE.TextureLoader();
+    const loadTex = p => new Promise((res, rej) => loader.load(p, res, undefined, rej));
+    const maxAniso = renderer.capabilities.getMaxAnisotropy();
+    const prep = (t, srgb, mirror) => {
+      if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = maxAniso;
+      if (mirror){ t.wrapS = THREE.RepeatWrapping; t.repeat.x = -1; }
+      t.needsUpdate = true;
+      return t;
     };
-    const edgeMat = new THREE.MeshStandardMaterial({color: 0x6b5530, metalness: .8, roughness: .48});
-    edgeMat.envMapIntensity = 1.1;
+    const [headsC, tailsC] = await Promise.all([
+      loadTex('assets/coin-tex/heads-color.jpg'),
+      loadTex('assets/coin-tex/tails-color.jpg'),
+    ]);
+    const headsMat = new THREE.MeshStandardMaterial({map: prep(headsC, true, false), metalness: .75, roughness: .36});
+    const tailsMat = new THREE.MeshStandardMaterial({map: prep(tailsC, true, true), metalness: .75, roughness: .36});
+    headsMat.envMapIntensity = 1.0;
+    tailsMat.envMapIntensity = 1.0;
+    const edgeMat = new THREE.MeshStandardMaterial({color: 0xc8a96a, metalness: .7, roughness: .5});
+    edgeMat.envMapIntensity = 1.0;
     const geo = new THREE.CylinderGeometry(1, 1, .085, 96);
     geo.rotateX(Math.PI / 2);
-    const coin = new THREE.Mesh(geo, [edgeMat, faceMat(tex), faceMat(back)]);
+    const coin = new THREE.Mesh(geo, [edgeMat, headsMat, tailsMat]);
+    const attachDetail = (mat, base, mirror) => {
+      [['normal', 'normalMap'], ['rough', 'roughnessMap'], ['metal', 'metalnessMap'], ['ao', 'aoMap']].forEach(([k, prop]) => {
+        loader.load('assets/coin-tex/' + base + '-' + k + '.png', t => {
+          prep(t, false, mirror);
+          if (prop === 'aoMap') t.channel = 0;
+          mat[prop] = t;
+          mat.needsUpdate = true;
+        });
+      });
+    };
+    attachDetail(headsMat, 'heads', false);
+    attachDetail(tailsMat, 'tails', true);
     const group = new THREE.Group();
     group.add(coin);
     scene.add(group);

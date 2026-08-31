@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="assets/site.css">
 <style>
   .audience{border-bottom:1px solid var(--line)}
-  .audience-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .audience-grid{display:grid;grid-template-columns:repeat(5,1fr)}
   .aud{padding:clamp(26px,4vw,48px) 20px;text-align:center;border-left:1px solid var(--line)}
   .aud:first-child{border-left:none}
   .aud b{display:block;font-size:clamp(1.7rem,3.4vw,2.7rem);font-weight:500;letter-spacing:-.03em}
@@ -33,6 +33,19 @@
   .house b{color:var(--cream);font-weight:500}
   .cta-row{margin-top:clamp(40px,6vh,60px);display:flex;align-items:center;gap:22px;flex-wrap:wrap}
   .cta-row .mono{color:var(--cream-faint)}
+  /* Stand With Crypto partner block */
+  .swc{border-top:1px solid var(--line-strong)}
+  .swc-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,4vw,56px);align-items:center;margin-top:clamp(28px,4vh,44px)}
+  .swc-copy .swc-badge{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-m);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim)}
+  .swc-copy .swc-badge img{width:26px;height:26px}
+  .swc-copy h2{margin:16px 0 0;font-size:clamp(1.7rem,3.2vw,2.6rem);font-weight:500;letter-spacing:-.03em;line-height:1.1}
+  .swc-copy h2 .serif{color:var(--bronze)}
+  .swc-copy p{color:var(--cream-dim);max-width:60ch;line-height:1.7;margin-top:14px}
+  .swc-copy .swc-stat{color:var(--cream);font-weight:500}
+  .swc-figure{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--ink-2);margin:0}
+  .swc-figure img{display:block;width:100%;height:100%;object-fit:cover}
+  .swc-figure figcaption{padding:12px 16px;font-family:var(--font-m);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-faint);border-top:1px solid var(--line)}
+  @media (max-width:860px){ .swc-grid{grid-template-columns:1fr} }
   section{padding-top:clamp(60px,9vh,100px)}
   section.audience{padding-top:0}
   @media (max-width:860px){
@@ -93,6 +106,7 @@
     <div class="aud reveal reveal-d1"><b><span class="serif">Every</span></b><small>Major on campus</small></div>
     <div class="aud reveal reveal-d2"><b>Weekly</b><small>Tuesday meetings</small></div>
     <div class="aud reveal reveal-d3"><b>400+</b><small>Cities joined on Pizza Day</small></div>
+    <div class="aud reveal reveal-d3"><b>Backed</b><small>By Stand With Crypto</small></div>
   </div>
 </section>
 
@@ -155,6 +169,24 @@
     <div class="cta-row reveal">
       <a class="btn solid" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs">Become a sponsor <span class="arr">→</span></a>
       <span class="mono">uarkcryptohogs@gmail.com · Deck available on request</span>
+    </div>
+  </div>
+</section>
+
+<section class="swc" aria-label="Stand With Crypto">
+  <div class="wrap">
+    <div class="eyebrow mono">Backed by</div>
+    <div class="swc-grid">
+      <div class="swc-copy reveal">
+        <span class="swc-badge"><img src="assets/sponsors/swc-shield.svg" alt="Stand With Crypto shield">Stand With Crypto</span>
+        <h2>A national movement, <span class="serif">on our campus.</span></h2>
+        <p><span class="swc-stat">Stand With Crypto works with 37 colleges and universities across 21 states through its inaugural college chapter program.</span> The organization has mobilized more than 2.6 million advocates nationwide championing clear, common-sense crypto regulation, and its college program puts that energy where the next generation of builders already is.</p>
+        <p>For Crypto Hogs, that means events, education, and a direct line into the country's largest crypto advocacy community.</p>
+      </div>
+      <figure class="swc-figure reveal reveal-d1">
+        <img src="assets/sponsors/swc-college.jpg" alt="Stand With Crypto '52 Million Strong' signage at an America Loves Crypto Tour event" loading="lazy">
+        <figcaption>Stand With Crypto · America Loves Crypto Tour</figcaption>
+      </figure>
     </div>
   </div>
 </section>
