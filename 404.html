@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Block Not Found</title>
+<link rel="icon" type="image/png" href="/cryptohogs/assets/coin-96.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Instrument+Serif:ital@1&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:#0B0B0D}
+  body{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:#0B0B0D;color:#F4EFE4;font-family:'Space Grotesk',sans-serif;
+    text-align:center;padding:24px;position:relative;overflow:hidden;
+  }
+  .ghost{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:min(46vw,560px);font-weight:700;color:transparent;
+    -webkit-text-stroke:1.5px rgba(201,169,106,.12);pointer-events:none;user-select:none;line-height:1;
+  }
+  .inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:18px}
+  .mono{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#C9A96A}
+  h1{font-size:clamp(2rem,6vw,3.6rem);font-weight:500;letter-spacing:-.03em}
+  h1 em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#C9A96A}
+  p{color:rgba(244,239,228,.56);max-width:44ch;line-height:1.7}
+  a.btn{
+    display:inline-flex;align-items:center;gap:10px;margin-top:10px;
+    padding:13px 24px;border-radius:4px;border:1px solid #9D2235;background:#9D2235;
+    color:#F4EFE4;text-decoration:none;font-weight:500;transition:background .3s;
+  }
+  a.btn:hover{background:#C41230;border-color:#C41230}
+</style>
+</head>
+<body>
+  <div class="ghost" aria-hidden="true">404</div>
+  <div class="inner">
+    <span class="mono">Error 404 · hash not found</span>
+    <h1>This block was <em>never mined.</em></h1>
+    <p>The page you're looking for doesn't resolve on this chain. The link may have reorged, or it never existed at all.</p>
+    <a class="btn" href="/cryptohogs/">Back to the genesis block →</a>
+  </div>
+</body>
+</html>

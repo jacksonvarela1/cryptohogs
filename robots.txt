@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jacksonvarela1.github.io/cryptohogs/sitemap.xml
