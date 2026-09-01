@@ -11,11 +11,12 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.coingecko.com https://mempool.space; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Crypto Hogs · UARK's Crypto Club</title>
-<meta name="description" content="Crypto Hogs is the University of Arkansas student org for crypto & digital assets. Speakers, education, networking, policy. For the curious, not the experts. Free and open to all UA students.">
+<meta name="description" content="Crypto Hogs is the University of Arkansas student org for crypto & digital assets. Speakers, education, networking, policy. Free and open to all UA students.">
 <meta property="og:title" content="Crypto Hogs · UARK's Crypto Club">
 <meta property="og:description" content="The future of money runs through Fayetteville. Speakers, education, networking & policy. Open to all UA students.">
 <meta property="og:image" content="https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg">
 <meta property="og:url" content="https://jacksonvarela1.github.io/cryptohogs/">
+<link rel="canonical" href="https://jacksonvarela1.github.io/cryptohogs/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg">
@@ -69,6 +70,7 @@
   section[id]{scroll-margin-top:72px}
   ::selection{background:var(--cardinal);color:var(--cream)}
   :focus-visible{outline:1.5px solid var(--bronze);outline-offset:4px}
+  a[target="_blank"]::after{content:" (opens in a new tab)";position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   img{max-width:100%;display:block}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
@@ -190,10 +192,10 @@
   @media (hover:hover) and (pointer:fine){
     body.cursor-on, body.cursor-on a, body.cursor-on button, body.cursor-on .coin3d{cursor:none}
     .cur-dot,.cur-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:120;border-radius:50%;transform:translate(-200px,-200px)}
-    .cur-dot{width:6px;height:6px;background:var(--bronze);transform:translate(-50%,-50%)}
+    .cur-dot{width:6px;height:6px;background:var(--bronze)}
     .cur-ring{
       width:34px;height:34px;border:1px solid rgba(201,169,106,.55);
-      transform:translate(-50%,-50%);transition:border-color .25s var(--ease);
+      transition:border-color .25s var(--ease);
     }
     body.cursor-hot .cur-ring{border-color:var(--bronze)}
     body.cursor-hot .cur-dot{background:var(--cardinal-hot)}
@@ -293,7 +295,7 @@
   .home-swc-badge img{width:24px;height:24px}
   .home-swc-body p{color:var(--cream-dim);line-height:1.7;margin:14px 0 0;max-width:56ch}
   .home-swc-body p b{color:var(--cream);font-weight:500}
-  .home-swc-link{display:inline-block;margin-top:16px;font-family:var(--font-m);font-size:.8rem;color:var(--bronze)}
+  .home-swc-link{display:inline-block;margin-top:8px;padding:8px 0;font-family:var(--font-m);font-size:.8rem;color:var(--bronze)}
   .home-swc-link .arr{transition:transform .3s var(--ease);display:inline-block}
   .home-swc-link:hover .arr{transform:translateX(4px)}
   .home-swc-figure{align-self:stretch;min-height:200px;margin:0}
@@ -347,7 +349,7 @@
     font-size:clamp(1.7rem,3.6vw,3rem);line-height:1.25;font-weight:400;letter-spacing:-.03em;
     max-width:22ch;
   }
-  .mission .word{opacity:.14;transition:opacity .25s linear;display:inline-block;margin-right:.24em}
+  .mission .word{opacity:.14;transition:opacity .25s linear}
   .mission .word.serif{color:var(--bronze)}
   .mission-quote{margin-top:56px;max-width:640px;border-left:2px solid var(--cardinal);padding-left:24px;color:var(--cream-dim);line-height:1.7}
   .mission-quote .mono{display:block;margin-top:14px;color:var(--cream-faint)}
@@ -399,8 +401,9 @@
   .row .date{font-family:var(--font-m);color:var(--bronze);font-size:.82rem;letter-spacing:.1em}
   .row .what{font-size:clamp(1.05rem,1.8vw,1.35rem);font-weight:500;letter-spacing:-.02em}
   .row .what small{display:block;font-size:.85rem;font-weight:400;color:var(--cream-faint);margin-top:4px;letter-spacing:0}
-  .row.past{opacity:.4}
-  .row.past:hover{opacity:.65}
+  .row.past{opacity:.7}
+  .row.past:hover{opacity:.85}
+  .row.past .what small,.row.past .chip{color:var(--cream)}
   .chip{font-family:var(--font-m);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:100px;border:1px solid var(--line-strong);color:var(--cream-dim);white-space:nowrap}
   .chip.hot{border-color:var(--cardinal);color:var(--cream);background:var(--cardinal)}
   .chip.tba{border-color:var(--line-strong);color:var(--cream-faint);background:transparent}
@@ -469,9 +472,9 @@
   .foot-brand .brand img{width:44px;height:44px}
   .foot-brand p{color:var(--cream-dim);font-size:.94rem;line-height:1.65}
   .foot-cols{display:flex;gap:clamp(40px,6vw,100px);flex-wrap:wrap}
-  .foot-col{display:flex;flex-direction:column;gap:12px}
+  .foot-col{display:flex;flex-direction:column;gap:2px}
   .foot-col .mono{color:var(--cream-faint);margin-bottom:6px}
-  .foot-col a{color:var(--cream-dim);font-size:.94rem;transition:color .3s,padding-left .3s var(--ease)}
+  .foot-col a{color:var(--cream-dim);font-size:.94rem;padding:5px 0;transition:color .3s,padding-left .3s var(--ease)}
   .foot-col a:hover{color:var(--bronze);padding-left:6px}
   .clockline{display:flex;align-items:center;gap:10px;color:var(--cream-dim);font-family:var(--font-m);font-size:.8rem;letter-spacing:.08em}
   .clockline .dot{width:7px;height:7px;border-radius:50%;background:var(--cardinal-hot);animation:pulse 2.4s infinite}
@@ -511,7 +514,7 @@
     .burger{display:block}
     .hero{padding-top:96px}
     .hero-grid{grid-template-columns:1fr;gap:40px}
-    .coin{width:min(62vw,340px)}
+    .coin3d{width:min(62vw,340px)}
     .coin-hint{bottom:-38px}
     .row{grid-template-columns:112px 1fr;grid-template-rows:auto auto}
     .row .date{white-space:nowrap}
@@ -522,8 +525,32 @@
   @media (max-width:480px){
     .team-grid{grid-template-columns:1fr 1fr;gap:12px}
     .card .info b{font-size:.95rem}
+    .row{grid-template-columns:1fr;gap:10px 0}
+    .row .chip{grid-column:1}
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Crypto Hogs",
+  "alternateName": "The Cryptocurrency Club at the University of Arkansas",
+  "url": "https://jacksonvarela1.github.io/cryptohogs/",
+  "logo": "https://jacksonvarela1.github.io/cryptohogs/assets/cryptohogs-logo.jpg",
+  "image": "https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg",
+  "description": "Crypto Hogs is the University of Arkansas student org for crypto & digital assets. Speakers, education, networking, policy. Free and open to all UA students.",
+  "email": "uarkcryptohogs@gmail.com",
+  "foundingDate": "2026",
+  "address": {"@type": "PostalAddress", "addressLocality": "Fayetteville", "addressRegion": "AR", "addressCountry": "US"},
+  "parentOrganization": {"@type": "CollegeOrUniversity", "name": "University of Arkansas"},
+  "sameAs": [
+    "https://www.instagram.com/uarkcryptohogs/",
+    "https://www.tiktok.com/@uarkcryptohogs",
+    "https://www.linkedin.com/in/cryptohogs-at-the-university-of-arkansas-410b733b7/",
+    "https://linktr.ee/uarkcryptohogs"
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -548,7 +575,7 @@
   </div>
 </header>
 
-<div class="mobilemenu" onclick="document.body.classList.remove('menu-open')">
+<div class="mobilemenu" onclick="document.body.classList.remove('menu-open');document.querySelector('.burger').setAttribute('aria-expanded','false')">
   <span class="mono">Crypto Hogs · UARK</span>
   <a href="#about">About</a>
   <a href="events.html">Events</a>
@@ -573,13 +600,13 @@
         <a class="btn solid magnetic" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join Crypto Hogs <span class="arr">→</span></a>
         <a class="btn magnetic" href="#fall">Fall '26 lineup <span class="arr">↓</span></a>
       </div>
-      <p class="hero-note mono reveal reveal-d4"><b>150+</b> members · Tuesdays 5:30 PM</p>
+      <p class="hero-note mono reveal reveal-d4"><b>150+</b> members · Tuesdays 5:30 to 7:00 PM CT</p>
       <p class="nextblock mono reveal reveal-d4" id="nextblock">Next block: <b>Sep 22</b> · speaker night with the CEO of ANVL Research Labs</p>
     </div>
     <div class="coin-stage reveal reveal-d2">
       <div class="coin-glow"></div>
       <div class="coin-wrap coin-float">
-        <div class="coin3d" id="coin3d" role="img" aria-label="Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock" title="Grab it" tabindex="0">
+        <div class="coin3d" id="coin3d" role="button" aria-label="Spin the Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock" title="Grab it" tabindex="0">
           <img src="assets/coin-hero.jpg" alt="" id="coinFallback">
         </div>
         <span class="coin-hint mono" id="coinHint">Grab the coin. Give it a spin</span>
@@ -606,10 +633,10 @@
 <!-- ============ STATS ============ -->
 <section class="stats" aria-label="Club stats">
   <div class="wrap stats-grid">
-    <div class="stat reveal"><b><span data-count="150">0</span>+</b><small>Members &amp; counting</small></div>
+    <div class="stat reveal"><b><span data-count="150">150</span>+</b><small>Members &amp; counting</small></div>
     <div class="stat reveal reveal-d1"><b><em>Free</em></b><small>Every event, every student</small></div>
     <div class="stat reveal reveal-d2"><b><em>Tue</em></b><small>Meetings all semester</small></div>
-    <div class="stat reveal reveal-d3"><b><span data-count="400">0</span>+</b><small>Cities joined on Bitcoin Pizza Day</small></div>
+    <div class="stat reveal reveal-d3"><b><span data-count="400">400</span>+</b><small>Cities joined on Bitcoin Pizza Day</small></div>
   </div>
 </section>
 
@@ -653,25 +680,25 @@
     <div class="pillar-grid">
       <div class="pillar reveal">
         <span class="num">/ 01</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" aria-hidden="true" focusable="false"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg>
         <h3>Speaker nights</h3>
-        <p>Founders, executives, miners, and policy leaders. On campus, in person, taking questions. Free and open to every UA student.</p>
+        <p>Founders, executives, miners, and policy leaders. On campus and on screen, taking your questions live. Free and open to every UA student.</p>
       </div>
       <div class="pillar reveal reveal-d1">
         <span class="num">/ 02</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a1 1 0 0 0-1-1H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a1 1 0 0 0-1-1H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>
         <h3>Education</h3>
         <p>Meetings that make blockchain make sense: no prerequisites, no jargon walls, no finance degree required. Bring questions.</p>
       </div>
       <div class="pillar reveal reveal-d1">
         <span class="num">/ 03</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 7.5l7.6 9M15.8 7.5l-7.6 9M8.5 6h7M8.5 18h7M6 8.5v7M18 8.5v7"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" aria-hidden="true" focusable="false"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 7.5l7.6 9M15.8 7.5l-7.6 9M8.5 6h7M8.5 18h7M6 8.5v7M18 8.5v7"/></svg>
         <h3>Networking &amp; careers</h3>
         <p>Connections with investors, builders, and people working full-time in the industry, plus internship pipelines and conference trips.</p>
       </div>
       <div class="pillar reveal reveal-d2">
         <span class="num">/ 04</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M3 21h18M5 21V10M19 21V10M9 21v-7h6v7M2 10h20L12 3 2 10z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M3 21h18M5 21V10M19 21V10M9 21v-7h6v7M2 10h20L12 3 2 10z"/></svg>
         <h3>Policy &amp; innovation</h3>
         <p>Arkansas is writing crypto law right now. We track it, meet the people writing it, and put students in the room where it happens.</p>
       </div>
@@ -725,7 +752,7 @@
       </div>
       <p class="reveal">General meetings run Tuesdays, 5:30 to 7:00 PM CT. Room drops in the GroupMe. Speaker nights below.</p>
     </div>
-    <div class="sched reveal">
+    <div class="sched reveal" data-year="2026">
       <div class="row">
         <span class="date">TUE · SEP 22</span>
         <span class="what">Onchain letters of credit, with the CEO of ANVL Research Labs<small>Max, CEO · virtual · 5:30 to 7:00 PM CT</small></span>
@@ -813,23 +840,23 @@
     </div>
     <div class="reveal">
       <details class="faqrow">
-        <summary><span class="idx">0x01</span> Do I need to own crypto? <span class="tog">+</span></summary>
+        <summary><span class="idx">0x01</span> Do I need to own crypto? <span class="tog" aria-hidden="true">+</span></summary>
         <p><b>No.</b> Most members start with zero. Curiosity is the only prerequisite, and it stays that way.</p>
       </details>
       <details class="faqrow">
-        <summary><span class="idx">0x02</span> Do I need to be a finance or CS major? <span class="tog">+</span></summary>
+        <summary><span class="idx">0x02</span> Do I need to be a finance or CS major? <span class="tog" aria-hidden="true">+</span></summary>
         <p><b>Every major is welcome.</b> Crypto needs marketers, writers, policy minds, designers, and healthy skeptics just as much as it needs engineers.</p>
       </details>
       <details class="faqrow">
-        <summary><span class="idx">0x03</span> Does it cost anything? <span class="tog">+</span></summary>
+        <summary><span class="idx">0x03</span> Does it cost anything? <span class="tog" aria-hidden="true">+</span></summary>
         <p><b>$0.</b> No dues, no paid course, no upsell, ever. Free pizza, on the other hand, happens regularly.</p>
       </details>
       <details class="faqrow">
-        <summary><span class="idx">0x04</span> Is this financial advice? <span class="tog">+</span></summary>
+        <summary><span class="idx">0x04</span> Is this financial advice? <span class="tog" aria-hidden="true">+</span></summary>
         <p><b>Emphatically not.</b> We study the technology, the industry, and the policy around it. Your money stays yours and your decisions stay yours.</p>
       </details>
       <details class="faqrow">
-        <summary><span class="idx">0x05</span> I know nothing about crypto. <span class="tog">+</span></summary>
+        <summary><span class="idx">0x05</span> I know nothing about crypto. <span class="tog" aria-hidden="true">+</span></summary>
         <p><b>Perfect.</b> The whole club is built for the curious, not the experts. Come confused, leave slightly less confused.</p>
       </details>
     </div>
@@ -867,7 +894,7 @@
     <div class="sponsor-cta reveal">
       <a class="btn solid magnetic" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs">Become a sponsor <span class="arr">→</span></a>
       <a class="btn magnetic" href="sponsors.html">The full pitch <span class="arr">→</span></a>
-      <span class="mono">Deck available on request</span>
+      <span class="mono">Deck on the sponsors page</span>
     </div>
   </div>
 </section>
@@ -937,7 +964,7 @@
       <span>© <span id="copyyear">2026</span> Crypto Hogs · A registered student organization at the University of Arkansas.</span>
       <span class="mono">Events open to all UA students · Not financial advice. We're a club, not your broker.</span>
     </div>
-    <span class="mono genesis">Chancellor on brink of second bailout for banks · 03/Jan/2009</span>
+    <span class="mono genesis" aria-hidden="true">Chancellor on brink of second bailout for banks · 03/Jan/2009</span>
   </div>
 </footer>
 
@@ -998,7 +1025,7 @@
     card.innerHTML =
       '<div class="ph">' +
         (o.img
-          ? '<img src="'+o.img+'" alt="'+o.name+', '+o.role+'" loading="lazy">'
+          ? '<img src="'+o.img+'" srcset="'+o.img.replace(/\.jpg$/, '-560.jpg')+' 560w, '+o.img+' 800w" sizes="(max-width:480px) 46vw, (max-width:860px) 47vw, (max-width:1000px) 31vw, 265px" alt="'+o.name+', '+o.role+'" loading="lazy">'
           : '<div class="mono-ini"><b>'+initials+'</b></div>') +
       '</div>' +
       '<div class="info"><b>'+o.name+'</b><span>'+o.role+'</span></div>';
@@ -1050,7 +1077,7 @@
       requestAnimationFrame(tick);
     });
   }, {threshold:.6});
-  if (cio) document.querySelectorAll('[data-count]').forEach(function(el){ cio.observe(el); });
+  if (cio) document.querySelectorAll('[data-count]').forEach(function(el){ el.textContent = '0'; cio.observe(el); });
 
   /* ---------- Mission word scrub ---------- */
   var scrub = document.getElementById('scrub');
@@ -1066,6 +1093,7 @@
             s.className = 'word' + (el.hasAttribute && el.hasAttribute('data-serif') ? ' serif' : '');
             s.textContent = w;
             frag.appendChild(s); nodes.push(s);
+            frag.appendChild(document.createTextNode(' '));
           });
           el.replaceChild(frag, n);
         } else if (n.nodeType === 1){ split(n); }
@@ -1165,9 +1193,15 @@
     var daysUntil = function(txt){
       var m = txt.match(/([A-Z]{3})\s*(\d{1,2})/);
       if (!m || !(m[1] in MONTHS)) return null;
-      var now = new Date();
-      var target = new Date(2026, MONTHS[m[1]], +m[2]);
-      return Math.ceil((target - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
+      var now = new Date(), today;
+      try {
+        var ct = now.toLocaleDateString('en-US', {timeZone:'America/Chicago'}).split('/');
+        today = new Date(+ct[2], ct[0] - 1, +ct[1]);
+      } catch (e) {}
+      if (!(today > 0)) today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var sched = document.querySelector('.sched');
+      var target = new Date((sched && +sched.getAttribute('data-year')) || 2026, MONTHS[m[1]], +m[2]);
+      return Math.round((target - today) / 86400000);
     };
     document.querySelectorAll('.row').forEach(function(row){
       row.addEventListener('mouseenter', function(){
@@ -1177,7 +1211,7 @@
         if (d !== null && d > 1) label += ' · in ' + d + ' days';
         else if (d === 1) label += ' · tomorrow';
         else if (d === 0) label += ' · tonight';
-        pill.textContent = label;
+        pill.textContent = (d !== null && d < 0) ? 'Done' : label;
         pill.classList.add('on'); pkick();
       });
       row.addEventListener('mouseleave', function(){ pill.classList.remove('on'); pkick(); });
@@ -1200,6 +1234,23 @@
     }catch(e){ clockEl.textContent = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
   }
   clock(); setInterval(clock, 30000);
+
+  /* mobile menu: Escape closes it, the burger's aria-expanded stays in sync, page behind the overlay is inert */
+  var burger = document.querySelector('.burger');
+  if (burger){
+    var behind = document.querySelectorAll('main, footer');
+    var syncMenu = function(){
+      var open = document.body.classList.contains('menu-open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      behind.forEach(function(el){ el.inert = open; });
+    };
+    document.addEventListener('click', syncMenu);
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && document.body.classList.contains('menu-open')){
+        document.body.classList.remove('menu-open'); syncMenu(); burger.focus();
+      }
+    });
+  }
 })();
 </script>
 
@@ -1349,9 +1400,8 @@
       v: .00012 + Math.random() * .00025, red: Math.random() < .12
     });
     var emx = 0, erun = !document.hidden, eraf = null, et0 = performance.now();
-    document.addEventListener('mousemove', function(e){
-      emx = e.clientX / Math.max(1, W) - .5;
-    }, {passive:true});
+    var emove = function(e){ emx = e.clientX / Math.max(1, W) - .5; };
+    document.addEventListener('mousemove', emove, {passive:true});
     var eskip = false;
     var edraw = function(t){
       eskip = !eskip;
@@ -1377,6 +1427,8 @@
     });
     window.addEventListener('ch:golite', function(){
       erun = false;
+      window.removeEventListener('resize', eresize);
+      document.removeEventListener('mousemove', emove);
       if (cv.parentNode) cv.parentNode.removeChild(cv);
     });
   }
@@ -1420,13 +1472,19 @@
   /* self-maintaining dates: past rows dim to Done, hero line tracks the real next event */
   (function(){
     var MO = {JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
-    var now = new Date();
-    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var sched = document.querySelector('.sched');
+    var YEAR = (sched && +sched.getAttribute('data-year')) || 2026;
+    var now = new Date(), today;
+    try {
+      var ct = now.toLocaleDateString('en-US', {timeZone:'America/Chicago'}).split('/');
+      today = new Date(+ct[2], ct[0] - 1, +ct[1]);
+    } catch (e) {}
+    if (!(today > 0)) today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     var next = null;
     document.querySelectorAll('.sched .row').forEach(function(row){
       var m = row.querySelector('.date').textContent.match(/([A-Z]{3})\s*(\d{1,2})/);
       if (!m || !(m[1] in MO)) return;
-      var d = new Date(2026, MO[m[1]], +m[2]);
+      var d = new Date(YEAR, MO[m[1]], +m[2]);
       if (d < today){
         row.classList.add('past');
         var chip = row.querySelector('.chip');
@@ -1526,7 +1584,13 @@
   /* ---------- GSAP: masked char reveals, parallax, ghost numerals ---------- */
   if (staticMode || reduced || !window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
+  /* park the h1 unpainted until the masked reveal is armed in fonts.ready, with a 2.5 s safety net */
+  var h1pre = document.querySelector('h1[data-split]'), h1shown = !h1pre;
+  var h1show = function(){ if (!h1shown){ h1shown = true; h1pre.style.opacity = ''; } };
+  if (h1pre) h1pre.style.opacity = '0';
+  setTimeout(h1show, 2500);
   function splitChars(el){
+    el.setAttribute('aria-label', el.innerText.replace(/\s+/g, ' ').trim());
     var chs = [];
     (function walk(node){
       Array.prototype.slice.call(node.childNodes).forEach(function(n){
@@ -1552,26 +1616,29 @@
     var chs = splitChars(el);
     if (!chs.length) return;
     gsap.set(chs, {yPercent: 112});
+    if (el === h1pre) h1show();
     gsap.to(chs, Object.assign({
       yPercent: 0, duration: .85, ease: 'power4.out', stagger: .016,
       onComplete: function(){ gsap.set(chs, {clearProps: 'transform'}); el.classList.add('split-done'); }
     }, opts || {}));
   }
   document.fonts.ready.then(function(){
-    var h1 = document.querySelector('h1[data-split]');
-    if (LITE){
-      /* phones & low-end: simple heading fades, no span explosion, no scrub layers */
-      if (h1) gsap.from(h1, {opacity: 0, y: 26, duration: .8, ease: 'power3.out', delay: .1});
+    try {
+      var h1 = document.querySelector('h1[data-split]');
+      if (LITE){
+        /* phones & low-end: simple heading fades, no span explosion, no scrub layers */
+        if (h1){ h1show(); gsap.from(h1, {opacity: 0, y: 26, duration: .8, ease: 'power3.out', delay: .1}); }
+        document.querySelectorAll('h2').forEach(function(h){
+          gsap.from(h, {opacity: 0, y: 24, duration: .7, ease: 'power3.out',
+            scrollTrigger: {trigger: h, start: 'top 88%', once: true}});
+        });
+        return;
+      }
+      if (h1) maskReveal(h1, {delay: .1});
       document.querySelectorAll('h2').forEach(function(h){
-        gsap.from(h, {opacity: 0, y: 24, duration: .7, ease: 'power3.out',
-          scrollTrigger: {trigger: h, start: 'top 88%', once: true}});
+        maskReveal(h, {scrollTrigger: {trigger: h, start: 'top 88%', once: true}});
       });
-      return;
-    }
-    if (h1) maskReveal(h1, {delay: .1});
-    document.querySelectorAll('h2').forEach(function(h){
-      maskReveal(h, {scrollTrigger: {trigger: h, start: 'top 88%', once: true}});
-    });
+    } catch (e) { h1show(); }
   });
 })();
 </script>
@@ -1623,7 +1690,7 @@ if (host && !reduced && !staticMode && !LITE){
     const coin = new THREE.Mesh(geo, [edgeMat, headsMat, tailsMat]);
     const attachDetail = (mat, base, mirror) => {
       [['normal', 'normalMap'], ['rough', 'roughnessMap'], ['metal', 'metalnessMap'], ['ao', 'aoMap']].forEach(([k, prop]) => {
-        loader.load('assets/coin-tex/' + base + '-' + k + '.png', t => {
+        loader.load('assets/coin-tex/' + base + '-' + k + '.webp', t => {
           prep(t, false, mirror);
           if (prop === 'aoMap') t.channel = 0;
           mat[prop] = t;
@@ -1651,12 +1718,14 @@ if (host && !reduced && !staticMode && !LITE){
       camera.updateProjectionMatrix();
     };
     size();
-    new ResizeObserver(size).observe(host);
+    const ro = new ResizeObserver(size); ro.observe(host);
     host.appendChild(renderer.domElement);
     host.classList.add('live');
+    renderer.domElement.addEventListener('webglcontextlost', () => host.classList.remove('live'));
+    renderer.domElement.addEventListener('webglcontextrestored', () => host.classList.add('live'));
 
     /* drag to spin, with inertia; tap = big spin + burst */
-    let vy = .012, dragging = false, px = 0, py = 0, moved = 0, downT = 0;
+    let vy = .012, dragging = false, px = 0, py = 0, moved = 0, downT = 0, demoted = false;
     const IDLE = .012;
     host.addEventListener('pointerdown', e => {
       dragging = true; moved = 0; px = e.clientX; py = e.clientY; downT = performance.now();
@@ -1674,7 +1743,7 @@ if (host && !reduced && !staticMode && !LITE){
     const endDrag = e => {
       if (!dragging) return;
       dragging = false; host.classList.remove('dragging');
-      if (moved < 8 && performance.now() - downT < 350){
+      if (!demoted && moved < 8 && performance.now() - downT < 350){
         vy += (Math.random() < .5 ? -1 : 1) * .45;
         if (window.__coinBurst) window.__coinBurst(e.clientX || px, e.clientY || py);
         const hint = document.getElementById('coinHint');
@@ -1688,7 +1757,7 @@ if (host && !reduced && !staticMode && !LITE){
         e.preventDefault();
         vy += .5;
         const r = host.getBoundingClientRect();
-        if (window.__coinBurst) window.__coinBurst(r.left + r.width / 2, r.top + r.height / 2);
+        if (window.__coinBurst && !demoted) window.__coinBurst(r.left + r.width / 2, r.top + r.height / 2);
       }
     });
 
@@ -1720,8 +1789,8 @@ if (host && !reduced && !staticMode && !LITE){
       if (running && raf === null) raf = requestAnimationFrame(tick);
     });
     window.addEventListener('ch:golite', () => {
-      running = false;
-      vis.disconnect();
+      running = false; demoted = true;
+      vis.disconnect(); ro.disconnect();
       host.classList.remove('live');
       setTimeout(() => {
         try { renderer.dispose(); } catch (_) {}

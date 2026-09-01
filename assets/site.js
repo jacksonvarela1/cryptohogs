@@ -22,6 +22,23 @@
   function onScrollNav(){ header.classList.toggle('scrolled', window.scrollY > 24); }
   window.addEventListener('scroll', onScrollNav, {passive:true}); onScrollNav();
 
+  /* mobile menu: Escape closes it, the burger's aria-expanded stays in sync, page behind the overlay is inert */
+  var burger = document.querySelector('.burger');
+  if (burger){
+    var behind = document.querySelectorAll('main, footer');
+    var syncMenu = function(){
+      var open = document.body.classList.contains('menu-open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      behind.forEach(function(el){ el.inert = open; });
+    };
+    document.addEventListener('click', syncMenu);
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && document.body.classList.contains('menu-open')){
+        document.body.classList.remove('menu-open'); syncMenu(); burger.focus();
+      }
+    });
+  }
+
   /* reveals */
   if ('IntersectionObserver' in window && !staticMode){
     var io = new IntersectionObserver(function(es){

@@ -12,7 +12,11 @@
 <title>Crypto Hogs Events</title>
 <meta name="description" content="The Crypto Hogs Fall 2026 lineup: speaker nights and weekly Tuesday meetings at the University of Arkansas. Free and open to all UA students.">
 <meta property="og:title" content="Crypto Hogs Events">
+<meta property="og:description" content="The Crypto Hogs Fall 2026 lineup: speaker nights and weekly Tuesday meetings at the University of Arkansas. Free and open to all UA students.">
 <meta property="og:image" content="https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg">
+<meta property="og:url" content="https://jacksonvarela1.github.io/cryptohogs/events.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://jacksonvarela1.github.io/cryptohogs/events.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg">
 <link rel="icon" type="image/png" href="assets/coin-96.png">
@@ -21,6 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <style>
   section{padding-top:clamp(60px,9vh,100px)}
   .open-line{margin-top:34px;font-size:1.05rem;color:var(--cream)}
@@ -29,6 +34,58 @@
   .fall-notes .chip{padding:10px 16px;white-space:normal;line-height:1.6;border-radius:10px}
   .past-cards .gcard .mono{margin-top:22px}
 </style>
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Onchain letters of credit, with the CEO of ANVL Research Labs",
+    "description": "Max, CEO of ANVL Research Labs: trade finance explained from scratch, then a live demo and open Q&A. Virtual session. Free and open to all University of Arkansas students.",
+    "startDate": "2026-09-22T17:30:00-05:00",
+    "endDate": "2026-09-22T19:00:00-05:00",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+    "location": {"@type": "VirtualLocation", "url": "https://jacksonvarela1.github.io/cryptohogs/events.html"},
+    "isAccessibleForFree": true,
+    "performer": {"@type": "Person", "name": "Max", "jobTitle": "CEO", "worksFor": {"@type": "Organization", "name": "ANVL Research Labs"}},
+    "organizer": {"@type": "Organization", "name": "Crypto Hogs", "url": "https://jacksonvarela1.github.io/cryptohogs/"},
+    "image": "https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg",
+    "url": "https://jacksonvarela1.github.io/cryptohogs/events.html"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Bitcoin mining, up close with Ben Smith",
+    "description": "Ben Smith of Bear Market Mining (Walnut Ridge, AR): facility walkthrough and the economics of when mining actually pays. In person. Free and open to all University of Arkansas students.",
+    "startDate": "2026-10-06T17:30:00-05:00",
+    "endDate": "2026-10-06T19:00:00-05:00",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "location": {"@type": "Place", "name": "University of Arkansas", "address": {"@type": "PostalAddress", "addressLocality": "Fayetteville", "addressRegion": "AR", "addressCountry": "US"}},
+    "isAccessibleForFree": true,
+    "performer": {"@type": "Person", "name": "Ben Smith", "worksFor": {"@type": "Organization", "name": "Bear Market Mining"}},
+    "organizer": {"@type": "Organization", "name": "Crypto Hogs", "url": "https://jacksonvarela1.github.io/cryptohogs/"},
+    "image": "https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg",
+    "url": "https://jacksonvarela1.github.io/cryptohogs/events.html"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "A Razorback on Wall Street: Nick Carpinito",
+    "description": "Nick Carpinito of Blockworks Research (New York), a UARK alum, walks a real research report, then a fireside on breaking into the industry. Virtual session. Free and open to all University of Arkansas students.",
+    "startDate": "2026-10-13T17:30:00-05:00",
+    "endDate": "2026-10-13T19:00:00-05:00",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+    "location": {"@type": "VirtualLocation", "url": "https://jacksonvarela1.github.io/cryptohogs/events.html"},
+    "isAccessibleForFree": true,
+    "performer": {"@type": "Person", "name": "Nick Carpinito", "worksFor": {"@type": "Organization", "name": "Blockworks Research"}},
+    "organizer": {"@type": "Organization", "name": "Crypto Hogs", "url": "https://jacksonvarela1.github.io/cryptohogs/"},
+    "image": "https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg",
+    "url": "https://jacksonvarela1.github.io/cryptohogs/events.html"
+  }
+]
+</script>
 </head>
 <body>
 
@@ -51,7 +108,7 @@
   </div>
 </header>
 
-<div class="mobilemenu" onclick="document.body.classList.remove('menu-open')">
+<div class="mobilemenu" onclick="document.body.classList.remove('menu-open');document.querySelector('.burger').setAttribute('aria-expanded','false')">
   <span class="mono">Crypto Hogs · UARK</span>
   <a href="index.html">Home</a>
   <a href="events.html">Events</a>
@@ -67,7 +124,7 @@
     <div class="eyebrow mono">Events</div>
     <h1 class="reveal">Tuesdays are <span class="serif">for the curious.</span></h1>
     <p class="sub reveal reveal-d1">
-      General meetings run every week of the semester, and speaker nights drop in about once a month.
+      General meetings run every week of the semester, and speaker nights drop in every week or two from late September on.
       Sessions run <b style="color:var(--bronze);font-weight:500">5:30 to 7:00 PM CT</b>, room announced in the GroupMe.
       Every event is free and open to all University of Arkansas students, member or not.
     </p>
@@ -90,7 +147,7 @@
       </div>
       <div class="row reveal">
         <span class="date">TUE · OCT 13</span>
-        <span class="what">A Razorback on Wall Street: Nick Carpinito<small>Blockworks Research, New York · 5:30 to 7:00 PM CT · UARK alum walks a real research report, then a fireside on breaking into the industry</small></span>
+        <span class="what">A Razorback on Wall Street: Nick Carpinito<small>Blockworks Research, New York · 5:30 to 7:00 PM CT · virtual · UARK alum walks a real research report, then a fireside on breaking into the industry</small></span>
         <span class="chip hot">Confirmed</span>
       </div>
       <div class="row reveal">
@@ -171,6 +228,7 @@
           <a href="https://www.instagram.com/uarkcryptohogs/" target="_blank" rel="noopener">Instagram</a>
           <a href="https://www.tiktok.com/@uarkcryptohogs" target="_blank" rel="noopener">TikTok</a>
           <a href="https://www.linkedin.com/in/cryptohogs-at-the-university-of-arkansas-410b733b7/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://linktr.ee/uarkcryptohogs" target="_blank" rel="noopener">Linktree</a>
           <a href="mailto:uarkcryptohogs@gmail.com">uarkcryptohogs@gmail.com</a>
         </div>
         <div class="foot-col">
