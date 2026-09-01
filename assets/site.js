@@ -10,6 +10,10 @@
   if (staticMode){
     document.documentElement.classList.add('lite');
     reduced = true;
+    document.addEventListener('DOMContentLoaded', function(){
+      var sh = location.search.match(/shift=(\d+)/);
+      if (sh) document.body.style.transform = 'translateY(-' + sh[1] + 'px)';
+    });
   }
 
   /* brand → home */

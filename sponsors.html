@@ -38,6 +38,30 @@
   .house b{color:var(--cream);font-weight:500}
   .cta-row{margin-top:clamp(40px,6vh,60px);display:flex;align-items:center;gap:22px;flex-wrap:wrap}
   .cta-row .mono{color:var(--cream-faint)}
+  /* tiers */
+  .tiers{border-top:1px solid var(--line)}
+  .tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,28px);align-items:start}
+  .tier{
+    border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-2);
+    padding:clamp(24px,3vw,34px);display:flex;flex-direction:column;gap:14px;height:100%;
+    transition:border-color .4s var(--ease),transform .5s var(--ease);
+  }
+  .tier:hover{border-color:var(--bronze-deep);transform:translateY(-6px)}
+  .tier.featured{border-color:var(--bronze-deep);background:linear-gradient(150deg,rgba(201,169,106,.07),transparent 60%),var(--ink-2)}
+  .tier-name{color:var(--bronze)}
+  .tier-price{font-size:clamp(2rem,3.4vw,2.8rem);font-weight:500;letter-spacing:-.03em;line-height:1}
+  .tier ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:4px}
+  .tier li{color:var(--cream-dim);font-size:.94rem;line-height:1.55;padding-left:20px;position:relative}
+  .tier li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:1px;background:var(--bronze)}
+  .tier-avail{margin-top:auto;padding-top:14px;color:var(--cream-faint)}
+  .tier-avail.hot{color:var(--bronze)}
+  .terms{
+    margin-top:clamp(34px,5vh,52px);border:1px solid var(--line);border-radius:var(--radius);
+    padding:clamp(24px,3.4vw,38px);background:var(--ink-2);display:flex;flex-direction:column;gap:14px;
+  }
+  .terms p{color:var(--cream-dim);line-height:1.7;max-width:78ch;font-size:.95rem}
+  .terms b{color:var(--cream);font-weight:500}
+  @media (max-width:860px){ .tier-grid{grid-template-columns:1fr} }
   /* Stand With Crypto partner block */
   .swc{border-top:1px solid var(--line-strong)}
   .swc-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,4vw,56px);align-items:center;margin-top:clamp(28px,4vh,44px)}
@@ -107,10 +131,10 @@
 
 <section class="audience" aria-label="Audience">
   <div class="wrap audience-grid">
-    <div class="aud reveal"><b>150+</b><small>Members &amp; counting</small></div>
-    <div class="aud reveal reveal-d1"><b><span class="serif">Every</span></b><small>Major on campus</small></div>
-    <div class="aud reveal reveal-d2"><b>Weekly</b><small>Tuesday meetings</small></div>
-    <div class="aud reveal reveal-d3"><b>400+</b><small>Cities joined on Pizza Day</small></div>
+    <div class="aud reveal"><b>150+</b><small>Active members</small></div>
+    <div class="aud reveal reveal-d1"><b>30<span class="serif">x</span></b><small>Growth in two years</small></div>
+    <div class="aud reveal reveal-d2"><b>16</b><small>Events per semester</small></div>
+    <div class="aud reveal reveal-d3"><b>40</b><small>Average event attendance</small></div>
     <div class="aud reveal reveal-d3"><b>Backed</b><small>By Stand With Crypto</small></div>
   </div>
 </section>
@@ -173,7 +197,73 @@
 
     <div class="cta-row reveal">
       <a class="btn solid" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs">Become a sponsor <span class="arr">→</span></a>
-      <span class="mono">uarkcryptohogs@gmail.com · Deck available on request</span>
+      <a class="btn" href="assets/cryptohogs-sponsorship.pdf" target="_blank" rel="noopener">Download the package <span class="arr">↗</span></a>
+      <span class="mono">uarkcryptohogs@gmail.com</span>
+    </div>
+  </div>
+</section>
+
+<section class="tiers" id="tiers">
+  <div class="wrap">
+    <div class="section-head" style="display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(28px,4vh,44px)">
+      <div>
+        <div class="eyebrow mono">Tiers</div>
+        <h2 style="font-size:clamp(1.9rem,3.6vw,3rem);font-weight:500;letter-spacing:-.03em;line-height:1.05">Pick your <span class="serif" style="color:var(--bronze)">level.</span></h2>
+      </div>
+      <p style="max-width:38ch;color:var(--cream-dim)">Full academic year. Payable in full or split across fall and spring semesters.</p>
+    </div>
+
+    <div class="tier-grid">
+      <div class="tier reveal">
+        <span class="tier-name mono">Supporter</span>
+        <span class="tier-price">$1,000</span>
+        <ul>
+          <li>Name on the club website and event materials</li>
+          <li>Announcement across club channels at signing</li>
+          <li>Recognition in the year-end recap sent to Walton College, administration, and alumni</li>
+          <li>Standing invitation to club events and programming</li>
+        </ul>
+        <span class="tier-avail mono">Open</span>
+      </div>
+
+      <div class="tier reveal reveal-d1 featured">
+        <span class="tier-name mono">Partner</span>
+        <span class="tier-price">$2,500</span>
+        <ul>
+          <li>Everything in Supporter</li>
+          <li>Logo on event signage, meeting slides, and member materials</li>
+          <li>Access to the member resume book, updated each semester</li>
+          <li>One recruiting touchpoint per semester: info session, event table, or resume drop</li>
+          <li>Speaking slot or technical workshop at a general meeting</li>
+        </ul>
+        <span class="tier-avail mono">Open</span>
+      </div>
+
+      <div class="tier reveal reveal-d2">
+        <span class="tier-name mono">Founding</span>
+        <span class="tier-price">$5,000</span>
+        <ul>
+          <li>Everything in Partner</li>
+          <li>Title billing on one flagship event, "presented by"</li>
+          <li>First review of the resume book, ahead of other sponsors</li>
+          <li>Named prize or scholarship at a club competition</li>
+          <li>Standing invitation to advise on programming for the year</li>
+          <li>Year-end written report itemizing expenditures</li>
+        </ul>
+        <span class="tier-avail mono hot">Only 2 available</span>
+      </div>
+    </div>
+
+    <div class="terms reveal">
+      <p><b>The fine print, up front.</b> Contributions support conference travel, speaker and event
+      programming, and club operations for the academic year. Funds are held in the club's
+      university-managed account and administered through the University of Arkansas Treasurer's
+      Office. Nothing is deposited into external or personal accounts, and every sponsor receives
+      an itemized account of expenditures at year end.</p>
+      <p>Crypto Hogs is a Registered Student Organization, not a 501(c)(3), so contributions are
+      structured as sponsorships in exchange for the benefits above rather than tax-deductible
+      donations. Written acknowledgment is provided for your records. Individual supporters may
+      swap the recruiting and branding benefits for recognition and mentorship access at any tier.</p>
     </div>
   </div>
 </section>
