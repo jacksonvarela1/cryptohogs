@@ -44,7 +44,7 @@
   .cta-row{margin-top:clamp(40px,6vh,60px);display:flex;align-items:center;gap:22px;flex-wrap:wrap}
   .cta-row .mono{color:var(--cream-faint)}
   /* tiers */
-  .tiers{border-top:1px solid var(--line)}
+  .tiers{border-top:1px solid var(--line);margin-top:clamp(50px,8vh,80px)}
   .tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,28px);align-items:start}
   .tier{
     border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-2);
@@ -68,11 +68,11 @@
   .terms b{color:var(--cream);font-weight:500}
   @media (max-width:860px){ .tier-grid{grid-template-columns:1fr} }
   /* Stand With Crypto partner block */
-  .swc{border-top:1px solid var(--line-strong)}
+  .swc{border-top:1px solid var(--line-strong);margin-top:clamp(50px,8vh,80px)}
   .swc-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,4vw,56px);align-items:center;margin-top:clamp(28px,4vh,44px)}
   .swc-copy .swc-badge{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-m);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim)}
   .swc-copy .swc-badge img{width:26px;height:26px}
-  .swc-copy h2{margin:16px 0 0;font-size:clamp(1.7rem,3.2vw,2.6rem);font-weight:500;letter-spacing:-.03em;line-height:1.1}
+  .swc-copy h2{margin:16px 0 0;font-size:clamp(1.7rem,3.2vw,2.6rem);font-weight:500;letter-spacing:-.03em;line-height:1.1;text-wrap:balance}
   .swc-copy h2 .serif{color:var(--bronze)}
   .swc-copy p{color:var(--cream-dim);max-width:60ch;line-height:1.7;margin-top:14px}
   .swc-copy .swc-stat{color:var(--cream);font-weight:500}
