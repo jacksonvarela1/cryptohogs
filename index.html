@@ -8,10 +8,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.coingecko.com https://mempool.space; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://mempool.space; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Crypto Hogs · UARK's Crypto Club</title>
-<meta name="description" content="Crypto Hogs is the University of Arkansas student org for crypto & digital assets. Speakers, education, networking, policy. Free and open to all UA students.">
+<meta name="description" content="Crypto Hogs is the University of Arkansas student org for crypto, blockchain, and quantum computing. Speakers, education, networking, policy. Free and open to all UA students.">
 <meta property="og:title" content="Crypto Hogs · UARK's Crypto Club">
 <meta property="og:description" content="The future of money runs through Fayetteville. Speakers, education, networking & policy. Open to all UA students.">
 <meta property="og:image" content="https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg">
@@ -541,7 +541,7 @@
   "url": "https://jacksonvarela1.github.io/cryptohogs/",
   "logo": "https://jacksonvarela1.github.io/cryptohogs/assets/cryptohogs-logo.jpg",
   "image": "https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg",
-  "description": "Crypto Hogs is the University of Arkansas student org for crypto & digital assets. Speakers, education, networking, policy. Free and open to all UA students.",
+  "description": "Crypto Hogs is the University of Arkansas student org for crypto, blockchain, and quantum computing. Speakers, education, networking, policy. Free and open to all UA students.",
   "email": "uarkcryptohogs@gmail.com",
   "foundingDate": "2026",
   "address": {"@type": "PostalAddress", "addressLocality": "Fayetteville", "addressRegion": "AR", "addressCountry": "US"},
@@ -595,7 +595,7 @@
       <div class="eyebrow mono reveal">University of Arkansas · Registered Student Org</div>
       <h1 data-split>The <span class="serif">future of money</span> runs through Fayetteville.</h1>
       <p class="hero-sub reveal reveal-d2">
-        Crypto Hogs is UARK's student org for crypto &amp; digital assets:
+        Crypto Hogs is UARK's student org for crypto, blockchain, and what comes next:
         <strong>for the curious, not the experts.</strong>
         No experience needed. Every major welcome.
       </p>
@@ -622,12 +622,12 @@
       <div class="marquee-inner">
         <span>Open to all UA students</span><span>150+ members</span><span>Free · open to all</span>
         <span>Tuesdays 5:30 PM CT</span><span>Education · Networking · Policy</span>
-        <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span><span>$HOG · 1 HOG = 1 HOG</span>
+        <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span>
       </div>
       <div class="marquee-inner">
         <span>Open to all UA students</span><span>150+ members</span><span>Free · open to all</span>
         <span>Tuesdays 5:30 PM CT</span><span>Education · Networking · Policy</span>
-        <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span><span>$HOG · 1 HOG = 1 HOG</span>
+        <span>Est. 2026 · Fayetteville, AR</span><span>Woo Pig Sooie ₿</span>
       </div>
     </div>
   </div>
@@ -691,7 +691,7 @@
         <span class="num">/ 02</span>
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a1 1 0 0 0-1-1H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>
         <h3>Education</h3>
-        <p>Meetings that make blockchain make sense: no prerequisites, no jargon walls, no finance degree required. Bring questions.</p>
+        <p>Meetings that make blockchain make sense, through to what quantum computing means for the cryptography holding it all together. No prerequisites, no jargon walls, no finance degree required. Bring questions.</p>
       </div>
       <div class="pillar reveal reveal-d1">
         <span class="num">/ 03</span>
@@ -1266,32 +1266,6 @@
   if (/[?&]motion/.test(location.search)) reduced = false;
   var staticMode = /[?&]static/.test(location.search);
   var LITE = document.documentElement.classList.contains('lite');
-  var btcUsd = null;
-
-  /* ---------- Live prices in the marquee (CoinGecko, fails silently) ---------- */
-  if (!staticMode){
-    fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true')
-      .then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(d){
-        if (!d || !d.bitcoin) return;
-        if (typeof d.bitcoin.usd === 'number') btcUsd = d.bitcoin.usd;
-        var rows = [['BTC', d.bitcoin], ['ETH', d.ethereum], ['SOL', d.solana]];
-        document.querySelectorAll('.marquee-inner').forEach(function(track){
-          rows.forEach(function(row){
-            if (!row[1] || typeof row[1].usd !== 'number') return;
-            var chg = Number(row[1].usd_24h_change) || 0;
-            var s = document.createElement('span');
-            s.appendChild(document.createTextNode(row[0] + ' $' + Math.round(row[1].usd).toLocaleString('en-US') + ' '));
-            var b = document.createElement('b');
-            b.style.color = chg >= 0 ? '#6FCF97' : '#E25563';
-            b.style.fontWeight = '500';
-            b.textContent = (chg >= 0 ? '▲' : '▼') + Math.abs(chg).toFixed(1) + '%';
-            s.appendChild(b);
-            track.appendChild(s);
-          });
-        });
-      }).catch(function(){});
-  }
 
   /* ---------- Custom cursor ---------- */
   if (!staticMode && !reduced && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
@@ -1527,18 +1501,6 @@
         document.getElementById('halvingline').hidden = false;
       }).catch(function(){});
   }
-
-  var origTitle = document.title, titleTimer = null, titleFlip = false;
-  document.addEventListener('visibilitychange', function(){
-    if (document.hidden && btcUsd && !titleTimer){
-      titleTimer = setInterval(function(){
-        titleFlip = !titleFlip;
-        document.title = titleFlip ? ('₿ $' + Math.round(btcUsd).toLocaleString('en-US') + ' · CRYPTO HOGS') : origTitle;
-      }, 4000);
-    } else if (!document.hidden && titleTimer){
-      clearInterval(titleTimer); titleTimer = null; document.title = origTitle;
-    }
-  });
 
   var coinEl = document.getElementById('coin3d'), clicks21 = 0, toast21done = false;
   if (coinEl){
