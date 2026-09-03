@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Crypto Hogs//UARK//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:ch-20261006@cryptohogs.uark
+DTSTAMP:20260903T120000Z
+DTSTART:20261006T223000Z
+DTEND:20261007T000000Z
+SUMMARY:Crypto Hogs: Bitcoin mining\, up close
+DESCRIPTION:Ben Smith of Bear Market Mining in Walnut Ridge\, Arkansas\, in person. Facility walkthrough and the economics of when mining actually pays. Free and open to all University of Arkansas students. No experience required.
+LOCATION:University of Arkansas\, Fayetteville\, AR
+URL:https://jacksonvarela1.github.io/cryptohogs/events.html
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

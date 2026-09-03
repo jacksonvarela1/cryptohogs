@@ -32,6 +32,14 @@
   .open-line b{color:var(--bronze);font-weight:500}
   .fall-notes{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
   .fall-notes .chip{padding:10px 16px;white-space:normal;line-height:1.6;border-radius:10px}
+  .addcal{display:flex;gap:16px;margin-top:10px}
+  .addcal a{
+    font-family:var(--font-m);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--bronze);text-decoration:none;border-bottom:1px solid transparent;padding:2px 0;
+    transition:border-color .3s var(--ease),color .3s var(--ease);
+  }
+  .addcal a:hover{border-bottom-color:var(--bronze)}
+  .row.past .addcal{display:none}
   .past-cards .gcard{display:flex;flex-direction:column}
   .past-cards .gcard .mono{margin-top:auto;padding-top:22px}
 </style>
@@ -138,17 +146,17 @@
     <div class="sched" id="sched">
       <div class="row reveal">
         <span class="date">TUE · SEP 22</span>
-        <span class="what">Onchain letters of credit, with the CEO of ANVL Research Labs<small>Max, CEO · 5:30 to 7:00 PM CT · virtual · trade finance explained from scratch, then a live demo and open Q&amp;A</small></span>
+        <span class="what">Onchain letters of credit, with the CEO of ANVL Research Labs<small>Max, CEO · 5:30 to 7:00 PM CT · virtual · trade finance explained from scratch, then a live demo and open Q&amp;A</small><span class="addcal"><a href="assets/events/2026-09-22-anvl.ics" download>Add to calendar &darr;</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Crypto+Hogs%3A+Onchain+letters+of+credit&dates=20260922T223000Z%2F20260923T000000Z&details=Max%2C+CEO+of+ANVL+Research+Labs%2C+virtual.+Free+and+open+to+all+UA+students.&location=University+of+Arkansas" target="_blank" rel="noopener">Google &nearr;</a></span></span>
         <span class="chip hot">Confirmed</span>
       </div>
       <div class="row reveal">
         <span class="date">TUE · OCT 6</span>
-        <span class="what">Bitcoin mining, up close with Ben Smith<small>Bear Market Mining, Walnut Ridge AR · 5:30 to 7:00 PM CT · in person · facility walkthrough and the economics of when mining actually pays</small></span>
+        <span class="what">Bitcoin mining, up close with Ben Smith<small>Bear Market Mining, Walnut Ridge AR · 5:30 to 7:00 PM CT · in person · facility walkthrough and the economics of when mining actually pays</small><span class="addcal"><a href="assets/events/2026-10-06-mining.ics" download>Add to calendar &darr;</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Crypto+Hogs%3A+Bitcoin+mining%2C+up+close&dates=20261006T223000Z%2F20261007T000000Z&details=Ben+Smith+of+Bear+Market+Mining%2C+in+person.+Free+and+open+to+all+UA+students.&location=University+of+Arkansas" target="_blank" rel="noopener">Google &nearr;</a></span></span>
         <span class="chip hot">Confirmed</span>
       </div>
       <div class="row reveal">
         <span class="date">TUE · OCT 13</span>
-        <span class="what">From Fayetteville to Wall Street: Nick Carpinito<small>Blockworks Research, New York · 5:30 to 7:00 PM CT · virtual · UARK alum walks a real research report, then a fireside on breaking into the industry</small></span>
+        <span class="what">From Fayetteville to Wall Street: Nick Carpinito<small>Blockworks Research, New York · 5:30 to 7:00 PM CT · virtual · UARK alum walks a real research report, then a fireside on breaking into the industry</small><span class="addcal"><a href="assets/events/2026-10-13-blockworks.ics" download>Add to calendar &darr;</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Crypto+Hogs%3A+From+Fayetteville+to+Wall+Street&dates=20261013T223000Z%2F20261014T000000Z&details=Nick+Carpinito+of+Blockworks+Research%2C+virtual.+Free+and+open+to+all+UA+students.&location=University+of+Arkansas" target="_blank" rel="noopener">Google &nearr;</a></span></span>
         <span class="chip hot">Confirmed</span>
       </div>
       <div class="row reveal">
@@ -178,6 +186,33 @@
       <span class="chip">Schedule may shift · GroupMe has the latest</span>
     </div>
     <p class="open-line reveal">Every event is <b>free and open to ALL University of Arkansas students.</b> Not a member yet? Come anyway.</p>
+  </div>
+</section>
+
+<section id="first-time">
+  <div class="wrap">
+    <div class="eyebrow mono">Your first Tuesday</div>
+    <h2 class="reveal" style="font-size:clamp(1.9rem,3.6vw,3rem);font-weight:500;letter-spacing:-.03em;line-height:1.05;text-wrap:balance">
+      Here is exactly <span class="serif" style="color:var(--bronze)">what happens.</span>
+    </h2>
+    <p class="sub reveal reveal-d1" style="margin-top:18px">
+      Nobody likes walking into a room blind. This is how a speaker night runs, start to finish,
+      so you know what you are getting into before you show up.
+    </p>
+    <div class="sched" style="margin-top:clamp(28px,4vh,44px)">
+      <div class="row reveal"><span class="date">5:30</span><span class="what">Doors and welcome<small>Club housekeeping and what is coming up. Walk in, sit anywhere.</small></span><span class="chip">10 min</span></div>
+      <div class="row reveal"><span class="date">5:40</span><span class="what">Who the speaker is<small>Reese introduces them and their work, so the talk makes sense from minute one.</small></span><span class="chip">10 min</span></div>
+      <div class="row reveal"><span class="date">5:50</span><span class="what">The talk<small>A primer first, in plain English, then the speaker takes it from there.</small></span><span class="chip">35 min</span></div>
+      <div class="row reveal"><span class="date">6:25</span><span class="what">The deeper dive<small>Use cases, economics, or a fireside, depending on who is speaking.</small></span><span class="chip">20 min</span></div>
+      <div class="row reveal"><span class="date">6:45</span><span class="what">Open questions<small>There is no question too basic. That is the entire point of the club.</small></span><span class="chip">15 min</span></div>
+    </div>
+    <div class="fall-notes reveal" style="margin-top:30px">
+      <span class="chip">You will not be quizzed</span>
+      <span class="chip">Most people come alone the first time</span>
+      <span class="chip">You can leave early, nobody takes attendance</span>
+      <span class="chip">You do not need to own any crypto</span>
+    </div>
+    <p class="open-line reveal">Room lands in the <b>GroupMe</b> before every meeting. That is the only place it goes, so join it even if you are only curious.</p>
   </div>
 </section>
 

@@ -58,6 +58,15 @@
   .tier ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:4px}
   .tier li{color:var(--cream-dim);font-size:.94rem;line-height:1.55;padding-left:20px;position:relative}
   .tier li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:1px;background:var(--bronze)}
+  .tier-cta{
+    margin-top:18px;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    padding:12px 18px;border:1px solid var(--bronze-deep);border-radius:4px;color:var(--bronze);
+    text-decoration:none;font-weight:500;font-size:.92rem;
+    transition:background .3s var(--ease),color .3s var(--ease);
+  }
+  .tier-cta:hover{background:var(--bronze);color:var(--ink)}
+  .tier.featured .tier-cta{background:#9D2235;border-color:#9D2235;color:var(--cream)}
+  .tier.featured .tier-cta:hover{background:#C41230;border-color:#C41230}
   .tier-avail{margin-top:auto;padding-top:14px;color:var(--cream-faint)}
   .tier-avail.hot{color:var(--bronze)}
   .terms{
@@ -229,6 +238,8 @@
           <li>Recognition in the year-end recap sent to Walton College, administration, and alumni</li>
           <li>Standing invitation to club events and programming</li>
         </ul>
+        <a class="tier-cta" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs%3A%20Supporter%20tier&body=Hi%20Crypto%20Hogs%2C%0A%0AWe%20would%20like%20to%20sponsor%20Crypto%20Hogs%20at%20the%20Supporter%20level%20%28%241%2C000%29%20for%20the%202026-27%20academic%20year.%0A%0AOrganization%3A%20%0ABest%20contact%20and%20title%3A%20%0AWe%20would%20like%20to%20send%20a%20speaker%20on%20%28optional%29%3A%20%0AAnything%20you%20should%20know%3A%20%0A%0AThanks%2C">Reserve Supporter <span class="arr">&rarr;</span></a>
+        <a class="tier-cta" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs%3A%20Partner%20tier&body=Hi%20Crypto%20Hogs%2C%0A%0AWe%20would%20like%20to%20sponsor%20Crypto%20Hogs%20at%20the%20Partner%20level%20%28%242%2C500%29%20for%20the%202026-27%20academic%20year.%0A%0AOrganization%3A%20%0ABest%20contact%20and%20title%3A%20%0AWe%20would%20like%20to%20send%20a%20speaker%20on%20%28optional%29%3A%20%0AAnything%20you%20should%20know%3A%20%0A%0AThanks%2C">Reserve Partner <span class="arr">&rarr;</span></a>
         <span class="tier-avail mono">Open</span>
       </div>
 
@@ -256,6 +267,7 @@
           <li>Standing invitation to advise on programming for the year</li>
           <li>Year-end written report itemizing expenditures</li>
         </ul>
+        <a class="tier-cta" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs%3A%20Founding%20tier&body=Hi%20Crypto%20Hogs%2C%0A%0AWe%20would%20like%20to%20sponsor%20Crypto%20Hogs%20at%20the%20Founding%20level%20%28%245%2C000%29%20for%20the%202026-27%20academic%20year.%0A%0AOrganization%3A%20%0ABest%20contact%20and%20title%3A%20%0AWe%20would%20like%20to%20send%20a%20speaker%20on%20%28optional%29%3A%20%0AAnything%20you%20should%20know%3A%20%0A%0AThanks%2C">Reserve Founding <span class="arr">&rarr;</span></a>
         <span class="tier-avail mono hot">Only 2 available</span>
       </div>
     </div>

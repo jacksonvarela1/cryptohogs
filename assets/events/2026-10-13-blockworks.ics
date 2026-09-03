@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Crypto Hogs//UARK//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:ch-20261013@cryptohogs.uark
+DTSTAMP:20260903T120000Z
+DTSTART:20261013T223000Z
+DTEND:20261014T000000Z
+SUMMARY:Crypto Hogs: From Fayetteville to Wall Street
+DESCRIPTION:Nick Carpinito of Blockworks Research\, a UARK alum\, walks a real research report\, then a fireside on breaking into the industry. Free and open to all University of Arkansas students. No experience required.
+LOCATION:Virtual. Room announced in the club GroupMe.
+URL:https://jacksonvarela1.github.io/cryptohogs/events.html
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
