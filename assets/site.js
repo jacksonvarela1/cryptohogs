@@ -77,12 +77,17 @@
   var pb = document.createElement('div');
   pb.className = 'scroll-progress';
   document.body.appendChild(pb);
-  var pbTick = false;
+  /* cache the scroll extent: reading scrollHeight/clientHeight per frame forces a full layout */
+  var pbTick = false, pbMax = 1;
+  function pbMeasure(){ var h = document.documentElement; pbMax = Math.max(1, h.scrollHeight - h.clientHeight); }
+  pbMeasure();
+  window.addEventListener('resize', pbMeasure, {passive:true});
+  if (window.ResizeObserver) new ResizeObserver(pbMeasure).observe(document.body);
+  window.addEventListener('load', pbMeasure);
   window.addEventListener('scroll', function(){
     if (pbTick) return; pbTick = true;
     requestAnimationFrame(function(){
-      var h = document.documentElement;
-      pb.style.transform = 'scaleX(' + (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')';
+      pb.style.transform = 'scaleX(' + (window.scrollY / pbMax) + ')';
       pbTick = false;
     });
   }, {passive:true});

@@ -64,8 +64,8 @@ header{
   transition:background .4s var(--ease),border-color .4s var(--ease);
   border-bottom:1px solid transparent;
 }
-header.scrolled{background:rgba(11,11,13,.88);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);border-bottom-color:var(--line)}
-html.lite header.scrolled{background:rgba(11,11,13,.97);-webkit-backdrop-filter:none;backdrop-filter:none}
+header.scrolled{background:rgba(11,11,13,.96);border-bottom-color:var(--line)}
+html.lite header.scrolled{background:rgba(11,11,13,.97)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
 .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:1.02rem;letter-spacing:.02em}
 .brand img{width:34px;height:34px;border-radius:50%;transition:transform .6s var(--ease)}
