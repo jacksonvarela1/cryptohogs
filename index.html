@@ -1633,10 +1633,14 @@ if (host && !reduced && !staticMode && !LITE){
     const loader = new THREE.TextureLoader();
     const loadTex = p => new Promise((res, rej) => loader.load(p, res, undefined, rej));
     const maxAniso = renderer.capabilities.getMaxAnisotropy();
-    const prep = (t, srgb, mirror) => {
+    /* The cylinder cap UVs land the artwork on its side, so every map gets the
+       same quarter turn. Colour and detail maps must share it or the lighting
+       stops matching the art. */
+    const prep = (t, srgb) => {
       if (srgb) t.colorSpace = THREE.SRGBColorSpace;
       t.anisotropy = maxAniso;
-      if (mirror){ t.wrapS = THREE.RepeatWrapping; t.repeat.x = -1; }
+      t.center.set(.5, .5);
+      t.rotation = Math.PI / 2;
       t.needsUpdate = true;
       return t;
     };
@@ -1644,8 +1648,8 @@ if (host && !reduced && !staticMode && !LITE){
       loadTex('assets/coin-tex/heads-color.jpg'),
       loadTex('assets/coin-tex/tails-color.jpg'),
     ]);
-    const headsMat = new THREE.MeshStandardMaterial({map: prep(headsC, true, false), metalness: .75, roughness: .36});
-    const tailsMat = new THREE.MeshStandardMaterial({map: prep(tailsC, true, true), metalness: .75, roughness: .36});
+    const headsMat = new THREE.MeshStandardMaterial({map: prep(headsC, true), metalness: .75, roughness: .36});
+    const tailsMat = new THREE.MeshStandardMaterial({map: prep(tailsC, true), metalness: .75, roughness: .36});
     headsMat.envMapIntensity = 1.0;
     tailsMat.envMapIntensity = 1.0;
     const edgeMat = new THREE.MeshStandardMaterial({color: 0xc8a96a, metalness: .7, roughness: .5});
@@ -1653,18 +1657,18 @@ if (host && !reduced && !staticMode && !LITE){
     const geo = new THREE.CylinderGeometry(1, 1, .085, 96);
     geo.rotateX(Math.PI / 2);
     const coin = new THREE.Mesh(geo, [edgeMat, headsMat, tailsMat]);
-    const attachDetail = (mat, base, mirror) => {
+    const attachDetail = (mat, base) => {
       [['normal', 'normalMap'], ['rough', 'roughnessMap'], ['metal', 'metalnessMap'], ['ao', 'aoMap']].forEach(([k, prop]) => {
         loader.load('assets/coin-tex/' + base + '-' + k + '.webp', t => {
-          prep(t, false, mirror);
+          prep(t, false);
           if (prop === 'aoMap') t.channel = 0;
           mat[prop] = t;
           mat.needsUpdate = true;
         });
       });
     };
-    attachDetail(headsMat, 'heads', false);
-    attachDetail(tailsMat, 'tails', true);
+    attachDetail(headsMat, 'heads');
+    attachDetail(tailsMat, 'tails');
     const group = new THREE.Group();
     group.add(coin);
     scene.add(group);
