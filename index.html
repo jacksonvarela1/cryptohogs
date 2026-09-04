@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://mempool.space; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://mempool.space https://umnizqaitlhulsxsasoz.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Crypto Hogs · UARK's Crypto Club</title>
 <meta name="description" content="Crypto Hogs is the University of Arkansas student org for crypto, blockchain, and quantum computing. Speakers, education, networking, policy. Free and open to all UA students.">
@@ -465,6 +465,30 @@
   .step:hover .go .arr{transform:translateX(6px)}
   .join-fine{text-align:center;margin-top:44px;color:var(--cream-faint)}
   .join-fine em{font-family:var(--font-s);color:var(--bronze);font-size:1.1em}
+  .signup{max-width:540px;margin:clamp(40px,6vh,58px) auto 0;text-align:center;position:relative}
+  .signup label{display:block;color:var(--bronze);margin-bottom:14px}
+  .signup-row{display:flex;gap:10px}
+  .signup input[type=email]{
+    flex:1;min-width:0;font-family:var(--font-d);font-size:.95rem;color:var(--cream);
+    background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;
+    transition:border-color .3s var(--ease),background .3s var(--ease);
+  }
+  .signup input[type=email]::placeholder{color:var(--cream-faint)}
+  .signup input[type=email]:focus{outline:none;border-color:var(--bronze);background:var(--panel)}
+  .signup button{
+    display:inline-flex;align-items:center;gap:10px;white-space:nowrap;cursor:pointer;
+    font-family:var(--font-d);font-weight:500;font-size:.92rem;letter-spacing:-.01em;
+    padding:12px 22px;border-radius:var(--radius);
+    border:1px solid var(--cardinal);background:var(--cardinal);color:var(--cream);
+    transition:background .3s var(--ease),border-color .3s var(--ease),opacity .3s var(--ease);
+  }
+  .signup button:hover{background:var(--cardinal-hot);border-color:var(--cardinal-hot)}
+  .signup button .arr{transition:transform .35s var(--ease)}
+  .signup button:hover .arr{transform:translateX(4px)}
+  .signup button[disabled]{opacity:.55;cursor:default}
+  .signup .hp{position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0}
+  .signup-note{margin-top:14px;color:var(--cream-faint);text-transform:none;letter-spacing:.02em}
+  @media(max-width:540px){.signup-row{flex-direction:column}}
 
   /* ============ FOOTER ============ */
   footer{border-top:1px solid var(--line);padding:clamp(50px,8vh,80px) 0 40px;background:var(--ink-2)}
@@ -925,9 +949,47 @@
         <span class="go">@uarkcryptohogs <span class="arr">→</span></span>
       </a>
     </div>
+    <form class="signup reveal" id="signupForm" novalidate>
+      <label class="mono" for="signupEmail">Get the weekly email</label>
+      <div class="signup-row">
+        <input id="signupEmail" name="email" type="email" required autocomplete="email"
+               placeholder="you@uark.edu" aria-describedby="signupNote">
+        <button type="submit">Sign up <span class="arr">&rarr;</span></button>
+      </div>
+      <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
+      <p class="signup-note mono" id="signupNote">One email a week at most. Unsubscribe any time.</p>
+    </form>
     <p class="join-fine reveal">No experience needed. Every major welcome. <em>For the curious, not the experts.</em></p>
   </div>
 </section>
+<script>
+(function(){
+  var SB_URL = 'https://umnizqaitlhulsxsasoz.supabase.co';
+  var SB_KEY = 'sb_publishable_sSUr0vltisFfqOJHmM3zMw_F1Oq6xWC';
+  var f = document.getElementById('signupForm'); if (!f) return;
+  var note = document.getElementById('signupNote');
+  var btn  = f.querySelector('button');
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (f.company.value) return;                       /* honeypot tripped, silently drop */
+    var email = f.email.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ note.textContent = 'That email does not look right.'; return; }
+    btn.disabled = true;
+    note.textContent = 'Signing you up...';
+    fetch(SB_URL + '/rest/v1/signups', {
+      method: 'POST',
+      headers: {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+                'Content-Type': 'application/json', 'Prefer': 'return=minimal'},
+      body: JSON.stringify({email: email, source: 'site'})
+    }).then(function(r){
+      if (r.ok || r.status === 409){ f.reset(); note.textContent = 'You are on the list. See you Tuesday.'; }
+      else { note.textContent = 'Something went wrong. Email uarkcryptohogs@gmail.com and we will add you.'; }
+    }).catch(function(){
+      note.textContent = 'Something went wrong. Email uarkcryptohogs@gmail.com and we will add you.';
+    }).then(function(){ btn.disabled = false; });
+  });
+})();
+</script>
 </main>
 
 <!-- ============ FOOTER ============ -->
