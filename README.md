@@ -58,6 +58,21 @@ The homepage cards come from the `OFFICERS` array near the bottom of `index.html
 
 Before hosting any document from the shared Drive, strip personal phone numbers, personal emails, and the club's university account number. The public deck's footer should carry only the club address, `uarkcryptohogs@gmail.com`. The Drive original is for sponsors we are already talking to. The public copy is for anyone on the internet.
 
+## Shirts
+
+The shirt artwork lives in `assets/merch/`, and `assets/merch/SPEC.md` carries the print
+spec: placement in inches, screen counts, blank prices at three tiers, and a cost model
+showing what one $2,500 Partner sponsorship covers. Regenerate every file with:
+
+```bash
+python tools/build-merch.py
+```
+
+Colors, the letterforms and the boar are all path data inside that script. There is no font
+file and no image file in the artwork, so it prints at any size. None of it carries a
+University of Arkansas mark, which is deliberate: see the last section of the spec for what
+to ask Trademark Licensing if the club ever wants an officially marked version.
+
 ## House style
 
 - No em dashes anywhere in copy. Use a period, a comma, a colon, or ` · `.
