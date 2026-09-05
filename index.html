@@ -19,10 +19,12 @@
       if (p === 'full') return false;
       if (p === 'reduced') return true;
     } catch (e) {}
-    if (/[?&]motion/.test(location.search)) return false;
-    if (/[?&]static/.test(location.search)) return true;
+    if (/[?&]motion\b/.test(location.search)) return false;
+    if (/[?&]static\b/.test(location.search)) return true;
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   };
+  /* Mirror the decision onto <html> so the CSS animations follow the same switch as the JS. */
+  document.documentElement.classList.add(window.__reduced() ? 'motion-off' : 'motion-on');
 </script>
 <title>Crypto Hogs · UARK's Crypto Club</title>
 <meta name="description" content="Crypto Hogs is the University of Arkansas student org for crypto, blockchain, and quantum computing. Speakers, education, networking, policy. Free and open to all UA students.">
@@ -63,10 +65,14 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
+  /* Reduced motion: the OS preference applies unless the page's own Motion switch says "on";
+     the switch saying "off" applies even when the OS says nothing. No JS: OS preference only. */
   @media (prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    html:not(.motion-on){scroll-behavior:auto}
+    html:not(.motion-on) *,html:not(.motion-on) *::before,html:not(.motion-on) *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   }
+  html.motion-off{scroll-behavior:auto}
+  html.motion-off *,html.motion-off *::before,html.motion-off *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   html{background:var(--ink)}
   /* overflow-x:clip on body only (not hidden, not on html): hidden makes body a
      scroll container and breaks smooth anchor scrolling; clip on html freezes
@@ -519,9 +525,9 @@
   .clockline .dot{width:7px;height:7px;border-radius:50%;background:var(--cardinal-hot);animation:pulse 2.4s infinite}
   .clockline[hidden]{display:none}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-  .foot-bottom{border-top:1px solid var(--line);padding-top:26px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--cream-faint);font-size:.82rem}
-  .motion-toggle{background:none;border:1px solid var(--line);border-radius:999px;color:var(--cream-faint);font-family:var(--font-m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:6px 14px;cursor:pointer;transition:border-color .3s var(--ease),color .3s var(--ease)}
-  .motion-toggle:hover{border-color:var(--bronze-deep);color:var(--bronze)}
+  .foot-bottom{border-top:1px solid var(--line);padding-top:26px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--cream-faint);font-size:.82rem}
+  .motion-toggle{background:none;border:1px solid var(--bronze-deep);border-radius:999px;color:var(--cream-dim);font-family:var(--font-m);font-size:.66rem;line-height:1;letter-spacing:.12em;text-transform:uppercase;padding:9px 16px;cursor:pointer;transition:border-color .3s var(--ease),color .3s var(--ease)}
+  .motion-toggle:hover{border-color:var(--bronze);color:var(--bronze)}
   .foot-bottom .mono{font-size:.66rem}
 
   /* ============ CURSOR PILL ============ */
@@ -1508,29 +1514,59 @@
 
   /* ---------- FPS watchdog: rolling monitor, drops to lite whenever the page can't keep up ---------- */
   if (!staticMode && !reduced && !LITE){
-    var badWins = 0, wFrames = 0, wStart = null;
+    var DBG = /[?&]dbg\b/.test(location.search);
+    /* It first learns the display: the 20th-percentile frame interval over the
+       first half second (30+ frames) is the refresh interval even if a few frames
+       are busy. A frame counts as dropped past 1.5x that, but never under 25 ms:
+       120 fps on a 240 Hz panel is still perfectly smooth. The verdict is the
+       share of each 4 s window spent inside dropped frames rather than a plain
+       fps average or a frame count, because on a fast panel the idle frames run
+       at 240 fps and swamp both of those even while the page is visibly janking
+       (the old fps < 42 test never once fired there). More than a third of the
+       window lost to dropped frames, two windows running, is the trip line. */
+    var cal = [], calStart = null, dropAt = 0;
+    var badWins = 0, wFrames = 0, wStart = null, wBad = 0, wBadMs = 0, prev = null;
     var watch = function(t){
       if (document.documentElement.classList.contains('lite')) return;
-      if (document.hidden){ wStart = null; wFrames = 0; requestAnimationFrame(watch); return; }
-      if (wStart === null){ wStart = t; wFrames = 0; }
-      wFrames++;
-      var span = t - wStart;
-      if (span >= 4000){
-        var fps = wFrames / (span / 1000);
-        /* windows with under 60 frames are throttled contexts, not slow machines */
-        if (wFrames >= 60 && fps < 42){
-          if (++badWins >= 2){
-            document.documentElement.classList.add('lite');
-            try { window.dispatchEvent(new CustomEvent('ch:golite')); } catch (e) {}
-            return;
+      if (document.hidden){ wStart = null; wFrames = 0; wBad = 0; wBadMs = 0; prev = null; requestAnimationFrame(watch); return; }
+      if (prev !== null){
+        var dt = t - prev;
+        if (!dropAt){
+          if (calStart === null) calStart = t;
+          cal.push(dt);
+          if (cal.length >= 30 && t - calStart >= 500){
+            cal.sort(function(a, b){ return a - b; });
+            var refresh = Math.min(Math.max(cal[Math.floor(cal.length * .2)], 1000 / 250), 1000 / 48);
+            dropAt = 1.5 * Math.max(refresh, 1000 / 60);
+            if (DBG) console.log('[watchdog] display ~' + Math.round(1000 / refresh) + ' Hz, dropped frame = over ' + dropAt.toFixed(1) + ' ms');
           }
-        } else if (fps >= 42){
-          badWins = 0;
+        } else {
+          if (wStart === null){ wStart = prev; wFrames = 0; wBad = 0; wBadMs = 0; }
+          wFrames++;
+          if (dt > dropAt){ wBad++; wBadMs += dt; }
+          var span = t - wStart;
+          if (span >= 4000){
+            var share = wBadMs / span;
+            if (DBG) console.log('[watchdog] ' + wFrames + ' frames, ' + wBad + ' dropped (' + Math.round(wBad / wFrames * 100) + '% of frames, ' + Math.round(share * 100) + '% of time)');
+            /* windows with under 60 frames are throttled contexts, not slow machines */
+            if (wFrames >= 60 && share > .35){
+              if (++badWins >= 2){
+                document.documentElement.classList.add('lite');
+                try { window.dispatchEvent(new CustomEvent('ch:golite')); } catch (e) {}
+                return;
+              }
+            } else if (wFrames >= 60){
+              badWins = 0;
+            }
+            wStart = t; wFrames = 0; wBad = 0; wBadMs = 0;
+          }
         }
-        wStart = t; wFrames = 0;
       }
+      prev = t;
       requestAnimationFrame(watch);
     };
+    /* rAF stops in a hidden tab, so the first frame back would read as one giant drop */
+    document.addEventListener('visibilitychange', function(){ prev = null; wStart = null; wFrames = 0; wBad = 0; wBadMs = 0; });
     window.addEventListener('load', function(){
       setTimeout(function(){ requestAnimationFrame(watch); }, 1200);
     });
@@ -1664,6 +1700,9 @@
   var h1show = function(){ if (!h1shown){ h1shown = true; h1pre.style.opacity = ''; } };
   if (h1pre) h1pre.style.opacity = '0';
   setTimeout(h1show, 2500);
+  /* the coin module waits on this so its first-frame stall never lands mid-reveal */
+  var heroDone; window.__heroDone = new Promise(function(r){ heroDone = r; });
+  setTimeout(heroDone, 4000);
   function splitChars(el){
     el.setAttribute('aria-label', el.innerText.replace(/\s+/g, ' ').trim());
     var chs = [];
@@ -1689,12 +1728,15 @@
   }
   function maskReveal(el, opts){
     var chs = splitChars(el);
-    if (!chs.length) return;
+    if (!chs.length){ if (el === h1pre) heroDone(); return; }
     gsap.set(chs, {yPercent: 112});
     if (el === h1pre) h1show();
     gsap.to(chs, Object.assign({
       yPercent: 0, duration: .85, ease: 'power4.out', stagger: .016,
-      onComplete: function(){ gsap.set(chs, {clearProps: 'transform'}); el.classList.add('split-done'); }
+      onComplete: function(){
+        gsap.set(chs, {clearProps: 'transform'}); el.classList.add('split-done');
+        if (el === h1pre) heroDone();
+      }
     }, opts || {}));
   }
   /* ScrollTrigger was costing ~1s of forced style and layout per full scroll to
@@ -1717,16 +1759,17 @@
       if (LITE){
         /* phones & low-end: simple heading fades, no span explosion */
         if (h1){ h1show(); gsap.from(h1, {opacity: 0, y: 26, duration: .8, ease: 'power3.out', delay: .1}); }
+        heroDone();
         document.querySelectorAll('h2').forEach(function(h){
           onEnter(h, function(){ gsap.from(h, {opacity: 0, y: 24, duration: .7, ease: 'power3.out'}); });
         });
         return;
       }
-      if (h1) maskReveal(h1, {delay: .1});
+      if (h1) maskReveal(h1, {delay: .1}); else heroDone();
       document.querySelectorAll('h2').forEach(function(h){
         onEnter(h, function(){ maskReveal(h); });
       });
-    } catch (e) { h1show(); }
+    } catch (e) { h1show(); heroDone(); }
   });
 })();
 </script>
@@ -1739,7 +1782,19 @@ const host = document.getElementById('coin3d');
 const reduced = window.__reduced();
 const staticMode = /[?&]static/.test(location.search);
 const LITE = document.documentElement.classList.contains('lite');
-if (host && !reduced && !staticMode && !LITE){
+const wanted = host && !reduced && !staticMode && !LITE;
+/* The coin is the heaviest thing on the page: three.js takes a couple of seconds
+   to parse on a slow CPU and its first frame (shader compile plus the PMREM
+   environment) is one long main-thread stall. None of that may land on the load,
+   the h1 reveal or the first scroll, so the module waits for the load event, then
+   for the hero reveal (capped at 1.5 s), then for an idle slot. The fallback image
+   stays up until the first WebGL frame has actually been drawn. */
+if (wanted){
+  await new Promise(r => document.readyState === 'complete' ? r() : window.addEventListener('load', r, {once: true}));
+  await Promise.race([window.__heroDone || Promise.resolve(), new Promise(r => setTimeout(r, 1500))]);
+  await new Promise(r => ('requestIdleCallback' in window) ? requestIdleCallback(() => r(), {timeout: 600}) : setTimeout(r, 600));
+}
+if (wanted && !document.documentElement.classList.contains('lite')){
   try {
     const THREE = await import('three');
     const {RoomEnvironment} = await import('./assets/vendor/RoomEnvironment.js');
@@ -1812,7 +1867,7 @@ if (host && !reduced && !staticMode && !LITE){
     size();
     const ro = new ResizeObserver(size); ro.observe(host);
     host.appendChild(renderer.domElement);
-    host.classList.add('live');
+    /* 'live' fades the fallback image out; tick() sets it on the first rendered frame */
     renderer.domElement.addEventListener('webglcontextlost', () => host.classList.remove('live'));
     renderer.domElement.addEventListener('webglcontextrestored', () => host.classList.add('live'));
 
@@ -1854,7 +1909,7 @@ if (host && !reduced && !staticMode && !LITE){
     });
 
     /* render only while visible */
-    let running = false, raf = null, inView = false, calm = 0, lastDraw = 0;
+    let running = false, raf = null, inView = false, calm = 0, lastDraw = 0, shown = false;
     const tick = (t) => {
       if (!dragging){
         vy += (Math.sign(vy || 1) * IDLE - vy) * .04;
@@ -1870,6 +1925,7 @@ if (host && !reduced && !staticMode && !LITE){
       if (calm <= 45 || nowMs - lastDraw >= 33){
         lastDraw = nowMs;
         renderer.render(scene, camera);
+        if (!shown){ shown = true; host.classList.add('live'); }
       }
       raf = running ? requestAnimationFrame(tick) : null;
     };

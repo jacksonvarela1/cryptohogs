@@ -32,14 +32,16 @@
   .open-line b{color:var(--bronze);font-weight:500}
   .fall-notes{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
   .fall-notes .chip{padding:10px 16px;white-space:normal;line-height:1.6;border-radius:10px}
-  .addcal{display:flex;gap:16px;margin-top:10px}
+  .addcal{display:flex;gap:18px;margin-top:6px}
   .addcal a{
     font-family:var(--font-m);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--bronze);text-decoration:none;border-bottom:1px solid transparent;padding:2px 0;
+    color:var(--bronze);text-decoration:none;border-bottom:1px solid transparent;padding:7px 0;
     transition:border-color .3s var(--ease),color .3s var(--ease);
   }
   .addcal a:hover{border-bottom-color:var(--bronze)}
   .row.past .addcal{display:none}
+  /* the intro under "Your first Tuesday" reads like the hero sub, so it should measure like it */
+  #first-time .sub{max-width:56ch;color:var(--cream-dim);font-size:1.06rem;line-height:1.65}
   .past-cards .gcard{display:flex;flex-direction:column}
   .past-cards .gcard .mono{margin-top:auto;padding-top:22px}
 </style>

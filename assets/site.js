@@ -1,8 +1,9 @@
 /* Crypto Hogs · shared behavior for subpages (kept deliberately light: no 3D, no canvas) */
 (function(){
   "use strict";
-  if (!window.__reduced){ window.__reduced = function(){ try { var p=localStorage.getItem("ch-motion"); if(p==="full")return false; if(p==="reduced")return true; } catch(e){} if(/[?&]motion/.test(location.search))return false; if(/[?&]static/.test(location.search))return true; return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }; }
+  if (!window.__reduced){ window.__reduced = function(){ try { var p=localStorage.getItem("ch-motion"); if(p==="full")return false; if(p==="reduced")return true; } catch(e){} if(/[?&]motion\b/.test(location.search))return false; if(/[?&]static\b/.test(location.search))return true; return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }; }
   var reduced = window.__reduced();
+  document.documentElement.classList.add(reduced ? 'motion-off' : 'motion-on');
   var LITE = window.matchMedia('(max-width:860px)').matches ||
              (navigator.deviceMemory && navigator.deviceMemory <= 2);
   if (LITE) document.documentElement.classList.add('lite');
