@@ -1,0 +1,101 @@
+{
+  "_readme": "One source of truth for the lineup. Edit this file, then run: python tools/build-schedule.py (README, section 'Changing the schedule or a speaker'). Never hand-edit the generated regions in index.html or events.html.",
+  "timezone": "America/Chicago",
+  "start": "17:30",
+  "end": "19:00",
+  "site": "https://jacksonvarela1.github.io/cryptohogs/",
+  "wrap_line": "Fall semester is a wrap. The spring schedule drops in the GroupMe first.",
+  "rows": [
+    {
+      "date": "2026-09-22",
+      "kind": "speaker",
+      "status": "confirmed",
+      "slug": "anvl",
+      "title": "Onchain letters of credit, with the CEO of ANVL Research Labs",
+      "small": "Max, CEO · 5:30 to 7:00 PM CT · virtual · trade finance explained from scratch, then a live demo and open Q&A",
+      "small_home": "Max, CEO · virtual · 5:30 to 7:00 PM CT",
+      "hero": "speaker night with the CEO of ANVL Research Labs",
+      "speaker": "Max",
+      "role": "CEO",
+      "org": "ANVL Research Labs",
+      "format": "virtual",
+      "description": "Max, CEO of ANVL Research Labs: trade finance explained from scratch, then a live demo and open Q&A. Virtual session. Free and open to all University of Arkansas students.",
+      "short": "Onchain letters of credit",
+      "calendar_description": "Max, CEO of ANVL Research Labs, joins virtually. Trade finance explained from scratch, then a live demo and open Q and A. Free and open to all University of Arkansas students. No experience required."
+    },
+    {
+      "date": "2026-10-06",
+      "kind": "speaker",
+      "status": "confirmed",
+      "slug": "mining",
+      "title": "Bitcoin mining, up close with Ben Smith",
+      "small": "Bear Market Mining, Walnut Ridge AR · 5:30 to 7:00 PM CT · in person · facility walkthrough and the economics of when mining actually pays",
+      "small_home": "Bear Market Mining, Walnut Ridge AR · in person · 5:30 to 7:00 PM CT",
+      "hero": "speaker night with Ben Smith of Bear Market Mining",
+      "speaker": "Ben Smith",
+      "org": "Bear Market Mining",
+      "format": "in-person",
+      "description": "Ben Smith of Bear Market Mining (Walnut Ridge, AR): facility walkthrough and the economics of when mining actually pays. In person. Free and open to all University of Arkansas students.",
+      "short": "Bitcoin mining, up close",
+      "calendar_description": "Ben Smith of Bear Market Mining in Walnut Ridge, Arkansas, in person. Facility walkthrough and the economics of when mining actually pays. Free and open to all University of Arkansas students. No experience required."
+    },
+    {
+      "date": "2026-10-13",
+      "kind": "speaker",
+      "status": "confirmed",
+      "slug": "blockworks",
+      "title": "From Fayetteville to Wall Street: Nick Carpinito",
+      "small": "Blockworks Research, New York · 5:30 to 7:00 PM CT · virtual · UARK alum walks a real research report, then a fireside on breaking into the industry",
+      "small_home": "Blockworks Research, New York · UARK alum · 5:30 to 7:00 PM CT",
+      "hero": "speaker night with Nick Carpinito of Blockworks Research",
+      "speaker": "Nick Carpinito",
+      "org": "Blockworks Research",
+      "format": "virtual",
+      "description": "Nick Carpinito of Blockworks Research (New York), a UARK alum, walks a real research report, then a fireside on breaking into the industry. Virtual session. Free and open to all University of Arkansas students.",
+      "short": "From Fayetteville to Wall Street",
+      "calendar_description": "Nick Carpinito of Blockworks Research, a UARK alum, walks a real research report, then a fireside on breaking into the industry. Free and open to all University of Arkansas students. No experience required."
+    },
+    {
+      "date": "2026-10-20",
+      "kind": "break",
+      "status": "break",
+      "title": "Fall Break"
+    },
+    {
+      "date": "2026-10-27",
+      "kind": "speaker",
+      "status": "tba",
+      "title": "Speaker night",
+      "small": "Announcement coming · follow the GroupMe for the drop",
+      "small_home": "Announcement coming"
+    },
+    {
+      "date": "2026-11-10",
+      "kind": "speaker",
+      "status": "tba",
+      "title": "Speaker night",
+      "small": "Announcement coming"
+    },
+    {
+      "date": "2026-11-17",
+      "kind": "speaker",
+      "status": "tba",
+      "title": "Speaker night",
+      "small": "Announcement coming"
+    },
+    {
+      "date": "2026-11-24",
+      "kind": "break",
+      "status": "break",
+      "title": "Thanksgiving week"
+    },
+    {
+      "date": "2026-12-01",
+      "kind": "finale",
+      "status": "confirmed",
+      "title": "Semester finale",
+      "small": "Fall recap, spring preview, and the last free pizza of the year",
+      "small_home": "Fall recap & the spring preview"
+    }
+  ]
+}

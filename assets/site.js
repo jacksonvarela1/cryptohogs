@@ -1,8 +1,8 @@
 /* Crypto Hogs · shared behavior for subpages (kept deliberately light: no 3D, no canvas) */
 (function(){
   "use strict";
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (/[?&]motion/.test(location.search)) reduced = false;
+  if (!window.__reduced){ window.__reduced = function(){ try { var p=localStorage.getItem("ch-motion"); if(p==="full")return false; if(p==="reduced")return true; } catch(e){} if(/[?&]motion/.test(location.search))return false; if(/[?&]static/.test(location.search))return true; return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }; }
+  var reduced = window.__reduced();
   var LITE = window.matchMedia('(max-width:860px)').matches ||
              (navigator.deviceMemory && navigator.deviceMemory <= 2);
   if (LITE) document.documentElement.classList.add('lite');
@@ -120,6 +120,21 @@
       ckick();
     }, {passive:true});
   }
+
+  /* motion toggle */
+  (function(){
+    var foot = document.querySelector(".foot-bottom");
+    if (!foot || document.getElementById("motionToggle")) return;
+    var b = document.createElement("button");
+    b.id = "motionToggle"; b.className = "motion-toggle"; b.type = "button";
+    b.setAttribute("aria-pressed", String(!window.__reduced()));
+    b.textContent = "Motion: " + (window.__reduced() ? "off" : "on");
+    b.addEventListener("click", function(){
+      try { localStorage.setItem("ch-motion", window.__reduced() ? "full" : "reduced"); } catch (e) {}
+      location.reload();
+    });
+    foot.appendChild(b);
+  })();
 
   /* console egg */
   try {

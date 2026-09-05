@@ -10,6 +10,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://mempool.space https://umnizqaitlhulsxsasoz.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<script>
+  /* Motion preference: an explicit choice on the page wins over the OS setting,
+     so the experience never silently dies when the OS reduce-motion flag flips. */
+  window.__reduced = function(){
+    try {
+      var p = localStorage.getItem('ch-motion');
+      if (p === 'full') return false;
+      if (p === 'reduced') return true;
+    } catch (e) {}
+    if (/[?&]motion/.test(location.search)) return false;
+    if (/[?&]static/.test(location.search)) return true;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+</script>
 <title>Crypto Hogs · UARK's Crypto Club</title>
 <meta name="description" content="Crypto Hogs is the University of Arkansas student org for crypto, blockchain, and quantum computing. Speakers, education, networking, policy. Free and open to all UA students.">
 <meta property="og:title" content="Crypto Hogs · UARK's Crypto Club">
@@ -506,6 +520,8 @@
   .clockline[hidden]{display:none}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
   .foot-bottom{border-top:1px solid var(--line);padding-top:26px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--cream-faint);font-size:.82rem}
+  .motion-toggle{background:none;border:1px solid var(--line);border-radius:999px;color:var(--cream-faint);font-family:var(--font-m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:6px 14px;cursor:pointer;transition:border-color .3s var(--ease),color .3s var(--ease)}
+  .motion-toggle:hover{border-color:var(--bronze-deep);color:var(--bronze)}
   .foot-bottom .mono{font-size:.66rem}
 
   /* ============ CURSOR PILL ============ */
@@ -628,7 +644,9 @@
         <a class="btn magnetic" href="#fall">Fall '26 lineup <span class="arr">↓</span></a>
       </div>
       <p class="hero-note mono reveal reveal-d4"><b>150+</b> members · Tuesdays 5:30 to 7:00 PM CT</p>
+      <!-- schedule:next:start -->
       <p class="nextblock mono reveal reveal-d4" id="nextblock">Next block: <b>Sep 22</b> · speaker night with the CEO of ANVL Research Labs</p>
+      <!-- schedule:next:end -->
     </div>
     <div class="coin-stage reveal reveal-d2">
       <div class="coin-glow"></div>
@@ -779,6 +797,7 @@
       </div>
       <p class="reveal">General meetings run Tuesdays, 5:30 to 7:00 PM CT. Room drops in the GroupMe. Speaker nights below.</p>
     </div>
+    <!-- schedule:rows:start -->
     <div class="sched reveal" data-year="2026">
       <div class="row">
         <span class="date">TUE · SEP 22</span>
@@ -816,9 +835,12 @@
         <span class="chip">Last meeting</span>
       </div>
     </div>
+    <!-- schedule:rows:end -->
     <div class="fall-notes reveal">
+      <!-- schedule:breaks:start -->
       <span class="chip">No meeting Oct 20 · Fall Break</span>
       <span class="chip">No meeting Nov 24 · Thanksgiving week</span>
+      <!-- schedule:breaks:end -->
       <span class="chip">Schedule may shift · GroupMe has the latest</span>
     </div>
     <p class="open-line reveal">Every event is <b>free and open to ALL University of Arkansas students.</b> Not a member yet? Come anyway.</p>
@@ -1022,6 +1044,7 @@
           <span class="mono">Join</span>
           <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">GroupMe</a>
           <a href="https://hogsync.uark.edu/UARKCryptoClub/club_signup" target="_blank" rel="noopener">HogSync</a>
+          <a href="members.html">Resume book</a>
         </div>
       </div>
     </div>
@@ -1038,8 +1061,7 @@
 <script>
 (function(){
   "use strict";
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (/[?&]motion/.test(location.search)) reduced = false;
+  var reduced = window.__reduced();
   var LITE = window.matchMedia('(max-width:860px)').matches ||
              (navigator.deviceMemory && navigator.deviceMemory <= 2);
   if (LITE) document.documentElement.classList.add('lite');
@@ -1323,8 +1345,7 @@
 <script>
 (function(){
   "use strict";
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (/[?&]motion/.test(location.search)) reduced = false;
+  var reduced = window.__reduced();
   var staticMode = /[?&]static/.test(location.search);
   var LITE = document.documentElement.classList.contains('lite');
 
@@ -1515,6 +1536,21 @@
     });
   }
 
+  /* Motion toggle: lets anyone force full motion or reduce it, saved across visits. */
+  (function(){
+    var foot = document.querySelector(".foot-bottom");
+    if (!foot || document.getElementById("motionToggle")) return;
+    var b = document.createElement("button");
+    b.id = "motionToggle"; b.className = "motion-toggle"; b.type = "button";
+    b.setAttribute("aria-pressed", String(!window.__reduced()));
+    b.textContent = "Motion: " + (window.__reduced() ? "off" : "on");
+    b.addEventListener("click", function(){
+      try { localStorage.setItem("ch-motion", window.__reduced() ? "full" : "reduced"); } catch (e) {}
+      location.reload();
+    });
+    foot.appendChild(b);
+  })();
+
   /* ---------- Feature pack: console egg, tab ticker, halving, countdown, 21-club, marquee pause ---------- */
   try {
     console.log('%cCRYPTO HOGS', 'font-size:26px;font-weight:bold;color:#C9A96A;text-shadow:2px 2px 0 #9D2235;');
@@ -1700,7 +1736,7 @@
 </script>
 <script type="module">
 const host = document.getElementById('coin3d');
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches && !/[?&]motion/.test(location.search);
+const reduced = window.__reduced();
 const staticMode = /[?&]static/.test(location.search);
 const LITE = document.documentElement.classList.contains('lite');
 if (host && !reduced && !staticMode && !LITE){

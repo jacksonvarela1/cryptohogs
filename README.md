@@ -18,14 +18,35 @@ Hosting: GitHub Pages, `main` branch, repo root. Every push to `main` deploys in
 
 ## Changing the schedule or a speaker
 
-Four places have to move together:
+One file, one command, one commit:
 
-1. `events.html`, the rows inside `<div class="sched" id="sched">`.
-2. `index.html`, the shorter schedule block in the events section (same rows, less detail).
-3. `events.html`, the `application/ld+json` block in `<head>`. It holds one `Event` object per confirmed speaker night. Google reads this. Keep dates in ISO form with the `-05:00` offset, `isAccessibleForFree` true, and `eventAttendanceMode` matching whether the session is in person or virtual.
-4. `sitemap.xml`, bump `<lastmod>` for any page you edited.
+1. Edit `assets/schedule.json`. Every row of the lineup lives there and nowhere else.
+2. Run `python tools/build-schedule.py` from the repo root (standard library only, Python 3.9+).
+3. Commit whatever changed: `schedule.json`, `index.html`, `events.html`, `assets/events/*.ics`, `sitemap.xml`.
 
-Rows dated in the past dim themselves automatically and the homepage "Next block" line advances on its own, so nothing needs editing week to week. The date logic assumes the year `2026`. When the spring 2027 schedule goes up, change the literal in the schedule script at the bottom of `events.html`, and on the homepage change `data-year="2026"` to `data-year="2027"` on the `<div class="sched reveal">` element (its script reads that attribute). Do both in the same commit.
+The script rewrites only the text between `<!-- schedule:NAME:start -->` and `<!-- schedule:NAME:end -->` comment markers. Never hand-edit inside a marker pair (the next run overwrites it) and never move or rename the markers (the script stops with an error if a pair is missing). Running it twice in a row changes nothing.
+
+| Region | Page | What it holds |
+|---|---|---|
+| `rows` | `events.html`, `index.html` | The whole `.sched` lineup block, including its `data-year` attribute. |
+| `breaks` | `events.html`, `index.html` | The "No meeting ..." chips. The "Schedule may shift" chip after them is hand-written. |
+| `jsonld` | `events.html` `<head>` | One schema.org `Event` per confirmed row with a slug. Google reads this. |
+| `next` | `index.html` hero | The no-JS fallback for the "Next block" line: the first row on or after the day you run the script. |
+
+Outside the markers it also writes `assets/events/<date>-<slug>.ics` for every confirmed row that has a slug (CRLF and 75-octet folding per RFC 5545; a file whose event did not change keeps its `DTSTAMP`, and .ics files that no longer match a row are deleted), builds the "Add to calendar" and Google Calendar links in those rows, and bumps `<lastmod>` in `sitemap.xml` for a page only when that page's generated content changed. The "Your first Tuesday" block on `events.html` reuses the `.sched` look but is hand-written and untouched.
+
+Row fields in `schedule.json`:
+
+- `date` (YYYY-MM-DD) on every row. All rows must fall in one calendar year; that year becomes `data-year`, which both page scripts read for the past-row dimming and the homepage countdown. A note is printed if a date is not a Tuesday.
+- `kind`: `speaker`, `general`, `break` or `finale`. `status`: `confirmed`, `tba`, `done` or `break`. Break rows use `break` for both and need only `date` and `title` (for example "Fall Break"); they become chips, not rows.
+- `title` is the row headline and the JSON-LD name. `small` is the one-line detail under it on `events.html`; `small_home` is the shorter homepage version and defaults to `small`. Write plain text (`Q&A`, `&`); the script escapes it.
+- Confirmed or done speaker rows also need `speaker`, `org` and `format` (`virtual` or `in-person`). To get a calendar file, the calendar links and a JSON-LD entry, a confirmed row needs `slug` (a-z, 0-9, hyphens; part of the .ics filename), `short` (the calendar title, prefixed "Crypto Hogs: "), `description` (JSON-LD) and `calendar_description` (the .ics body and the Google link).
+- Optional: `role` (jobTitle in JSON-LD), `location` (overrides "Virtual. Room announced in the club GroupMe." or "University of Arkansas, Fayetteville, AR"), `hero` (wording for the homepage "Next block" fallback, defaults to the title).
+- Chips are derived: confirmed shows "Confirmed", `tba` shows "Speaker TBA", `done` shows "Done" and pre-dims the row, `finale` shows "Last meeting".
+
+Meeting time comes from the top-level `start`, `end` and `timezone` (17:30 to 19:00 America/Chicago). The script works out the UTC offset per date, so rows after the clocks change in November correctly get `-06:00`. No em dashes anywhere in the file; the script refuses to run if it finds one.
+
+Rows dated in the past dim themselves automatically and the homepage "Next block" line advances on its own, so nothing needs editing week to week. When the spring schedule goes up, replace the rows in `schedule.json` and run the script; `data-year` follows the dates.
 
 Only name a speaker once they are confirmed. Every event must stay free and open to all UA students, and talks are framed by topic, never as a company showcase. Those two rules come from ASG funding requirements.
 

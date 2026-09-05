@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<!--
+   CRYPTO HOGS · University of Arkansas · est. 2026
+   psst... type "wps" on the homepage.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://umnizqaitlhulsxsasoz.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Join the resume book · Crypto Hogs</title>
+<meta name="description" content="Put yourself in the Crypto Hogs member resume book. Club sponsors get it each semester for recruiting. Optional, free, UARK students only, and you can leave any time.">
+<meta property="og:title" content="Join the Crypto Hogs resume book">
+<meta property="og:description" content="Club sponsors get the member resume book each semester for recruiting. Put yourself in it and recruiters see you first. Optional, free, and you can leave any time.">
+<meta property="og:image" content="https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg">
+<meta property="og:url" content="https://jacksonvarela1.github.io/cryptohogs/members.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://jacksonvarela1.github.io/cryptohogs/members.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jacksonvarela1.github.io/cryptohogs/assets/og-card.jpg">
+<link rel="icon" type="image/png" href="assets/coin-96.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+<style>
+  .book{padding:clamp(44px,7vh,80px) 0 clamp(60px,9vh,100px)}
+  .book-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,5vw,80px);align-items:start}
+  /* the pitch */
+  .pitch{display:flex;flex-direction:column;gap:clamp(22px,3vh,32px);position:sticky;top:96px}
+  .pitch .pt{border-top:1px solid var(--line);padding-top:18px}
+  .pitch .pt .mono{color:var(--bronze);display:block;margin-bottom:10px}
+  .pitch .pt b{display:block;font-size:clamp(1.25rem,2vw,1.6rem);font-weight:500;letter-spacing:-.025em;line-height:1.12;margin-bottom:10px;text-wrap:pretty}
+  .pitch .pt b .serif{color:var(--bronze)}
+  .pitch .pt p{color:var(--cream-dim);line-height:1.72;max-width:46ch;font-size:.96rem;text-wrap:pretty}
+  .pitch .pt p a{color:var(--cream);border-bottom:1px solid var(--bronze-deep);transition:border-color .3s var(--ease)}
+  .pitch .pt p a:hover{border-color:var(--bronze)}
+  .pitch .tags{display:flex;gap:8px;flex-wrap:wrap}
+  /* the form, styled like the homepage signup */
+  .bform{position:relative;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(22px,3.4vw,38px)}
+  .bform .head{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+  .bform .head .mono{display:block;color:var(--bronze);margin-bottom:10px}
+  .bform .head b{display:block;font-size:clamp(1.35rem,2.4vw,1.85rem);font-weight:500;letter-spacing:-.025em;line-height:1.1}
+  .bform .head b .serif{color:var(--bronze)}
+  .bform .head p{color:var(--cream-faint);font-size:.9rem;margin-top:8px}
+  .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}
+  .f-grid .full{grid-column:1 / -1}
+  .field label,.field .lbl{display:block;color:var(--bronze);margin-bottom:8px}
+  .field .opt{color:var(--cream-faint)}
+  .bform input[type=text],.bform input[type=email],.bform input[type=url],.bform select{
+    width:100%;min-width:0;font-family:var(--font-d);font-size:.95rem;color:var(--cream);
+    background:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;
+    transition:border-color .3s var(--ease),background .3s var(--ease);
+    appearance:none;-webkit-appearance:none;letter-spacing:-.01em;
+  }
+  .bform input::placeholder{color:var(--cream-faint)}
+  .bform input:focus,.bform select:focus{outline:none;border-color:var(--bronze);background:var(--panel)}
+  .bform select{
+    color-scheme:dark;cursor:pointer;padding-right:40px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23C9A96A' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 15px center;background-size:12px 8px;
+  }
+  .bform select:invalid,.bform select option[value=""]{color:var(--cream-faint)}
+  .bform select option{color:var(--cream);background:var(--ink)}
+  .bform [aria-invalid="true"]{border-color:var(--cardinal-hot)}
+  .field .hint{margin-top:7px;color:var(--cream-faint);font-size:.8rem;line-height:1.5}
+  /* interest chips are checkboxes */
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips label{cursor:pointer;position:relative;display:inline-flex}
+  .chips input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+  .chips .chip{display:inline-flex;align-items:center;gap:8px;transition:border-color .25s var(--ease),color .25s var(--ease),background .25s var(--ease)}
+  .chips .chip::before{content:"";width:6px;height:6px;border-radius:50%;border:1px solid var(--bronze-deep);transition:background .25s var(--ease)}
+  .chips label:hover .chip{border-color:var(--bronze)}
+  .chips input:checked + .chip{border-color:var(--bronze);color:var(--cream);background:rgba(201,169,106,.10)}
+  .chips input:checked + .chip::before{background:var(--bronze);border-color:var(--bronze)}
+  .chips input:focus-visible + .chip{outline:1.5px solid var(--bronze);outline-offset:3px}
+  /* consent */
+  .consent{
+    display:flex;gap:12px;align-items:flex-start;padding:14px 16px;cursor:pointer;
+    border:1px solid var(--line);border-radius:var(--radius);background:var(--ink);
+    transition:border-color .3s var(--ease);
+  }
+  .consent:hover{border-color:var(--line-strong)}
+  .consent.bad{border-color:var(--cardinal-hot)}
+  .consent input{width:18px;height:18px;flex:none;margin-top:2px;accent-color:var(--cardinal);cursor:pointer}
+  .consent span{color:var(--cream-dim);font-size:.9rem;line-height:1.55}
+  .consent span b{color:var(--cream);font-weight:500}
+  /* submit row */
+  .bform-row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:22px}
+  .bform button{
+    display:inline-flex;align-items:center;gap:10px;white-space:nowrap;cursor:pointer;
+    font-family:var(--font-d);font-weight:500;font-size:.92rem;letter-spacing:-.01em;
+    padding:12px 22px;border-radius:var(--radius);
+    border:1px solid var(--cardinal);background:var(--cardinal);color:var(--cream);
+    transition:background .3s var(--ease),border-color .3s var(--ease),opacity .3s var(--ease);
+  }
+  .bform button:hover{background:var(--cardinal-hot);border-color:var(--cardinal-hot)}
+  .bform button .arr{transition:transform .35s var(--ease)}
+  .bform button:hover .arr{transform:translateX(4px)}
+  .bform button[disabled]{opacity:.55;cursor:default}
+  .bform .hp{position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0}
+  .signup-note{flex:1;min-width:200px;color:var(--cream-faint);text-transform:none;letter-spacing:.02em;line-height:1.55}
+  .signup-note.ok{color:var(--bronze)}
+  .book-fine{text-align:center;margin-top:clamp(44px,7vh,72px);color:var(--cream-faint);text-wrap:pretty}
+  .book-fine a{color:var(--cream);border-bottom:1px solid var(--bronze-deep)}
+  .book-fine em{font-family:var(--font-s);color:var(--bronze);font-size:1.1em}
+  @media (max-width:860px){
+    .book-grid{grid-template-columns:1fr}
+    .pitch{position:static}
+  }
+  @media (max-width:540px){
+    .f-grid{grid-template-columns:1fr}
+    .bform-row{flex-direction:column;align-items:stretch}
+    .bform button{justify-content:center}
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="Crypto Hogs home">
+      <img src="assets/coin-96.png" alt="" aria-hidden="true">
+      CRYPTO&nbsp;HOGS
+    </a>
+    <nav class="navlinks" aria-label="Main">
+      <a class="link" href="index.html#about">About</a>
+      <a class="link" href="events.html">Events</a>
+      <a class="link" href="team.html">Team</a>
+      <a class="link" href="sponsors.html">Sponsors</a>
+      <a class="btn" href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club <span class="arr">→</span></a>
+      <button class="burger" aria-label="Menu" aria-expanded="false" onclick="this.setAttribute('aria-expanded', document.body.classList.toggle('menu-open'))">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="mobilemenu" onclick="document.body.classList.remove('menu-open');document.querySelector('.burger').setAttribute('aria-expanded','false')">
+  <span class="mono">Crypto Hogs · UARK</span>
+  <a href="index.html">Home</a>
+  <a href="events.html">Events</a>
+  <a href="team.html">Team</a>
+  <a href="sponsors.html">Sponsors</a>
+  <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the club →</a>
+</div>
+
+<main>
+<section class="page-hero">
+  <span class="ghost" aria-hidden="true">CV</span>
+  <div class="wrap">
+    <div class="eyebrow mono">The member resume book</div>
+    <h1 class="reveal">Join the <span class="serif">resume book.</span></h1>
+    <p class="sub reveal reveal-d1">
+      Sponsors who fund Crypto Hogs get a book of members who want to be found. Put yourself
+      in it and recruiters see you first. Optional, free, UARK students only, and you can
+      leave any time.
+    </p>
+  </div>
+</section>
+
+<section class="book" id="book">
+  <div class="wrap">
+    <div class="book-grid">
+
+      <aside class="pitch">
+        <div class="pt reveal">
+          <span class="mono">01 / What it is</span>
+          <b>One card. <span class="serif">Your links.</span></b>
+          <p>A PDF the officers rebuild each semester: your name, major, graduation term, what
+          you are into, and links to your LinkedIn and resume. No uploads. The links stay yours,
+          so when you update the resume on Drive, the book points at the new one.</p>
+        </div>
+        <div class="pt reveal reveal-d1">
+          <span class="mono">02 / Who sees it</span>
+          <b>The people paying for <span class="serif">the pizza.</span></b>
+          <p>Partner and Founding sponsors, the companies whose money covers speakers, events,
+          and food, get the book for recruiting and nothing else. It is never posted online and
+          never sold. Being in it means their recruiters see you before the career fair does.</p>
+        </div>
+        <div class="pt reveal reveal-d2">
+          <span class="mono">03 / Your control</span>
+          <b>Opt in. <span class="serif">Opt out.</span></b>
+          <p>Completely optional, and it has nothing to do with membership, which stays free and
+          open to every UA student. To change or remove your card, email
+          <a href="mailto:uarkcryptohogs@gmail.com?subject=Resume%20book">uarkcryptohogs@gmail.com</a>
+          from your UARK address and it comes out of the next edition.</p>
+        </div>
+        <div class="tags reveal reveal-d3" aria-label="Book details">
+          <span class="chip">Fall 2026 edition</span>
+          <span class="chip">Sponsors only</span>
+          <span class="chip">Free</span>
+        </div>
+      </aside>
+
+      <form class="bform reveal reveal-d1" id="bookForm" novalidate autocomplete="on">
+        <div class="head">
+          <span class="mono">Your card</span>
+          <b>Two minutes, <span class="serif">then you are in.</span></b>
+          <p>Everything without "optional" next to it is required.</p>
+        </div>
+        <div class="f-grid">
+          <div class="field">
+            <label class="mono" for="bkName">Full name</label>
+            <input id="bkName" name="full_name" type="text" required autocomplete="name" maxlength="120" placeholder="Ada Lovelace" aria-describedby="bookNote">
+          </div>
+          <div class="field">
+            <label class="mono" for="bkEmail">UARK email</label>
+            <input id="bkEmail" name="email" type="email" required autocomplete="email" maxlength="120" placeholder="you@uark.edu" inputmode="email">
+          </div>
+          <div class="field">
+            <label class="mono" for="bkMajor">Major</label>
+            <input id="bkMajor" name="major" type="text" required autocomplete="off" maxlength="120" placeholder="Finance, CS, Poli Sci...">
+          </div>
+          <div class="field">
+            <label class="mono" for="bkTerm">Expected graduation</label>
+            <select id="bkTerm" name="grad_term" required>
+              <option value="" selected>Choose a term</option>
+              <option>Fall 2026</option>
+              <option>Spring 2027</option>
+              <option>Fall 2027</option>
+              <option>Spring 2028</option>
+              <option>Fall 2028</option>
+              <option>Spring 2029</option>
+              <option>Fall 2029</option>
+              <option>Spring 2030</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="mono" for="bkLinkedin">LinkedIn <span class="opt">(optional)</span></label>
+            <input id="bkLinkedin" name="linkedin" type="url" autocomplete="url" maxlength="400" placeholder="linkedin.com/in/you" inputmode="url">
+          </div>
+          <div class="field">
+            <label class="mono" for="bkResume">Resume link <span class="opt">(optional)</span></label>
+            <input id="bkResume" name="resume_url" type="url" autocomplete="off" maxlength="400" placeholder="drive.google.com/..." inputmode="url" aria-describedby="bkResumeHint">
+            <p class="hint" id="bkResumeHint">A Google Drive, Dropbox, or personal-site link. Set sharing to "anyone with the link".</p>
+          </div>
+          <fieldset class="field full" style="border:0;min-width:0">
+            <legend class="mono lbl">Interests <span class="opt">(optional)</span></legend>
+            <div class="chips">
+              <label><input type="checkbox" name="interests" value="Bitcoin"><span class="chip">Bitcoin</span></label>
+              <label><input type="checkbox" name="interests" value="DeFi"><span class="chip">DeFi</span></label>
+              <label><input type="checkbox" name="interests" value="Policy"><span class="chip">Policy</span></label>
+              <label><input type="checkbox" name="interests" value="Engineering"><span class="chip">Engineering</span></label>
+              <label><input type="checkbox" name="interests" value="Trading and markets"><span class="chip">Trading and markets</span></label>
+              <label><input type="checkbox" name="interests" value="Quantum and cryptography"><span class="chip">Quantum and cryptography</span></label>
+              <label><input type="checkbox" name="interests" value="Careers"><span class="chip">Careers</span></label>
+            </div>
+          </fieldset>
+          <div class="field full">
+            <label class="consent" id="bkConsentBox">
+              <input type="checkbox" name="consent" value="true" required>
+              <span><b>I understand this card will be shared with Crypto Hogs sponsors for recruiting.</b>
+              I can ask to update or remove it at any time by emailing uarkcryptohogs@gmail.com.</span>
+            </label>
+          </div>
+        </div>
+        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
+        <div class="bform-row">
+          <button type="submit">Add me to the book <span class="arr">&rarr;</span></button>
+          <p class="signup-note mono" id="bookNote" aria-live="polite">UARK addresses only. The book never goes public.</p>
+        </div>
+      </form>
+
+    </div>
+
+    <p class="book-fine reveal">
+      Not in the club yet? <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">Join the GroupMe</a>
+      first, it is free and open to every UA student. <em>For the curious, not the experts.</em>
+    </p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="index.html"><img src="assets/coin-96.png" alt="Crypto Hogs coin logo">CRYPTO&nbsp;HOGS</a>
+        <p>The Cryptocurrency Club at the University of Arkansas. Educating students, connecting them with industry, and putting Fayetteville on the map of the future of finance.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <span class="mono">Explore</span>
+          <a href="index.html">Home</a>
+          <a href="events.html">Events</a>
+          <a href="team.html">Team</a>
+          <a href="sponsors.html">Sponsors</a>
+        </div>
+        <div class="foot-col">
+          <span class="mono">Connect</span>
+          <a href="https://www.instagram.com/uarkcryptohogs/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@uarkcryptohogs" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.linkedin.com/in/cryptohogs-at-the-university-of-arkansas-410b733b7/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://linktr.ee/uarkcryptohogs" target="_blank" rel="noopener">Linktree</a>
+          <a href="mailto:uarkcryptohogs@gmail.com">uarkcryptohogs@gmail.com</a>
+        </div>
+        <div class="foot-col">
+          <span class="mono">Join</span>
+          <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">GroupMe</a>
+          <a href="https://hogsync.uark.edu/UARKCryptoClub/club_signup" target="_blank" rel="noopener">HogSync</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Crypto Hogs · A registered student organization at the University of Arkansas. Not an official unit of the university, and we do not speak for it.</span>
+      <span class="mono">Events open to all UA students · Not financial advice. We're a club, not your broker.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  var SB_URL = 'https://umnizqaitlhulsxsasoz.supabase.co';
+  var SB_KEY = 'sb_publishable_sSUr0vltisFfqOJHmM3zMw_F1Oq6xWC';
+  var CLUB   = 'uarkcryptohogs@gmail.com';
+  var f = document.getElementById('bookForm'); if (!f) return;
+  var note = document.getElementById('bookNote');
+  var btn  = f.querySelector('button[type=submit]');
+  var box  = document.getElementById('bkConsentBox');
+  var idle = note.textContent;
+
+  function say(msg, cls){ note.textContent = msg; note.className = 'signup-note mono' + (cls ? ' ' + cls : ''); }
+  function bad(el, msg){ el.setAttribute('aria-invalid', 'true'); say(msg); el.focus(); return null; }
+  function clean(){
+    f.querySelectorAll('[aria-invalid]').forEach(function(el){ el.removeAttribute('aria-invalid'); });
+    box.classList.remove('bad');
+  }
+  /* returns a normalised https URL, '' when empty, null when it cannot be a URL */
+  function asUrl(v){
+    v = v.trim(); if (!v) return '';
+    if (!/^https?:\/\//i.test(v)) v = 'https://' + v;
+    try {
+      var u = new URL(v);
+      if ((u.protocol !== 'https:' && u.protocol !== 'http:') || !/\./.test(u.hostname)) return null;
+      return u.href;
+    } catch (e){ return null; }
+  }
+  function collect(){
+    clean();
+    var name = f.full_name.value.trim();
+    if (name.length < 2 || name.length > 120) return bad(f.full_name, 'Tell us your name.');
+    var email = f.email.value.trim().toLowerCase();
+    if (!/^[a-z0-9._%+-]+@uark\.edu$/.test(email)) return bad(f.email, 'Use your @uark.edu address. The book is for UA students only.');
+    var major = f.major.value.trim();
+    if (!major || major.length > 120) return bad(f.major, 'What are you studying?');
+    var term = f.grad_term.value;
+    if (!term) return bad(f.grad_term, 'Pick your expected graduation term.');
+    var li = asUrl(f.linkedin.value);
+    if (li === null || (li && !/(^|\.)linkedin\.com$/i.test(new URL(li).hostname))) return bad(f.linkedin, 'That LinkedIn link does not look right. Paste the full profile URL.');
+    var cv = asUrl(f.resume_url.value);
+    if (cv === null) return bad(f.resume_url, 'That resume link does not look right. Paste the full URL.');
+    var interests = [];
+    f.querySelectorAll('input[name=interests]:checked').forEach(function(c){ interests.push(c.value); });
+    if (!f.consent.checked){ box.classList.add('bad'); say('Tick the box so we know you are OK with sponsors seeing your card.'); f.consent.focus(); return null; }
+    return {full_name: name, email: email, major: major, grad_term: term,
+            linkedin: li || null, resume_url: cv || null, interests: interests, consent: true};
+  }
+  f.addEventListener('input', function(e){ if (e.target && e.target.getAttribute('aria-invalid')) e.target.removeAttribute('aria-invalid'); });
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (f.company.value) return;                       /* honeypot tripped, silently drop */
+    var row = collect(); if (!row) return;
+    btn.disabled = true;
+    say('Adding you to the book...');
+    fetch(SB_URL + '/rest/v1/members', {
+      method: 'POST',
+      headers: {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+                'Content-Type': 'application/json', 'Prefer': 'return=minimal'},
+      body: JSON.stringify(row)
+    }).then(function(r){
+      if (r.ok){ f.reset(); say('You are in the book. Sponsors get the next edition at the start of the semester.', 'ok'); }
+      else if (r.status === 409){ say('You are already in the book. Email ' + CLUB + ' from your UARK address to update your card.', 'ok'); }
+      else { say('Something went wrong. Email ' + CLUB + ' and we will add you by hand.'); }
+    }).catch(function(){
+      say('Something went wrong. Email ' + CLUB + ' and we will add you by hand.');
+    }).then(function(){ btn.disabled = false; });
+  });
+  f.addEventListener('reset', function(){ setTimeout(function(){ clean(); if (!note.classList.contains('ok')) say(idle); }, 0); });
+})();
+</script>
+</body>
+</html>

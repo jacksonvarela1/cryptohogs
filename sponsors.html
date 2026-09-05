@@ -34,6 +34,42 @@
   .aud b{display:block;font-size:clamp(1.7rem,3.4vw,2.7rem);font-weight:500;letter-spacing:-.03em}
   .aud b .serif{color:var(--bronze)}
   .aud small{display:block;margin-top:8px;color:var(--cream-faint);font-family:var(--font-m);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
+  /* 2026-27 sponsor board */
+  .board{border-bottom:1px solid var(--line);padding-bottom:clamp(44px,7vh,72px)}
+  .board-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(24px,3.6vh,36px)}
+  .board-head h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:500;letter-spacing:-.03em;line-height:1.05;text-wrap:balance}
+  .board-head h2 .serif{color:var(--bronze)}
+  .board-head p{max-width:40ch;color:var(--cream-dim)}
+  .board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px);align-items:stretch}
+  .slot{
+    border:1px solid var(--line);border-radius:var(--radius);background:var(--ink-2);
+    padding:clamp(20px,2.4vw,28px);display:flex;flex-direction:column;gap:14px;
+    transition:border-color .4s var(--ease);
+  }
+  .slot:hover{border-color:var(--bronze-deep)}
+  .slot-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px 14px;flex-wrap:wrap}
+  .slot-name{color:var(--bronze)}
+  .slot-name .slot-price{color:var(--cream-faint);margin-left:6px}
+  .slot-avail{color:var(--cream-faint);display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+  .slot-avail::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7}
+  .slot-avail.hot{color:var(--bronze)}
+  .slot-logo{
+    min-height:96px;display:flex;align-items:center;justify-content:center;gap:10px;
+    border:1px dashed var(--bronze-deep);border-radius:var(--radius);padding:16px;
+    color:var(--bronze);text-decoration:none;text-align:center;
+    transition:background .3s var(--ease),border-color .3s var(--ease);
+  }
+  .slot-logo:hover{background:rgba(201,169,106,.08);border-color:var(--bronze)}
+  .slot-logo .arr{transition:transform .3s var(--ease)}
+  .slot-logo:hover .arr{transform:translateX(4px)}
+  .slot-logo.filled{border-style:solid;border-color:var(--line);background:var(--panel)}
+  .slot-logo.filled:hover{border-color:var(--bronze-deep);background:var(--panel)}
+  .slot-logo img{display:block;max-height:56px;max-width:78%;width:auto;height:auto}
+  .slot p{color:var(--cream-dim);font-size:.94rem;line-height:1.55}
+  .board-note{margin-top:clamp(18px,2.6vh,26px);color:var(--cream-faint);font-size:.9rem;line-height:1.6;max-width:82ch}
+  .board-note a{color:var(--cream-dim);text-underline-offset:3px}
+  .board-note a:hover{color:var(--cream)}
+  @media (max-width:860px){ .board-grid{grid-template-columns:1fr} }
   .steps{border-top:1px solid var(--line-strong);margin-top:clamp(40px,6vh,64px)}
   .house{
     margin-top:clamp(40px,6vh,64px);border:1px solid var(--line);border-radius:var(--radius);
@@ -144,13 +180,65 @@
   </div>
 </section>
 
+<!--
+  SPONSOR BOARD, 2026-27. Zero paying sponsors today, so every slot shows "Your logo here".
+  When a sponsor signs, edit that tier's .slot below:
+  1. Replace the <a class="slot-logo mono" ...>Your logo here</a> link with the logo:
+       <a class="slot-logo filled" href="https://their-site.example" target="_blank" rel="noopener"><img src="assets/sponsors/their-logo.svg" alt="Their Name" loading="lazy"></a>
+     Use a <span class="slot-logo filled"> instead of <a> if they have no site to link. The logo file
+     must live in this repo (assets/sponsors/, SVG or a PNG about 400px wide on a transparent background):
+     the page's Content Security Policy only allows images from 'self', so a hotlinked logo will not load.
+     Partner and Supporter can hold several sponsors, so add a second .slot-logo under the first when needed.
+  2. Change the .slot-avail text. Founding counts down: "1 of 2 available", then "Fully subscribed", and
+     drop its "hot" class once it is full. Partner and Supporter stay "Open" for as long as they are.
+  3. Update the same tier's .tier-avail text in the Tiers section further down so the two never disagree.
+  4. Leave the one-line "who it is for" copy alone; only the logo and the availability line change.
+  Stand With Crypto is an advocacy partner, not a paying sponsor. It never goes on this board.
+-->
+<section class="board" id="board" aria-labelledby="board-h">
+  <div class="wrap">
+    <div class="eyebrow mono">2026-27 sponsors</div>
+    <div class="board-head">
+      <h2 id="board-h" class="reveal">Be the first name <span class="serif">on the wall.</span></h2>
+      <p class="reveal reveal-d1">First sponsorship cycle for a club founded in spring 2026. Every tier is open, and the first organizations in get the whole year in front of the room.</p>
+    </div>
+    <div class="board-grid">
+      <div class="slot reveal">
+        <div class="slot-top">
+          <span class="slot-name mono">Founding <span class="slot-price">$5,000</span></span>
+          <span class="slot-avail mono hot">2 of 2 available</span>
+        </div>
+        <a class="slot-logo mono" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs%3A%20Founding%20tier&body=Hi%20Crypto%20Hogs%2C%0A%0AWe%20would%20like%20to%20sponsor%20Crypto%20Hogs%20at%20the%20Founding%20level%20%28%245%2C000%29%20for%20the%202026-27%20academic%20year.%0A%0AOrganization%3A%20%0ABest%20contact%20and%20title%3A%20%0AWe%20would%20like%20to%20send%20a%20speaker%20on%20%28optional%29%3A%20%0AAnything%20you%20should%20know%3A%20%0A%0AThanks%2C">Your logo here <span class="arr">&rarr;</span></a>
+        <p>For the two organizations that want their name on a flagship night and a say in the year's programming.</p>
+      </div>
+      <div class="slot reveal reveal-d1">
+        <div class="slot-top">
+          <span class="slot-name mono">Partner <span class="slot-price">$2,500</span></span>
+          <span class="slot-avail mono">Open</span>
+        </div>
+        <a class="slot-logo mono" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs%3A%20Partner%20tier&body=Hi%20Crypto%20Hogs%2C%0A%0AWe%20would%20like%20to%20sponsor%20Crypto%20Hogs%20at%20the%20Partner%20level%20%28%242%2C500%29%20for%20the%202026-27%20academic%20year.%0A%0AOrganization%3A%20%0ABest%20contact%20and%20title%3A%20%0AWe%20would%20like%20to%20send%20a%20speaker%20on%20%28optional%29%3A%20%0AAnything%20you%20should%20know%3A%20%0A%0AThanks%2C">Your logo here <span class="arr">&rarr;</span></a>
+        <p>For teams recruiting on campus: logo on every slide, the resume book, and a talk at a general meeting.</p>
+      </div>
+      <div class="slot reveal reveal-d2">
+        <div class="slot-top">
+          <span class="slot-name mono">Supporter <span class="slot-price">$1,000</span></span>
+          <span class="slot-avail mono">Open</span>
+        </div>
+        <a class="slot-logo mono" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs%3A%20Supporter%20tier&body=Hi%20Crypto%20Hogs%2C%0A%0AWe%20would%20like%20to%20sponsor%20Crypto%20Hogs%20at%20the%20Supporter%20level%20%28%241%2C000%29%20for%20the%202026-27%20academic%20year.%0A%0AOrganization%3A%20%0ABest%20contact%20and%20title%3A%20%0AWe%20would%20like%20to%20send%20a%20speaker%20on%20%28optional%29%3A%20%0AAnything%20you%20should%20know%3A%20%0A%0AThanks%2C">Your logo here <span class="arr">&rarr;</span></a>
+        <p>For organizations and individuals who want their name behind a free, student-run club for the year.</p>
+      </div>
+    </div>
+    <p class="board-note reveal">Stand With Crypto is our advocacy partner (<a href="#swc">see below</a>); the slots above are for organizations funding the club's programming.</p>
+  </div>
+</section>
+
 <section class="audience" aria-label="Audience">
   <div class="wrap audience-grid">
     <div class="aud reveal"><b>150+</b><small>Active members</small></div>
-    <div class="aud reveal reveal-d1"><b>30<span class="serif">x</span></b><small>Growth in two years</small></div>
+    <div class="aud reveal reveal-d1"><b>$0</b><small>Member dues</small></div>
     <div class="aud reveal reveal-d2"><b>16</b><small>Events per semester</small></div>
     <div class="aud reveal reveal-d3"><b>40</b><small>Average event attendance</small></div>
-    <div class="aud reveal reveal-d3"><b>Backed</b><small>By Stand With Crypto</small></div>
+    <div class="aud reveal reveal-d3"><b>Partner</b><small>Stand With Crypto</small></div>
   </div>
 </section>
 
@@ -239,7 +327,6 @@
           <li>Standing invitation to club events and programming</li>
         </ul>
         <a class="tier-cta" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs%3A%20Supporter%20tier&body=Hi%20Crypto%20Hogs%2C%0A%0AWe%20would%20like%20to%20sponsor%20Crypto%20Hogs%20at%20the%20Supporter%20level%20%28%241%2C000%29%20for%20the%202026-27%20academic%20year.%0A%0AOrganization%3A%20%0ABest%20contact%20and%20title%3A%20%0AWe%20would%20like%20to%20send%20a%20speaker%20on%20%28optional%29%3A%20%0AAnything%20you%20should%20know%3A%20%0A%0AThanks%2C">Reserve Supporter <span class="arr">&rarr;</span></a>
-        <a class="tier-cta" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs%3A%20Partner%20tier&body=Hi%20Crypto%20Hogs%2C%0A%0AWe%20would%20like%20to%20sponsor%20Crypto%20Hogs%20at%20the%20Partner%20level%20%28%242%2C500%29%20for%20the%202026-27%20academic%20year.%0A%0AOrganization%3A%20%0ABest%20contact%20and%20title%3A%20%0AWe%20would%20like%20to%20send%20a%20speaker%20on%20%28optional%29%3A%20%0AAnything%20you%20should%20know%3A%20%0A%0AThanks%2C">Reserve Partner <span class="arr">&rarr;</span></a>
         <span class="tier-avail mono">Open</span>
       </div>
 
@@ -253,6 +340,7 @@
           <li>One recruiting touchpoint per semester: info session, event table, or resume drop</li>
           <li>Speaking slot or technical workshop at a general meeting</li>
         </ul>
+        <a class="tier-cta" href="mailto:uarkcryptohogs@gmail.com?subject=Sponsoring%20Crypto%20Hogs%3A%20Partner%20tier&body=Hi%20Crypto%20Hogs%2C%0A%0AWe%20would%20like%20to%20sponsor%20Crypto%20Hogs%20at%20the%20Partner%20level%20%28%242%2C500%29%20for%20the%202026-27%20academic%20year.%0A%0AOrganization%3A%20%0ABest%20contact%20and%20title%3A%20%0AWe%20would%20like%20to%20send%20a%20speaker%20on%20%28optional%29%3A%20%0AAnything%20you%20should%20know%3A%20%0A%0AThanks%2C">Reserve Partner <span class="arr">&rarr;</span></a>
         <span class="tier-avail mono">Open</span>
       </div>
 
@@ -285,9 +373,9 @@
   </div>
 </section>
 
-<section class="swc" aria-label="Stand With Crypto">
+<section class="swc" id="swc" aria-label="Stand With Crypto">
   <div class="wrap">
-    <div class="eyebrow mono">Backed by</div>
+    <div class="eyebrow mono">Advocacy partner</div>
     <div class="swc-grid">
       <div class="swc-copy reveal">
         <span class="swc-badge"><img src="assets/sponsors/swc-shield.svg" alt="Stand With Crypto shield">Stand With Crypto</span>
@@ -331,6 +419,7 @@
           <span class="mono">Join</span>
           <a href="https://groupme.com/join_group/113608298/MGcsS3ON" target="_blank" rel="noopener">GroupMe</a>
           <a href="https://hogsync.uark.edu/UARKCryptoClub/club_signup" target="_blank" rel="noopener">HogSync</a>
+          <a href="members.html">Resume book</a>
         </div>
       </div>
     </div>

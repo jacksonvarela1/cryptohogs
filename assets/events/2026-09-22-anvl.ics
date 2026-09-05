@@ -5,11 +5,13 @@ CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
 UID:ch-20260922@cryptohogs.uark
-DTSTAMP:20260903T120000Z
+DTSTAMP:20260904T214757Z
 DTSTART:20260922T223000Z
 DTEND:20260923T000000Z
 SUMMARY:Crypto Hogs: Onchain letters of credit
-DESCRIPTION:Max\, CEO of ANVL Research Labs\, joins virtually. Trade finance explained from scratch\, then a live demo and open Q and A. Free and open to all University of Arkansas students. No experience required.
+DESCRIPTION:Max\, CEO of ANVL Research Labs\, joins virtually. Trade financ
+ e explained from scratch\, then a live demo and open Q and A. Free and ope
+ n to all University of Arkansas students. No experience required.
 LOCATION:Virtual. Room announced in the club GroupMe.
 URL:https://jacksonvarela1.github.io/cryptohogs/events.html
 STATUS:CONFIRMED
