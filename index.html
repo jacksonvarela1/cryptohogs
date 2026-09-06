@@ -272,6 +272,10 @@
   /* next block line (hero) */
   .nextblock{margin-top:14px;color:var(--cream-dim)}
   .nextblock b{color:var(--bronze);font-weight:500}
+  .nextblock.is-tonight{color:var(--cream)}
+  .nextblock .nb-tag{display:inline-block;margin-right:9px;padding:3px 9px;border-radius:var(--radius);
+    background:var(--cardinal-hot);color:var(--cream);font-weight:600;font-size:.86em;
+    letter-spacing:.12em;text-transform:uppercase}
 
   /* FAQ: block-explorer rows */
   .faq{border-top:1px solid var(--line);padding:clamp(80px,12vh,150px) 0}
@@ -1604,7 +1608,12 @@
       today = new Date(+ct[2], ct[0] - 1, +ct[1]);
     } catch (e) {}
     if (!(today > 0)) today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    var next = null;
+    var nowMin = 12 * 60;
+    try {
+      var ctc = now.toLocaleTimeString('en-US', {timeZone:'America/Chicago', hour12:false, hour:'2-digit', minute:'2-digit'}).split(':');
+      if (+ctc[0] >= 0 && +ctc[1] >= 0) nowMin = (+ctc[0] % 24) * 60 + +ctc[1];
+    } catch (e) {}
+    var upcoming = [];
     document.querySelectorAll('.sched .row').forEach(function(row){
       var m = row.querySelector('.date').textContent.match(/([A-Z]{3})\s*(\d{1,2})/);
       if (!m || !(m[1] in MO)) return;
@@ -1613,21 +1622,34 @@
         row.classList.add('past');
         var chip = row.querySelector('.chip');
         if (chip){ chip.textContent = 'Done'; chip.className = 'chip'; }
-      } else if (!next){
-        next = {date: d, label: m[1].charAt(0) + m[1].slice(1).toLowerCase() + ' ' + m[2], row: row};
+      } else {
+        upcoming.push({date: d, label: m[1].charAt(0) + m[1].slice(1).toLowerCase() + ' ' + m[2], row: row});
       }
     });
+    var next = upcoming[0];
+    /* once tonight's meeting has ended, the hero points at the next one instead */
+    if (next && next.date - today === 0 && nowMin >= 19 * 60) next = upcoming[1];
     var nb = document.getElementById('nextblock');
     if (!nb) return;
     if (next){
       var days = Math.round((next.date - today) / 86400000);
-      var when = days === 0 ? 'tonight' : days === 1 ? 'tomorrow' : 'in ' + days + ' days';
       var what = next.row.querySelector('.what');
-      var title = what ? (what.childNodes[0].textContent || '').trim() : '';
+      var title = (what ? (what.childNodes[0].textContent || '').trim() : '') || 'general meeting';
+      if (days === 0){
+        var live = nowMin >= 17 * 60 + 30;
+        nb.classList.add('is-tonight');
+        nb.textContent = '';
+        var tag = document.createElement('b'); tag.className = 'nb-tag';
+        tag.textContent = live ? 'Happening now' : 'Tonight';
+        nb.appendChild(tag);
+        nb.appendChild(document.createTextNode(title + (live ? ' · until 7:00 PM CT' : ' · 5:30 PM CT')));
+        return;
+      }
+      var when = days === 1 ? 'tomorrow' : 'in ' + days + ' days';
       nb.textContent = 'Next block: ';
       var b = document.createElement('b'); b.textContent = next.label;
       nb.appendChild(b);
-      nb.appendChild(document.createTextNode(' · ' + (title || 'general meeting') + ' · ' + when));
+      nb.appendChild(document.createTextNode(' · ' + title + ' · ' + when));
     } else {
       nb.textContent = 'Fall semester is a wrap. The spring schedule drops in the GroupMe first.';
     }
