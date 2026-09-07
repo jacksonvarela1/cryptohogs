@@ -1,0 +1,274 @@
+#!/usr/bin/env python3
+"""Generate flyer.html, the printable 8.5 by 11 tabling flyer.
+
+Run from anywhere:  python tools/build-flyer.py
+
+It reads assets/schedule.json, keeps the confirmed speaker nights that have not
+happened yet, draws the GroupMe QR code locally with tools/qrcode_mini.py, and
+writes flyer.html at the root of the repo. Open that file and print it, or use
+File then Print then Save as PDF. There is no external image and no CDN, so the
+sheet prints the same on a laptop with no wifi.
+
+Rerun this whenever the lineup changes, the same way as tools/build-schedule.py.
+
+Standard library only, Python 3.9+.
+"""
+import datetime
+import json
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+sys.path.insert(0, HERE)
+
+from qrcode_mini import encode, svg_path            # noqa: E402
+
+GROUPME = "https://groupme.com/join_group/113608298/MGcsS3ON"
+SITE = "jacksonvarela1.github.io/cryptohogs"
+QUIET = 4
+
+INK = "#0B0B0D"
+CREAM = "#F4EFE4"
+CARDINAL = "#9D2235"
+BRONZE = "#8F7340"
+
+MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+          "August", "September", "October", "November", "December"]
+
+
+def esc(text):
+    return (text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def qr_svg(payload, ecl="Q"):
+    """The QR as one inline SVG, quiet zone included, no external request."""
+    matrix = encode(payload, ecl=ecl)
+    n = len(matrix)
+    span = n + QUIET * 2
+    return (
+        '<svg class="qr" viewBox="0 0 {span} {span}" role="img" '
+        'aria-label="QR code linking to the Crypto Hogs GroupMe" '
+        'shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">'
+        '<rect width="{span}" height="{span}" fill="#fff"/>'
+        '<path transform="translate({q},{q})" fill="{ink}" d="{d}"/>'
+        "</svg>"
+    ).format(span=span, q=QUIET, ink=INK, d=svg_path(matrix)), n
+
+
+def upcoming(schedule, today):
+    """The confirmed speaker nights still ahead, soonest first, at most three."""
+    rows = []
+    for row in schedule["rows"]:
+        if row.get("kind") != "speaker" or row.get("status") != "confirmed":
+            continue
+        date = datetime.date.fromisoformat(row["date"])
+        if date < today:
+            continue
+        rows.append((date, row))
+    rows.sort(key=lambda pair: pair[0])
+    return rows[:3]
+
+
+def line_for(row):
+    """Speaker, organisation and format, on one line, with no em dash."""
+    bits = []
+    speaker = row.get("speaker")
+    org = row.get("org")
+    if speaker and org:
+        bits.append("%s, %s" % (speaker, org))
+    elif speaker:
+        bits.append(speaker)
+    elif org:
+        bits.append(org)
+    fmt = row.get("format")
+    if fmt == "virtual":
+        bits.append("virtual")
+    elif fmt == "in-person":
+        bits.append("in person")
+    return " &middot; ".join(esc(b) for b in bits)
+
+
+def build():
+    with open(os.path.join(ROOT, "assets", "schedule.json"), encoding="utf-8") as fh:
+        schedule = json.load(fh)
+    today = datetime.date.today()
+    rows = upcoming(schedule, today)
+    qr, modules = qr_svg(GROUPME)
+
+    lineup = []
+    for date, row in rows:
+        lineup.append(
+            '        <li data-until="{iso}">'
+            '<span class="when">{mon} {day}</span>'
+            '<span class="what"><b>{title}</b><i>{who}</i></span></li>'.format(
+                iso=row["date"], mon=MONTHS[date.month - 1][:3].upper(),
+                day=date.day, title=esc(row["title"]), who=line_for(row)))
+    if not lineup:
+        lineup.append(
+            '        <li><span class="when">SOON</span><span class="what">'
+            '<b>Next speaker night</b><i>Announcement drops in the GroupMe first</i>'
+            "</span></li>")
+
+    html = TEMPLATE.format(
+        built=today.isoformat(),
+        modules=modules,
+        lineup="\n".join(lineup),
+        qr=qr,
+        site=SITE,
+        groupme=GROUPME,
+        ink=INK, cream=CREAM, cardinal=CARDINAL, bronze=BRONZE,
+    )
+    out = os.path.join(ROOT, "flyer.html")
+    with open(out, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(html)
+    print("wrote %s" % out)
+    print("  QR: version %d, %d modules, level Q, pointing at the GroupMe"
+          % ((modules - 17) // 4, modules))
+    print("  lineup rows: %d" % len(rows))
+
+
+TEMPLATE = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Crypto Hogs · printable tabling flyer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Generated by tools/build-flyer.py on {built}. Do not hand edit: rerun the tool. */
+  @page {{ size: letter; margin: 0; }}
+  *{{margin:0;padding:0;box-sizing:border-box}}
+  :root{{
+    --ink:{ink}; --cream:{cream}; --cardinal:{cardinal}; --bronze:{bronze};
+    --font-d:'Space Grotesk',Arial,Helvetica,sans-serif;
+    --font-s:'Instrument Serif',Georgia,'Times New Roman',serif;
+    --font-m:'IBM Plex Mono',Consolas,'Courier New',monospace;
+  }}
+  body{{background:#26262a;font-family:var(--font-d);color:var(--ink);
+       -webkit-font-smoothing:antialiased;padding:24px 16px;overflow-x:hidden}}
+  .stage{{overflow-x:auto;overflow-y:hidden;padding-bottom:8px}}
+  .hint{{max-width:8.5in;margin:0 auto 18px;color:#cfc9bd;font-size:13px;line-height:1.6}}
+  .hint b{{color:#fff}}
+  .hint code{{font-family:var(--font-m);color:#e6c98a}}
+  .sheet{{
+    width:8.5in;height:11in;margin:0 auto;background:var(--cream);color:var(--ink);
+    padding:0.62in 0.68in 0.5in;display:flex;flex-direction:column;
+    box-shadow:0 18px 50px rgba(0,0,0,.45);overflow:hidden;
+  }}
+  .eyebrow{{display:flex;justify-content:space-between;align-items:baseline;
+            font-family:var(--font-m);font-size:9.5pt;letter-spacing:.16em;
+            text-transform:uppercase;color:var(--bronze)}}
+  .rule{{height:3px;background:var(--cardinal);margin:9px 0 22px}}
+  .wordmark{{font-weight:700;font-size:95pt;line-height:.84;letter-spacing:-.045em;
+             text-transform:uppercase}}
+  .tagline{{font-family:var(--font-s);font-style:italic;font-size:19.5pt;line-height:1.16;
+            margin-top:12px;color:#2b2b31}}
+  .offer{{margin-top:20px;border-top:1px solid rgba(11,11,13,.22);
+          border-bottom:1px solid rgba(11,11,13,.22);padding:15px 0;
+          display:flex;align-items:baseline;gap:26px}}
+  .offer .day{{font-weight:700;font-size:28pt;letter-spacing:-.03em;line-height:1;
+               white-space:nowrap}}
+  .offer .day em{{font-style:normal;color:var(--cardinal)}}
+  .offer .free{{font-size:12.5pt;line-height:1.42}}
+  .offer .free b{{font-weight:700}}
+  .label{{font-family:var(--font-m);font-size:9.5pt;letter-spacing:.16em;
+          text-transform:uppercase;color:var(--bronze);margin:18px 0 8px}}
+  .lineup{{list-style:none}}
+  .lineup li{{display:flex;gap:16px;align-items:baseline;padding:8px 0;
+              border-bottom:1px dotted rgba(11,11,13,.26)}}
+  .lineup .when{{font-family:var(--font-m);font-size:11pt;font-weight:500;
+                 letter-spacing:.04em;color:var(--cardinal);width:1.05in;flex:none}}
+  .lineup .what b{{display:block;font-size:13pt;font-weight:700;letter-spacing:-.015em;
+                   line-height:1.25}}
+  .lineup .what i{{display:block;font-style:normal;font-size:10.5pt;
+                   color:#55555e;margin-top:2px}}
+  .join{{margin-top:auto;display:flex;gap:24px;align-items:center;
+         background:var(--ink);color:var(--cream);padding:18px 20px}}
+  .qr{{width:1.7in;height:1.7in;display:block;flex:none;background:#fff;padding:0}}
+  .join h2{{font-size:21pt;font-weight:700;letter-spacing:-.03em;line-height:1.05}}
+  .join p{{font-size:11pt;line-height:1.45;margin-top:8px;color:rgba(244,239,228,.78)}}
+  .join .where{{font-family:var(--font-m);font-size:10pt;letter-spacing:.05em;
+                margin-top:12px;color:#C9A96A}}
+  .foot{{margin-top:12px;display:flex;justify-content:space-between;gap:18px;
+         font-size:8.5pt;line-height:1.45;color:#5c5c65}}
+  .foot .facts{{font-family:var(--font-m);letter-spacing:.05em;text-transform:uppercase;
+                color:var(--bronze);white-space:nowrap}}
+  @media print{{
+    body{{background:#fff;padding:0;overflow:visible}}
+    .hint{{display:none}}
+    .stage{{overflow:visible;padding:0}}
+    .sheet{{box-shadow:none;margin:0}}
+    .join{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+    .sheet,.eyebrow,.rule,.offer .day em,.lineup .when,.join .where{{
+      -webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  }}
+</style>
+</head>
+<body>
+  <p class="hint"><b>Printable tabling flyer.</b> Print at US Letter, 100 percent scale,
+    background graphics on, margins set to None. Generated {built} by
+    <code>python tools/build-flyer.py</code>; rerun it when the lineup changes.
+    Past dates drop off this sheet on their own.</p>
+
+  <div class="stage">
+  <div class="sheet">
+    <div class="eyebrow"><span>University of Arkansas</span><span>Est. 2026</span></div>
+    <div class="rule"></div>
+
+    <h1 class="wordmark">Crypto<br>Hogs</h1>
+    <p class="tagline">The cryptocurrency club for students who have never<br>owned any, and for students who already do.</p>
+
+    <div class="offer">
+      <div class="day">Tuesdays<br><em>5:30 to 7:00 PM</em></div>
+      <div class="free"><b>Free, and open to all University of Arkansas students.</b><br>
+        Dues are $0. No experience required. Come once and see.</div>
+    </div>
+
+    <p class="label">This semester</p>
+    <ul class="lineup" id="lineup">
+{lineup}
+    </ul>
+
+    <div class="join">
+      {qr}
+      <div>
+        <h2>Scan to join the GroupMe</h2>
+        <p>Room numbers, speaker announcements and the free pizza alerts all land
+          there first. It is the fastest way in.</p>
+        <p class="where">{site}</p>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span>A registered student organization at the University of Arkansas. Not an
+        official unit of the university, and we do not speak for it.</span>
+      <span class="facts">150+ members<br>Instagram @uarkcryptohogs</span>
+    </div>
+  </div>
+  </div>
+
+<script>
+  // Drop any speaker night that has already passed, so an old print run of this
+  // file never advertises a date that is gone. Runs once, before printing.
+  (function () {{
+    var today = new Date();
+    var iso = today.getFullYear() + '-' +
+      String(today.getMonth() + 1).padStart(2, '0') + '-' +
+      String(today.getDate()).padStart(2, '0');
+    var rows = document.querySelectorAll('#lineup li[data-until]');
+    for (var i = 0; i < rows.length; i++) {{
+      if (rows[i].getAttribute('data-until') < iso) rows[i].remove();
+    }}
+  }})();
+</script>
+</body>
+</html>
+"""
+
+
+if __name__ == "__main__":
+    build()

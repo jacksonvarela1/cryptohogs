@@ -2,3 +2,5 @@
 assets/headshots/
 assets/contact-sheet.jpg
 assets/coin.png
+__pycache__/
+*.pyc

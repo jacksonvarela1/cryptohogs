@@ -73,6 +73,37 @@ file and no image file in the artwork, so it prints at any size. None of it carr
 University of Arkansas mark, which is deliberate: see the last section of the spec for what
 to ask Trademark Licensing if the club ever wants an officially marked version.
 
+## The tabling flyer
+
+`flyer.html` is a printable 8.5 by 11 sheet for tabling: the wordmark, the Tuesday time,
+the free and open to all line, this semester's confirmed speaker nights, and a QR code
+that joins the GroupMe. Print it from any browser at US Letter, 100 percent scale, with
+background graphics on and margins set to None. It fills exactly one page.
+
+Regenerate it after any schedule change:
+
+```bash
+python tools/build-flyer.py
+```
+
+It reads `assets/schedule.json`, so the flyer and the site never disagree. Only confirmed
+speaker nights that have not happened yet appear, at most three, and the page also drops a
+date on its own once it passes, so an old copy of the file never advertises a night that is
+gone.
+
+The QR is drawn locally by `tools/qrcode_mini.py`, a small QR encoder written for this repo.
+Nothing is fetched from a CDN, so the sheet prints identically on a laptop with no wifi.
+The code is error correction level Q, which survives a scuffed or partly covered print. If
+you ever need a QR for something else:
+
+```python
+from qrcode_mini import encode, svg_path
+svg_path(encode("https://example.com", ecl="Q"))
+```
+
+The flyer is `noindex` and is not linked from the site. It is a tool for officers, not a
+page for visitors.
+
 ## House style
 
 - No em dashes anywhere in copy. Use a period, a comma, a colon, or ` · `.
