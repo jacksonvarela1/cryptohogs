@@ -225,7 +225,10 @@ def rows_region(rows, data, page, tz):
 
 
 def breaks_region(rows):
-    return ['<span class="chip">No meeting %s %s %s</span>' % (month_day(r["_date"]), DOT, esc(r["title"]))
+    # data-break is read by index.html's hero script: on a plain Tuesday that is not a break
+    # week the hero says "Tonight, weekly meeting" instead of pointing at the next speaker night.
+    return ['<span class="chip" data-break="%s">No meeting %s %s %s</span>'
+            % (r["_date"].strftime("%Y-%m-%d"), month_day(r["_date"]), DOT, esc(r["title"]))
             for r in rows if r["kind"] == "break"]
 
 

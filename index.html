@@ -189,7 +189,13 @@
   .brand img{border-radius:50%}
   @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
   .coin-float{animation:floaty 6.5s ease-in-out infinite}
-  .coin-hint{position:absolute;left:50%;bottom:-44px;transform:translateX(-50%);color:var(--cream-faint);white-space:nowrap}
+  .coin-hint{position:absolute;left:50%;bottom:-44px;transform:translateX(-50%);color:var(--cream-faint);white-space:nowrap;opacity:0;transition:opacity .5s var(--ease)}
+  /* only promise a spin once the 3D coin is actually drawing: reduced motion, LITE phones,
+     a WebGL failure and a watchdog demotion all leave a still image that cannot be spun */
+  .coin3d.live ~ .coin-hint{opacity:1}
+  .coin-hint.has-offer{opacity:1}
+  .motion-offer{background:none;border:1px solid var(--bronze-deep);border-radius:999px;color:var(--cream-dim);font-family:var(--font-m);font-size:.62rem;line-height:1;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;cursor:pointer;white-space:nowrap;transition:border-color .3s var(--ease),color .3s var(--ease)}
+  .motion-offer:hover{border-color:var(--bronze);color:var(--bronze)}
   .particle{position:fixed;z-index:115;pointer-events:none;font-size:20px;line-height:1;will-change:transform,opacity}
 
   /* film grain (static: animating a full-viewport layer costs more than it looks) */
@@ -848,8 +854,8 @@
     <!-- schedule:rows:end -->
     <div class="fall-notes reveal">
       <!-- schedule:breaks:start -->
-      <span class="chip">No meeting Oct 20 · Fall Break</span>
-      <span class="chip">No meeting Nov 24 · Thanksgiving week</span>
+      <span class="chip" data-break="2026-10-20">No meeting Oct 20 · Fall Break</span>
+      <span class="chip" data-break="2026-11-24">No meeting Nov 24 · Thanksgiving week</span>
       <!-- schedule:breaks:end -->
       <span class="chip">Schedule may shift · GroupMe has the latest</span>
     </div>
@@ -1598,6 +1604,32 @@
     console.log('%c₿ You opened devtools. You should probably join.\n→ GroupMe: https://groupme.com/join_group/113608298/MGcsS3ON\n→ Tuesdays · University of Arkansas · est. 2026 · WPS', 'color:#F4EFE4;font-size:12px;line-height:1.7;');
   } catch (e) {}
 
+  /* Reduced motion leaves a still coin. Do not tell anyone to spin it, and put the offer to
+     turn motion on right under the coin instead of only in the footer 99 percent down the page.
+     This offers motion, it never starts it, so the accessibility preference is still respected. */
+  (function(){
+    if (!window.__reduced()) return;
+    var host = document.getElementById('coin3d');
+    if (host){
+      host.setAttribute('title', 'Tap it');
+      host.setAttribute('aria-label', 'The Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock');
+    }
+    var hint = document.getElementById('coinHint');
+    if (!hint) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'motion-offer';
+    b.textContent = 'Motion is off · turn it on';
+    b.title = 'Your device asks for reduced motion, so the coin and the effects are paused. This turns them on in this browser and remembers it.';
+    b.addEventListener('click', function(){
+      try { localStorage.setItem('ch-motion', 'full'); } catch (e) {}
+      location.reload();
+    });
+    hint.textContent = '';
+    hint.appendChild(b);
+    hint.classList.add('has-offer');
+  })();
+
   /* self-maintaining dates: past rows dim to Done, hero line tracks the real next event */
   (function(){
     var MO = {JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
@@ -1614,11 +1646,12 @@
       var ctc = now.toLocaleTimeString('en-US', {timeZone:'America/Chicago', hour12:false, hour:'2-digit', minute:'2-digit'}).split(':');
       if (+ctc[0] >= 0 && +ctc[1] >= 0) nowMin = (+ctc[0] % 24) * 60 + +ctc[1];
     } catch (e) {}
-    var upcoming = [];
+    var upcoming = [], allDates = [];
     document.querySelectorAll('.sched .row').forEach(function(row){
       var m = row.querySelector('.date').textContent.match(/([A-Z]{3})\s*(\d{1,2})/);
       if (!m || !(m[1] in MO)) return;
       var d = new Date(YEAR, MO[m[1]], +m[2]);
+      allDates.push(+d);
       if (d < today){
         row.classList.add('past');
         var chip = row.querySelector('.chip');
@@ -1632,18 +1665,45 @@
     if (next && next.date - today === 0 && nowMin >= 19 * 60) next = upcoming[1];
     var nb = document.getElementById('nextblock');
     if (!nb) return;
+
+    function tonight(label){
+      var live = nowMin >= 17 * 60 + 30;
+      nb.classList.add('is-tonight');
+      nb.textContent = '';
+      var tag = document.createElement('b'); tag.className = 'nb-tag';
+      tag.textContent = live ? 'Happening now' : 'Tonight';
+      nb.appendChild(tag);
+      nb.appendChild(document.createTextNode(label + (live ? ' · until 7:00 PM CT' : ' · 5:30 PM CT')));
+    }
+
+    /* The lineup above lists speaker nights and the finale, but the club meets EVERY Tuesday.
+       On a plain Tuesday that is not a break week, say so, rather than pointing weeks ahead
+       at the next speaker while a meeting is happening the same evening. */
+    var breakToday = false;
+    document.querySelectorAll('[data-break]').forEach(function(el){
+      var b = (el.getAttribute('data-break') || '').split('-');
+      if (b.length === 3 && +b[0] === today.getFullYear() && +b[1] === today.getMonth() + 1 && +b[2] === today.getDate()) breakToday = true;
+    });
+    var lineupToday = !!(next && next.date - today === 0);
+    /* Bound it to the term. The lineup only names speaker nights, so the first one is well after
+       classes start: allow the four weeks before it, and stop at the last night of the semester.
+       Without this the line would claim a meeting on any Tuesday of the summer. */
+    var termOpen = false;
+    if (allDates.length){
+      var first = Math.min.apply(null, allDates), last = Math.max.apply(null, allDates);
+      termOpen = (+today >= first - 28 * 86400000) && (+today <= last);
+    }
+    if (termOpen && today.getDay() === 2 && !breakToday && !lineupToday && nowMin < 19 * 60){
+      tonight('Weekly meeting');
+      return;
+    }
+
     if (next){
       var days = Math.round((next.date - today) / 86400000);
       var what = next.row.querySelector('.what');
       var title = (what ? (what.childNodes[0].textContent || '').trim() : '') || 'general meeting';
       if (days === 0){
-        var live = nowMin >= 17 * 60 + 30;
-        nb.classList.add('is-tonight');
-        nb.textContent = '';
-        var tag = document.createElement('b'); tag.className = 'nb-tag';
-        tag.textContent = live ? 'Happening now' : 'Tonight';
-        nb.appendChild(tag);
-        nb.appendChild(document.createTextNode(title + (live ? ' · until 7:00 PM CT' : ' · 5:30 PM CT')));
+        tonight(title);
         return;
       }
       var when = days === 1 ? 'tomorrow' : 'in ' + days + ' days';
