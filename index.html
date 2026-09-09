@@ -1865,7 +1865,24 @@ const host = document.getElementById('coin3d');
 const reduced = window.__reduced();
 const staticMode = /[?&]static/.test(location.search);
 const LITE = document.documentElement.classList.contains('lite');
-const wanted = host && !reduced && !staticMode && !LITE;
+/* Chrome flags a "major performance caveat" when WebGL would run on the software
+   rasterizer instead of a GPU: an old laptop, hardware acceleration switched off, a
+   remote desktop. The coin costs about a third of a CPU core there, for as long as the
+   hero is on screen, and the FPS watchdog never catches it because the page still holds
+   a steady 60. Ask the browser first, and on that answer never load three.js at all. */
+const gpu = (() => {
+  try {
+    const c = document.createElement('canvas'), o = {failIfMajorPerformanceCaveat: true};
+    const gl = c.getContext('webgl2', o) || c.getContext('webgl', o);
+    if (!gl) return false;
+    const lose = gl.getExtension('WEBGL_lose_context');
+    if (lose) lose.loseContext();
+    return true;
+  } catch (e) { return false; }
+})();
+const wanted = host && !reduced && !staticMode && !LITE && gpu;
+/* Nothing is going to spin, so stop the hover tooltip promising it. */
+if (host && !wanted) host.removeAttribute('title');
 /* The coin is the heaviest thing on the page: three.js takes a couple of seconds
    to parse on a slow CPU and its first frame (shader compile plus the PMREM
    environment) is one long main-thread stall. None of that may land on the load,
