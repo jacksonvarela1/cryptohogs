@@ -180,6 +180,7 @@
     touch-action:pan-y;-webkit-tap-highlight-color:transparent;
   }
   .coin3d.dragging{cursor:grabbing}
+  .coin3d:not(.live){cursor:default}
   .coin3d canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
   .coin3d img{
     position:absolute;inset:9%;width:82%;height:82%;border-radius:50%;pointer-events:none;
@@ -667,10 +668,10 @@
     <div class="coin-stage reveal reveal-d2">
       <div class="coin-glow"></div>
       <div class="coin-wrap coin-float">
-        <div class="coin3d" id="coin3d" role="button" aria-label="Spin the Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock" title="Grab it" tabindex="0">
+        <div class="coin3d" id="coin3d" role="img" aria-label="The Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock">
           <img src="assets/coin-hero.jpg" alt="" id="coinFallback">
         </div>
-        <span class="coin-hint mono" id="coinHint">Grab the coin. Give it a spin</span>
+        <span class="coin-hint mono" id="coinHint" aria-hidden="true">Grab the coin. Give it a spin</span>
       </div>
     </div>
   </div>
@@ -1242,6 +1243,32 @@
       })(p);
     }
   };
+  /* One place decides what the coin says it is. Until three.js has drawn a frame the coin
+     is a picture, not a button: reduced motion, LITE phones, software WebGL, a lost context
+     and a watchdog demotion all end there, so the markup ships as the still state and only a
+     rendered frame promotes it. Promising a spin to a screen reader that will never get one
+     is the same lie the hover tooltip used to tell. */
+  window.__coinLive = function(live){
+    var host = document.getElementById('coin3d'), hint = document.getElementById('coinHint');
+    if (host){
+      if (live){
+        host.setAttribute('role', 'button');
+        host.setAttribute('tabindex', '0');
+        host.setAttribute('title', 'Grab it');
+        host.setAttribute('aria-label', 'Spin the Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock');
+      } else {
+        host.setAttribute('role', 'img');
+        host.removeAttribute('tabindex');
+        host.removeAttribute('title');
+        host.setAttribute('aria-label', 'The Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock');
+      }
+    }
+    /* the hint holds the turn-motion-on button on the reduced path, so never hide that one */
+    if (hint && !hint.classList.contains('has-offer')){
+      if (live) hint.removeAttribute('aria-hidden');
+      else hint.setAttribute('aria-hidden', 'true');
+    }
+  };
   /* fallback interactions if the 3D module never takes over */
   var coinHost = document.getElementById('coin3d');
   if (coinHost){
@@ -1609,11 +1636,6 @@
      This offers motion, it never starts it, so the accessibility preference is still respected. */
   (function(){
     if (!window.__reduced()) return;
-    var host = document.getElementById('coin3d');
-    if (host){
-      host.setAttribute('title', 'Tap it');
-      host.setAttribute('aria-label', 'The Crypto Hogs coin: a bronze razorback boar holding a key over a Bitcoin padlock');
-    }
     var hint = document.getElementById('coinHint');
     if (!hint) return;
     var b = document.createElement('button');
@@ -1628,6 +1650,7 @@
     hint.textContent = '';
     hint.appendChild(b);
     hint.classList.add('has-offer');
+    hint.removeAttribute('aria-hidden');
   })();
 
   /* self-maintaining dates: past rows dim to Done, hero line tracks the real next event */
@@ -1967,9 +1990,10 @@ if (wanted && !document.documentElement.classList.contains('lite')){
     size();
     const ro = new ResizeObserver(size); ro.observe(host);
     host.appendChild(renderer.domElement);
+    const setLive = v => { host.classList.toggle('live', v); if (window.__coinLive) window.__coinLive(v); };
     /* 'live' fades the fallback image out; tick() sets it on the first rendered frame */
-    renderer.domElement.addEventListener('webglcontextlost', () => host.classList.remove('live'));
-    renderer.domElement.addEventListener('webglcontextrestored', () => host.classList.add('live'));
+    renderer.domElement.addEventListener('webglcontextlost', () => setLive(false));
+    renderer.domElement.addEventListener('webglcontextrestored', () => setLive(true));
 
     /* drag to spin, with inertia; tap = big spin + burst */
     let vy = .012, dragging = false, px = 0, py = 0, moved = 0, downT = 0, demoted = false;
@@ -2025,7 +2049,7 @@ if (wanted && !document.documentElement.classList.contains('lite')){
       if (calm <= 45 || nowMs - lastDraw >= 33){
         lastDraw = nowMs;
         renderer.render(scene, camera);
-        if (!shown){ shown = true; host.classList.add('live'); }
+        if (!shown){ shown = true; setLive(true); }
       }
       raf = running ? requestAnimationFrame(tick) : null;
     };
@@ -2044,7 +2068,7 @@ if (wanted && !document.documentElement.classList.contains('lite')){
     window.addEventListener('ch:golite', () => {
       running = false; demoted = true;
       vis.disconnect(); ro.disconnect();
-      host.classList.remove('live');
+      setLive(false);
       setTimeout(() => {
         try { renderer.dispose(); } catch (_) {}
         if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
