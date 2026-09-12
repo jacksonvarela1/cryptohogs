@@ -1393,6 +1393,18 @@
   var staticMode = /[?&]static/.test(location.search);
   var LITE = document.documentElement.classList.contains('lite');
 
+  /* One scheduler for the loops that never stop. Every drawing on this page is
+     already held to 30fps by the clock, but a loop that asks for the next frame
+     straight away makes the browser build that frame anyway: on a 240Hz panel
+     that was 240 style and paint passes a second to show 30 drawings, about half
+     a core at idle. Waiting out the rest of the interval on a timer and only then
+     asking for a frame costs a seventh of one, with nothing on screen changing.
+     The handle it gives back is only ever compared against null. */
+  window.__chFrame = function(cb, gap){
+    if (!(gap > 1)) return requestAnimationFrame(cb);
+    return setTimeout(function(){ requestAnimationFrame(cb); }, gap);
+  };
+
   /* ---------- Custom cursor ---------- */
   if (!staticMode && !reduced && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
     var dot = document.createElement('div'); dot.className = 'cur-dot';
@@ -1516,12 +1528,14 @@
     var emx = 0, erun = !document.hidden, eraf = null, et0 = performance.now();
     var emove = function(e){ emx = e.clientX / Math.max(1, W) - .5; };
     document.addEventListener('mousemove', emove, {passive:true});
-    /* 30fps by the clock, not by skipping every other frame: on a 240Hz display
-       alternate frames is still 120 draws a second. */
-    var eLast = 0, E_MS = 33;
+    /* 30fps by the clock, and the next frame is not even asked for until the
+       clock says it is due: waking 240 times a second to return early cost more
+       than the drawing did. */
+    var eLast = 0, E_MS = 33, enext = function(){
+      eraf = erun ? window.__chFrame(edraw, E_MS - (performance.now() - eLast)) : null;
+    };
     var edraw = function(t){
       var now = t || performance.now();
-      if (now - eLast < E_MS){ eraf = erun ? requestAnimationFrame(edraw) : null; return; }
       eLast = now;
       ctx.clearRect(0, 0, W, H);
       var dt = t - et0;
@@ -1535,7 +1549,7 @@
         ctx.fillStyle = o.red ? 'rgba(196,18,48,' + (tw * .5).toFixed(3) + ')' : 'rgba(201,169,106,' + tw.toFixed(3) + ')';
         ctx.fill();
       }
-      eraf = erun ? requestAnimationFrame(edraw) : null;
+      enext();
     };
     if (erun) eraf = requestAnimationFrame(edraw);
     document.addEventListener('visibilitychange', function(){
@@ -1562,8 +1576,13 @@
        at 240 fps and swamp both of those even while the page is visibly janking
        (the old fps < 42 test never once fired there). More than a third of the
        window lost to dropped frames, two windows running, is the trip line. */
+    /* The watchdog was itself a loop that asked for every frame forever, which on
+       a fast panel costs more than the effects it is watching. So it watches until
+       the page has proved it can keep up, then checks back once a minute. */
+    var REST_MS = 60000;
     var cal = [], calStart = null, dropAt = 0;
-    var badWins = 0, wFrames = 0, wStart = null, wBad = 0, wBadMs = 0, prev = null;
+    var badWins = 0, goodWins = 0, rested = false;
+    var wFrames = 0, wStart = null, wBad = 0, wBadMs = 0, prev = null;
     var watch = function(t){
       if (document.documentElement.classList.contains('lite')) return;
       if (document.hidden){ wStart = null; wFrames = 0; wBad = 0; wBadMs = 0; prev = null; requestAnimationFrame(watch); return; }
@@ -1588,6 +1607,7 @@
             if (DBG) console.log('[watchdog] ' + wFrames + ' frames, ' + wBad + ' dropped (' + Math.round(wBad / wFrames * 100) + '% of frames, ' + Math.round(share * 100) + '% of time)');
             /* windows with under 60 frames are throttled contexts, not slow machines */
             if (wFrames >= 60 && share > .35){
+              goodWins = 0;
               if (++badWins >= 2){
                 document.documentElement.classList.add('lite');
                 try { window.dispatchEvent(new CustomEvent('ch:golite')); } catch (e) {}
@@ -1595,6 +1615,14 @@
               }
             } else if (wFrames >= 60){
               badWins = 0;
+              /* two clean windows the first time, one on every check-in after */
+              if (++goodWins >= (rested ? 1 : 2)){
+                rested = true; goodWins = 0;
+                if (DBG) console.log('[watchdog] page keeps up, resting ' + (REST_MS / 1000) + 's');
+                prev = null; wStart = null; wFrames = 0; wBad = 0; wBadMs = 0;
+                setTimeout(function(){ requestAnimationFrame(watch); }, REST_MS);
+                return;
+              }
             }
             wStart = t; wFrames = 0; wBad = 0; wBadMs = 0;
           }
@@ -2033,25 +2061,35 @@ if (wanted && !document.documentElement.classList.contains('lite')){
     });
 
     /* render only while visible */
-    let running = false, raf = null, inView = false, calm = 0, lastDraw = 0, shown = false;
+    let running = false, raf = null, inView = false, calm = 0, lastDraw = 0, shown = false, prevT = 0;
+    /* Full rate while it is being dragged or still spinning fast, a paced 30fps
+       once it has settled: asking for all 240 frames to draw 30 of them was the
+       single most expensive thing the idle page did. */
+    const nextFrame = () => {
+      raf = running
+        ? window.__chFrame(tick, (dragging || calm <= 45) ? 0 : 33 - (performance.now() - lastDraw))
+        : null;
+    };
     const tick = (t) => {
-      if (!dragging){
-        vy += (Math.sign(vy || 1) * IDLE - vy) * .04;
-        group.rotation.y += vy;
-        const breathe = Math.sin((t || 0) * .0006) * .07;
-        group.rotation.x += (breathe - group.rotation.x) * .03;
-      }
-      /* Idle throttle: once the coin has settled into its calm spin, render at
-         30fps by the clock. The old version skipped alternate frames, which on a
-         240Hz panel still meant 120 renders a second. */
-      calm = (!dragging && Math.abs(Math.abs(vy) - IDLE) < .002) ? calm + 1 : 0;
       const nowMs = t || performance.now();
+      /* Step in 60Hz frames so the spin runs at one speed everywhere. Stepping
+         once per callback meant the coin turned four times faster on a 240Hz
+         panel than on a laptop, and a tap spin died four times sooner. */
+      const step = prevT ? Math.min(4, (nowMs - prevT) / 16.667) : 1;
+      prevT = nowMs;
+      if (!dragging){
+        vy += (Math.sign(vy || 1) * IDLE - vy) * .04 * step;
+        group.rotation.y += vy * step;
+        const breathe = Math.sin((t || 0) * .0006) * .07;
+        group.rotation.x += (breathe - group.rotation.x) * .03 * step;
+      }
+      calm = (!dragging && Math.abs(Math.abs(vy) - IDLE) < .002) ? calm + 1 : 0;
       if (calm <= 45 || nowMs - lastDraw >= 33){
         lastDraw = nowMs;
         renderer.render(scene, camera);
         if (!shown){ shown = true; setLive(true); }
       }
-      raf = running ? requestAnimationFrame(tick) : null;
+      nextFrame();
     };
     const vis = new IntersectionObserver(es => {
       es.forEach(en => {
