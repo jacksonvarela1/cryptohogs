@@ -21,6 +21,22 @@ in the site's own colors and type. The PNGs next to it are the exports.
 
 3. Look at the PNG before posting it.
 
+## Day-of story versions (1080x1920)
+
+Same template, add `&s=story` to the URL and use `--window-size=1080,1920`. The story
+says "Tonight" in the date pill, so post it on the day of the talk only. Content stays
+inside the top 270px and bottom 360px that Instagram covers with its own buttons.
+
+```
+"/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" --headless=new --disable-gpu \
+  --force-device-scale-factor=1 --hide-scrollbars --window-size=1080,1920 \
+  --user-data-dir=/tmp/chshot --virtual-time-budget=15000 \
+  --screenshot=C:/Users/alexa/cryptohogs/assets/social/2026-10-20-my-talk-story-1080x1920.png \
+  "http://127.0.0.1:4990/assets/social/speaker-card.html?e=2026-10-20&s=story"
+```
+
+Use an absolute path for `--screenshot`; headless Chrome silently drops a relative one.
+
 ## Rules baked into the template, leave them in
 
 - The talk headline is the subject, never a company name. ASG funding requires that no

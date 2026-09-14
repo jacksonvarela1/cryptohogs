@@ -91,6 +91,15 @@
   }
   .foot .site{font-family:var(--font-m);font-size:22px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-dim)}
   .foot .rso{font-family:var(--font-m);font-size:15px;line-height:1.5;letter-spacing:.03em;color:rgba(244,239,228,.34);text-align:right;max-width:36ch}
+
+  /* ?s=story: 1080x1920 day-of story. Instagram draws its own UI over roughly the top
+     250px and bottom 340px, so everything that matters sits inside those margins. */
+  .card.story{height:1920px;padding:270px 84px 360px}
+  .card.story .coin{width:900px;height:900px;right:-240px;top:760px}
+  .card.story .datebar{margin-top:96px}
+  .card.story h1{font-size:118px;line-height:1;margin-top:56px}
+  .card.story .who{margin-top:52px;font-size:42px}
+  .card.story .who span{font-size:32px}
 </style>
 </head>
 <body>
@@ -156,8 +165,10 @@ var EVENTS = {
 
 var key = new URLSearchParams(location.search).get("e") || "2026-09-22";
 var e = EVENTS[key];
+var story = new URLSearchParams(location.search).get("s") === "story";
 if (e) {
-  document.getElementById("day").textContent = e.day;
+  if (story) document.getElementById("card").className = "card story";
+  document.getElementById("day").textContent = story ? "Tonight · " + e.day : e.day;
   document.getElementById("title").innerHTML = e.title;
   document.getElementById("who").innerHTML =
     e.who + '<span>' + e.note + '</span>';
