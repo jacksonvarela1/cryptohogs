@@ -1,5 +1,11 @@
 # Crypto Hogs website
 
+## Publishing guardrails
+
+Run `python tools/check-site.py` before publishing. It checks headings, footer non-endorsement, forbidden text (including HTML entities), and company names in schedule headlines. Print/social assets and the compact 404 have explicit footer exemptions. This static check complements the headless browser smoke test.
+
+Tests: `python -m unittest discover -s tools -p test_check_site.py`.
+
 Live: https://jacksonvarela1.github.io/cryptohogs/
 Hosting: GitHub Pages, `main` branch, repo root. Every push to `main` deploys in about a minute.
 
