@@ -110,6 +110,17 @@ svg_path(encode("https://example.com", ecl="Q"))
 The flyer is `noindex` and is not linked from the site. It is a tool for officers, not a
 page for visitors.
 
+## Adding a past meeting recap
+
+After a meeting, set its row in `assets/schedule.json` to `"status": "done"` and
+add a `"recap"` string containing two factual sentences from an officer's notes.
+Run `python tools/build-schedule.py`. The events page adds the recap to Past blocks
+starting the following calendar day in Central time, newest first. Upcoming and
+unfinished meetings stay hidden, even when draft notes exist. Omit `recap` until
+the notes are ready. Text is escaped; HTML and photo embeds are not supported.
+The existing historical cards remain in place. Verify with
+`python tools/test_schedule_recaps.py` before publishing.
+
 ## House style
 
 - No em dashes anywhere in copy. Use a period, a comma, a colon, or ` · `.

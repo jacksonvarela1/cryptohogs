@@ -117,6 +117,8 @@ def load():
             fail(where + ": kind 'break' and status 'break' go together")
         if not r.get("title"):
             fail(where + ": 'title' is required")
+        if "recap" in r and (not isinstance(r["recap"], str) or not r["recap"].strip()):
+            fail(where + ": 'recap' must be non-empty plain text")
         if r["kind"] != "break" and not r.get("small"):
             fail(where + ": 'small' (the one-line detail under the title) is required")
         if r["kind"] in ("speaker", "general") and r["status"] in ("confirmed", "done"):
@@ -350,6 +352,22 @@ MARK = re.compile(r"^([ \t]*)<!-- schedule:([a-z]+):start -->[ \t]*\r?\n.*?^[ \t
                   re.S | re.M)
 
 
+def recap_region(rows, today):
+    """Only completed past meetings can display an officer-written recap."""
+    out = []
+    for r in sorted(rows, key=lambda row: row["_date"], reverse=True):
+        if not r.get("recap") or r["status"] != "done" or r["_date"] >= today:
+            continue
+        out.extend([
+            '<div class="gcard reveal">',
+            '  <b>' + esc(r["title"]) + '</b>',
+            '  <p>' + esc(r["recap"].strip()) + '</p>',
+            '  <span class="mono">' + esc(month_day(r["_date"])) + ', ' + str(r["_date"].year) + '</span>',
+            '</div>',
+        ])
+    return out
+
+
 def splice(path, regions):
     text = path.read_bytes().decode("utf-8")
     eol = "\r\n" if "\r\n" in text else "\n"
@@ -400,6 +418,7 @@ def main():
         "rows": rows_region(rows, data, "events.html", tz),
         "breaks": breaks_region(rows),
         "jsonld": jsonld_region(rows, data, tz),
+        "recaps": recap_region(rows, today),
     })
     ix_changed = splice(ROOT / "index.html", {
         "rows": rows_region(rows, data, "index.html", tz),
