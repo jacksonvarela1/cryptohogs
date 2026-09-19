@@ -1952,6 +1952,11 @@ if (wanted && !document.documentElement.classList.contains('lite')){
     const DPR = Math.min(devicePixelRatio, 1.5);
     const renderer = new THREE.WebGLRenderer({alpha: true, antialias: DPR < 1.5, powerPreference: 'high-performance'});
     renderer.setPixelRatio(DPR);
+    /* three.js asks the driver for the shader link status and every uniform location
+       the first time a program draws, and each of those questions blocks the main
+       thread until the GPU process answers. The coin uses stock materials with no
+       custom shader, so the error check buys nothing and costs a round trip. */
+    renderer.debug.checkShaderErrors = false;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(28, 1, .1, 20);
@@ -1986,18 +1991,33 @@ if (wanted && !document.documentElement.classList.contains('lite')){
     const geo = new THREE.CylinderGeometry(1, 1, .085, 96);
     geo.rotateX(Math.PI / 2);
     const coin = new THREE.Mesh(geo, [edgeMat, headsMat, tailsMat]);
-    const attachDetail = (mat, base) => {
-      [['normal', 'normalMap'], ['rough', 'roughnessMap'], ['metal', 'metalnessMap'], ['ao', 'aoMap']].forEach(([k, prop]) => {
-        loader.load('assets/coin-tex/' + base + '-' + k + '.webp', t => {
-          prep(t, false);
-          if (prop === 'aoMap') t.channel = 0;
-          mat[prop] = t;
-          mat.needsUpdate = true;
-        });
+    /* Every mat.needsUpdate on a standard material makes three.js build another
+       shader program, and a program is compiled and linked the first time it draws.
+       Attaching the four detail maps one at a time asked for a new program on each
+       arrival, so the coin paid for about ten compiles and each one landed as a
+       fresh stall two to four seconds after the page already looked finished. The
+       four maps now download in parallel and go on in a single assignment, which is
+       three programs for the whole coin, and the two faces hand over in separate
+       idle slots so their compiles never share a frame. */
+    const DETAIL = [['normal', 'normalMap'], ['rough', 'roughnessMap'], ['metal', 'metalnessMap'], ['ao', 'aoMap']];
+    const idleSlot = () => new Promise(r => ('requestIdleCallback' in window) ? requestIdleCallback(() => r(), {timeout: 1200}) : setTimeout(r, 200));
+    const loadDetail = base => Promise.all(DETAIL.map(([k, prop]) => new Promise(res => {
+      loader.load('assets/coin-tex/' + base + '-' + k + '.webp', t => res([prop, t]), undefined, () => res(null));
+    })));
+    const applyDetail = (mat, loaded) => {
+      loaded.forEach(pair => {
+        if (!pair) return;
+        const [prop, t] = pair;
+        prep(t, false);
+        if (prop === 'aoMap') t.channel = 0;
+        mat[prop] = t;
       });
+      mat.needsUpdate = true;
     };
-    attachDetail(headsMat, 'heads');
-    attachDetail(tailsMat, 'tails');
+    Promise.all([loadDetail('heads'), loadDetail('tails')]).then(async ([h, t]) => {
+      await idleSlot(); applyDetail(headsMat, h);
+      await idleSlot(); applyDetail(tailsMat, t);
+    });
     const group = new THREE.Group();
     group.add(coin);
     scene.add(group);
