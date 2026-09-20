@@ -1993,24 +1993,28 @@ if (wanted && !document.documentElement.classList.contains('lite')){
     const coin = new THREE.Mesh(geo, [edgeMat, headsMat, tailsMat]);
     /* Every mat.needsUpdate on a standard material makes three.js build another
        shader program, and a program is compiled and linked the first time it draws.
-       Attaching the four detail maps one at a time asked for a new program on each
+       Attaching the detail maps one at a time asked for a new program on each
        arrival, so the coin paid for about ten compiles and each one landed as a
        fresh stall two to four seconds after the page already looked finished. The
-       four maps now download in parallel and go on in a single assignment, which is
+       maps now download in parallel and go on in a single assignment, which is
        three programs for the whole coin, and the two faces hand over in separate
-       idle slots so their compiles never share a frame. */
-    const DETAIL = [['normal', 'normalMap'], ['rough', 'roughnessMap'], ['metal', 'metalnessMap'], ['ao', 'aoMap']];
+       idle slots so their compiles never share a frame.
+       Ambient occlusion, roughness and metalness share one 512 map a face: the
+       shader already reads them from .r, .g and .b, which is the glTF ORM layout,
+       so three greys that each cost the GPU a full size RGBA upload now cost one
+       half size upload between them. Rebuild it with tools/build-coin-orm.py. */
     const idleSlot = () => new Promise(r => ('requestIdleCallback' in window) ? requestIdleCallback(() => r(), {timeout: 1200}) : setTimeout(r, 200));
-    const loadDetail = base => Promise.all(DETAIL.map(([k, prop]) => new Promise(res => {
-      loader.load('assets/coin-tex/' + base + '-' + k + '.webp', t => res([prop, t]), undefined, () => res(null));
+    const loadDetail = base => Promise.all(['normal', 'orm'].map(k => new Promise(res => {
+      loader.load('assets/coin-tex/' + base + '-' + k + '.webp', t => res([k, t]), undefined, () => res(null));
     })));
     const applyDetail = (mat, loaded) => {
       loaded.forEach(pair => {
         if (!pair) return;
-        const [prop, t] = pair;
+        const [k, t] = pair;
         prep(t, false);
-        if (prop === 'aoMap') t.channel = 0;
-        mat[prop] = t;
+        if (k === 'normal') { mat.normalMap = t; return; }
+        t.channel = 0;
+        mat.aoMap = t; mat.roughnessMap = t; mat.metalnessMap = t;
       });
       mat.needsUpdate = true;
     };

@@ -17,7 +17,7 @@ Hosting: GitHub Pages, `main` branch, repo root. Every push to `main` deploys in
 | `team.html`, `events.html`, `sponsors.html` | Subpages. They share `assets/site.css` and `assets/site.js` plus a small page-specific `<style>` block in their own `<head>`. |
 | `404.html` | Branded not-found page. Its links use absolute `/cryptohogs/` paths because GitHub Pages serves the site under that subpath. Change them if the site moves to a custom domain at the root. |
 | `assets/vendor/` | three.js 0.160, GSAP 3.12.5, ScrollTrigger. Self-hosted so the Content Security Policy can stay strict. Do not swap these for CDN copies. |
-| `assets/coin-tex/` | The coin's PBR maps. Color maps are JPEG, detail maps (normal, roughness, metalness, AO) are WebP. The loader builds the filenames, so renaming one breaks the coin silently. |
+| `assets/coin-tex/` | The coin's PBR maps. Color maps are JPEG at 1024; the detail maps are WebP at 512, one normal map and one ORM map a face that carries ambient occlusion, roughness and metalness in its red, green and blue channels. Rebuild the ORM maps from `assets/coin-tex/src/` with `python tools/build-coin-orm.py`. The loader builds the filenames, so renaming one breaks the coin silently. |
 | `assets/web/` | Officer photos. Each has an 800px original and a `-560.jpg` variant for small screens. Add both when adding a person. |
 | `assets/cryptohogs-sponsorship.pdf` | The public sponsorship deck. See the PDF rule below. |
 | `sitemap.xml`, `robots.txt` | Search plumbing. |
